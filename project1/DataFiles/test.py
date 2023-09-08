@@ -18,7 +18,7 @@ y = np.linspace(0,1, np.shape(terrain)[1])
 x_mesh, y_mesh = np.meshgrid(x,y)
 
 z = terrain
-X = create_X(x_mesh, y_mesh,m)
+
 
 
 # Show the terrain
