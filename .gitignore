@@ -1,1 +1,11 @@
 .DS_store
+*.xdv
+*.out
+*.log
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.aux
+*.bbl
+*.blg
+_minted-report
