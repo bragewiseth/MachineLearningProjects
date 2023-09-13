@@ -8,4 +8,5 @@
 *.aux
 *.bbl
 *.blg
+*.dvi
 _minted-report
