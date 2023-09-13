@@ -9,4 +9,5 @@
 *.bbl
 *.blg
 *.dvi
+*.toc
 _minted-report
