@@ -1,3 +1,0 @@
-\contentsline {section}{\numberline {1}Introduction}{3}{section.0.1}%
-\contentsline {section}{\numberline {2}OLS}{3}{section.0.2}%
-\contentsline {subsection}{\numberline {2.1}yurr}{3}{subsection.0.2.1}%
