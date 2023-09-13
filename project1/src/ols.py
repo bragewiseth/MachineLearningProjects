@@ -7,7 +7,6 @@ from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from random import random, seed
-# np.set_printoptions(precision=2, suppress=True)
 
 
 
@@ -24,11 +23,10 @@ class MyStandardScaler:
             self.mean_[i] = np.mean(X[:, i])
             self.var_[i] = np.var(X[:, i])
 
-
     def transform(self, X, with_std=True, with_mean=True):
         if self.mean_ is None or self.var_ is None:
             raise ValueError("Call fit first")
-        
+
         if with_mean:
             X = X - self.mean_.reshape(1, -1)
         if with_std:
@@ -56,6 +54,9 @@ def fit_beta(X, y):
     return np.linalg.pinv(X.T @ X) @ X.T @ y
 
 
+def fit_beta_ridge(X, y, l):
+    p = X.shape[1]
+    return np.linalg.inv(X.T @ X + (l * np.eye(p))) @ X.T @ y
 
 
 def FrankeFunction(x,y):
@@ -69,6 +70,7 @@ def FrankeFunction(x,y):
 
 n = 100
 degree = 5
+Lambda = 1
 np.random.seed()
 
 
@@ -111,24 +113,32 @@ X = np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T
 
 scaler = StandardScaler()       # sklearn scaler
 myScaler = MyStandardScaler()   # own implementation of standard scaler
-poly = PolynomialFeatures(degree,include_bias=False)
+poly = PolynomialFeatures(degree,include_bias=True)
 
 
 # fit polynomial and scale
 x_train, x_test, y_train, y_test = train_test_split(X, z.ravel(), test_size=0.2)
 X_train = poly.fit_transform(x_train)
 X_test = poly.transform(x_test)
-X_train = myScaler.fit_transform(X_train)
-X_test = myScaler.transform(X_test)
+X_train_scaled = scaler.fit_transform(X_train[:,1:])
+X_test_scaled = scaler.transform(X_test[:,1:])
 y_train_mean = np.mean(y_train)
-y_train = y_train - y_train_mean
+y_train_scaled = y_train - y_train_mean
 
 
 # fit beta
-beta = fit_beta(X_train,y_train)
+beta_scaled = fit_beta(X_train_scaled,y_train_scaled)
+beta = fit_beta(X_train, y_train)
+beta_ridge = fit_beta_ridge(X_train, y_train, Lambda)
+beta_ridge_scaled = fit_beta_ridge(X_train_scaled, y_train_scaled, Lambda)
 
-predict = (myScaler.transform(poly.transform(X)) @ beta) + y_train_mean 
-predict = predict.reshape(n,n)
+predict = (scaler.transform(poly.transform(X)[:,1:]) @ beta_scaled) + y_train_mean 
+predict2d = predict.reshape(n,n)
+ytilde_scaled = X_test_scaled @ beta_scaled + y_train_mean
+ytilde = X_test @ beta
+ytilde_scaled_ridge = X_test_scaled @ beta_ridge_scaled + y_train_mean
+ytilde_rigde = X_test @ beta_ridge
+
 
 
 
@@ -136,7 +146,7 @@ predict = predict.reshape(n,n)
 ax = fig.add_subplot(1,2,2,projection='3d')
 ax.title.set_text("Model")
 
-surf = ax.plot_surface(xx, yy, predict, cmap=cm.coolwarm, # type: ignore
+surf = ax.plot_surface(xx, yy, predict2d, cmap=cm.coolwarm, # type: ignore
                        linewidth=0, antialiased=False)
 
 # Customize the z axis.
@@ -147,4 +157,24 @@ ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 # Add a color bar which maps values to colors.
 fig.colorbar(surf, shrink=0.5, aspect=5)
 
-plt.show()
+# plt.show()
+
+
+
+np.set_printoptions(precision=5, suppress=True, threshold=np.inf)
+polyScaleShowcase = PolynomialFeatures(5)
+A = polyScaleShowcase.fit_transform(x.reshape(-1,1))
+A_scaled = scaler.fit_transform(A)
+print(A)
+print(A_scaled)
+print(beta)
+print(beta_scaled)
+print(beta_ridge_scaled)
+print(beta_ridge)
+
+
+print(MSE(y_test,ytilde ))
+print(MSE(y_test,ytilde_scaled ))
+print(MSE(y_test,ytilde_rigde))
+print(MSE(y_test,ytilde_scaled_ridge))
+
