@@ -65,11 +65,11 @@
 
 % Heading arguments are {volume}{year}{pages}{submitted}{published}{author-full-names}
 
-% \jmlrheading{1}{2000}{1-48}{4/00}{10/00}{Marina Meil\u{a} and Michael I. Jordan}
+% \jmlrheading{1}{2000}{1-48}{4/00}{10/00}{https://github.com/bragewiseth/MachineLearningProjects}
 
 % Short headings should be running head and authors last names
 
-\ShortHeadings{Project 1}{}
+\ShortHeadings{\url{https://github.com/bragewiseth/MachineLearningProjects}}{\url{https://github.com/bragewiseth/MachineLearningProjects}}
 \firstpageno{1}
 
 
@@ -119,7 +119,10 @@
 		\end{flushright}
         
 	\end{minipage}\\[2 cm]
-	\@date
+	\@date\\
+    \vspace*{25mm}
+    \urlstyle{rm}
+    \textsc{\url{https://github.com/bragewiseth/MachineLearningProjects}}
 	
 	
     
@@ -128,7 +131,7 @@
     
 	
 \end{titlepage}
-
+\nocite{*}
 % \maketitle
 \newpage
 \tableofcontents
@@ -137,7 +140,7 @@
 \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
 \lettrine{T}{}his paper describes the mixtures-of-trees model, a probabilistic 
 model for discrete multidimensional domains.  Mixtures-of-trees 
-generalize the probabilistic trees of \cite{chow:68}
+generalize the probabilistic trees of 
 in a different and complementary direction to that of Bayesian networks.
 We present efficient algorithms for learning mixtures-of-trees 
 models in maximum likelihood and Bayesian frameworks. 
@@ -149,7 +152,6 @@ model for both density estimation and classification.
 We also discuss the sense in which tree-based classifiers
 perform an implicit form of feature selection, and demonstrate
 a resulting insensitivity to irrelevant attributes.
-\cite{YOUR_NAME_HERE_MachineLearningProjects_2023}
 \end{abstract}
 
 \begin{keywords}
@@ -161,7 +163,7 @@ a resulting insensitivity to irrelevant attributes.
 Probabilistic inference has become a core technology in AI,
 largely due to developments in graph-theoretic methods for the 
 representation and manipulation of complex probability 
-distributions~\cite{pearl:88}.  Whether in their guise as 
+distributions~.  Whether in their guise as 
 \cite{Goodfellow-et-al-2016}
 directed graphs (Bayesian networks) or as undirected graphs (Markov 
 random fields), \emph{probabilistic graphical models} have a number 
@@ -211,10 +213,16 @@ of uncertainty...\\
     -2.19979 -5.79259 -9.48697 -1.28166 -5.40093  7.77825  0.19055  3.09519
     1.60557 -0.83485  2.797   -4.1589 ]
 \end{minted}
-
+\begin{minted}[style=bw]{python}
+    0.010349396022903145
+    0.010349396024145656
+    0.02106077418650843
+    0.01782525371566323
+\end{minted}
+\footnote{the code can be found at \url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/ols.py}\cite{MachineLearningProjects_2023}}
 First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centerd and not that spread out, which means that initaially by just looking at the data scaling is not that nececary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an exsample $0.1^5 = 0.00001$ this makes the collums of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considerd to bring them back to the same ish order of magnitude. The act of not scaling results in $\beta$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$ (We would imagine that keeping everything in the same order of magnitude is something that the computer likes, perhaps reducing floatingpoint error). Now this alone may not justify why we should scale this dataset, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$ This explains why the MSE for unscaled data is much higher than for scaled data in the ridge case.  
 This leads us to conclude that we should scale the data, making it easier to tweek $\lambda$ and giving us nicer numbers to work with.
-
+\footnotemark[\value{footnote}]
 
 
 \acks{We would like to acknowledge support for this project
