@@ -8,59 +8,11 @@ from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from random import random, seed
-# np.set_printoptions(precision=2, suppress=True)
+from myStandardScaler import MyStandardScaler
+from utils import MSE, R2, FrankeFunction
 
 
 
-class MyStandardScaler:
-    def __init__(self):
-        self.mean_ = None
-        self.var_ = None
-
-    def fit(self, X):
-        p = X.shape[1]
-        self.mean_ = np.zeros(p)
-        self.var_ = np.zeros(p)
-        for i in range(p):
-            self.mean_[i] = np.mean(X[:, i])
-            self.var_[i] = np.var(X[:, i])
-
-
-    def transform(self, X, with_std=True, with_mean=True):
-        if self.mean_ is None or self.var_ is None:
-            raise ValueError("Call fit first")
-        
-        if with_mean:
-            X = X - self.mean_.reshape(1, -1)
-        if with_std:
-            X /= np.sqrt(self.var_).reshape(1, -1)
-        return X
-
-    def fit_transform(self, X, with_std=True, with_mean=True):
-        self.fit(X)
-        return self.transform(X, with_std, with_mean)
-
-
-
-
-
-def MSE(y_data,y_model):
-    n = np.size(y_model)
-    return np.sum((y_data-y_model)**2)/n
-
-
-def R2(y_data,y_model):
-    return 1 - np.sum((y_data-y_model)**2)/np.sum((y_data-np.mean(y_model))**2)
-
-
-
-
-def FrankeFunction(x,y):
-    term1 = 0.75*np.exp(-(0.25*(9*x-2)**2) - 0.25*((9*y-2)**2))
-    term2 = 0.75*np.exp(-((9*x+1)**2)/49.0 - 0.1*(9*y+1))
-    term3 = 0.5*np.exp(-(9*x-7)**2/4.0 - 0.25*((9*y-3)**2))
-    term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
-    return term1 + term2 + term3 + term4
 
 
 

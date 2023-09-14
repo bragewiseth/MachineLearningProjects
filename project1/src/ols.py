@@ -7,64 +7,9 @@ from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from random import random, seed
+from myStandardScaler import MyStandardScaler
+from utils import MSE, R2, FrankeFunction, fit_beta, fit_beta_ridge
 
-
-
-class MyStandardScaler:
-    def __init__(self):
-        self.mean_ = None
-        self.var_ = None
-
-    def fit(self, X):
-        p = X.shape[1]
-        self.mean_ = np.zeros(p)
-        self.var_ = np.zeros(p)
-        for i in range(p):
-            self.mean_[i] = np.mean(X[:, i])
-            self.var_[i] = np.var(X[:, i])
-
-    def transform(self, X, with_std=True, with_mean=True):
-        if self.mean_ is None or self.var_ is None:
-            raise ValueError("Call fit first")
-
-        if with_mean:
-            X = X - self.mean_.reshape(1, -1)
-        if with_std:
-            X /= np.sqrt(self.var_).reshape(1, -1)
-        return X
-
-    def fit_transform(self, X, with_std=True, with_mean=True):
-        self.fit(X)
-        return self.transform(X, with_std, with_mean)
-
-
-
-
-
-def MSE(y_data,y_model):
-    n = np.size(y_model)
-    return np.sum((y_data-y_model)**2)/n
-
-
-def R2(y_data,y_model):
-    return 1 - np.sum((y_data-y_model)**2)/np.sum((y_data-np.mean(y_model))**2)
-
-
-def fit_beta(X, y):
-    return np.linalg.pinv(X.T @ X) @ X.T @ y
-
-
-def fit_beta_ridge(X, y, l):
-    p = X.shape[1]
-    return np.linalg.inv(X.T @ X + (l * np.eye(p))) @ X.T @ y
-
-
-def FrankeFunction(x,y):
-    term1 = 0.75*np.exp(-(0.25*(9*x-2)**2) - 0.25*((9*y-2)**2))
-    term2 = 0.75*np.exp(-((9*x+1)**2)/49.0 - 0.1*(9*y+1))
-    term3 = 0.5*np.exp(-(9*x-7)**2/4.0 - 0.25*((9*y-3)**2))
-    term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
-    return term1 + term2 + term3 + term4
 
 
 
@@ -105,10 +50,6 @@ fig.colorbar(surf, shrink=0.5, aspect=5)
 
 
 
-
-
-
-
 X = np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T
 
 scaler = StandardScaler()       # sklearn scaler
@@ -121,7 +62,7 @@ x_train, x_test, y_train, y_test = train_test_split(X, z.ravel(), test_size=0.2)
 X_train = poly.fit_transform(x_train)
 X_test = poly.transform(x_test)
 X_train_scaled = scaler.fit_transform(X_train[:,1:])
-X_test_scaled = scaler.transform(X_test[:,1:])
+X_test_scaled = scaler.transform(X_test[:,1:]) # type: ignore
 y_train_mean = np.mean(y_train)
 y_train_scaled = y_train - y_train_mean
 
@@ -132,7 +73,7 @@ beta = fit_beta(X_train, y_train)
 beta_ridge = fit_beta_ridge(X_train, y_train, Lambda)
 beta_ridge_scaled = fit_beta_ridge(X_train_scaled, y_train_scaled, Lambda)
 
-predict = (scaler.transform(poly.transform(X)[:,1:]) @ beta_scaled) + y_train_mean 
+predict = (scaler.transform(poly.transform(X)[:,1:]) @ beta_scaled) + y_train_mean # type: ignore 
 predict2d = predict.reshape(n,n)
 ytilde_scaled = X_test_scaled @ beta_scaled + y_train_mean
 ytilde = X_test @ beta
@@ -161,7 +102,7 @@ fig.colorbar(surf, shrink=0.5, aspect=5)
 
 
 
-np.set_printoptions(precision=5, suppress=True, threshold=np.inf)
+np.set_printoptions(precision=5, suppress=True, threshold=np.inf) # type: ignore
 polyScaleShowcase = PolynomialFeatures(5)
 A = polyScaleShowcase.fit_transform(x.reshape(-1,1))
 A_scaled = scaler.fit_transform(A)
