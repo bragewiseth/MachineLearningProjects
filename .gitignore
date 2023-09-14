@@ -11,3 +11,4 @@
 *.dvi
 *.toc
 _minted-report
+_minted-report/
