@@ -155,32 +155,27 @@ a resulting insensitivity to irrelevant attributes.
 \end{abstract}
 
 \begin{keywords}
-  Bayesian Networks, Mixture Models, Chow-Liu Trees
+    Linear Regression, Fitting Polynomials, Scaling, Bias-Variance 
 \end{keywords}
 
 \section{Introduction}
 
-Probabilistic inference has become a core technology in AI,
-largely due to developments in graph-theoretic methods for the 
-representation and manipulation of complex probability 
-distributions~.  Whether in their guise as 
-\cite{Goodfellow-et-al-2016}
-directed graphs (Bayesian networks) or as undirected graphs (Markov 
-random fields), \emph{probabilistic graphical models} have a number 
-of virtues as representations of uncertainty and as inference engines.  
-Graphical models allow a separation between qualitative, structural
-aspects of uncertain knowledge and the quantitative, parametric aspects 
-of uncertainty...\\
-
-{\noindent \em Remainder omitted in this sample. See http://www.jmlr.org/papers/ for full paper.}
+Franke function bla bla bla blablbisdjaidh
+sdhkadhjsiajdsdsah
+\begin{figure*}[h]
+    \centering
+    \resizebox*{0.9\linewidth}{!}{\input{Figure_1.pgf}}
+\end{figure*}
 
 % Acknowledgements should go at the end, before appendices and references
 
 
 
-
+\pagebreak
 
 \section{Ordinary Least Squares}
+\section{Ridge}
+\section{Lasso}
 \subsection{Discussion on Scaling}
 
 
@@ -219,7 +214,11 @@ of uncertainty...\\
     0.02106077418650843
     0.01782525371566323
 \end{minted}
-\footnote{the code can be found at \url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/ols.py}\cite{MachineLearningProjects_2023}}
+\begin{center}
+    \scriptsize
+    the code for genertating this output \footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/ols.py}\cite{MachineLearningProjects_2023}}
+\end{center}
+
 First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centerd and not that spread out, which means that initaially by just looking at the data scaling is not that nececary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an exsample $0.1^5 = 0.00001$ this makes the collums of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considerd to bring them back to the same ish order of magnitude. The act of not scaling results in $\beta$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$ (We would imagine that keeping everything in the same order of magnitude is something that the computer likes, perhaps reducing floatingpoint error). Now this alone may not justify why we should scale this dataset, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$ This explains why the MSE for unscaled data is much higher than for scaled data in the ridge case.  
 This leads us to conclude that we should scale the data, making it easier to tweek $\lambda$ and giving us nicer numbers to work with.
 \footnotemark[\value{footnote}]

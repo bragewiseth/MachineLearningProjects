@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib.pylab as plt
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 def MSE(y_data,y_model):
     n = np.size(y_model)
@@ -26,4 +29,59 @@ def FrankeFunction(x,y):
     return term1 + term2 + term3 + term4
 
 
+
+def makeFigure(figsize=(10,10)):
+    fig = plt.figure(figsize=figsize)
+    fig.tight_layout()
+    return fig
+
+
+def plotFrankefunction(xx,yy, z, fig, subplot=(1,1,1),title=None ):
+    ax = fig.add_subplot(subplot[0],subplot[1], subplot[2],projection='3d')
+    ax.title.set_text(title)
+        # Plot the surface.
+    surf = ax.plot_surface(xx, yy, z, cmap=cm.coolwarm, # type: ignore
+                        linewidth=0, antialiased=False)
+
+    # Customize the z axis.
+    ax.set_zlim(-0.10, 1.40)
+    ax.zaxis.set_major_locator(LinearLocator(10))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+    fig.colorbar(surf, shrink=0.5, aspect=5)
+    # Add a color bar which maps values to colors.
+    return ax
+
+
+
+
+
+
+
+class MyStandardScaler:
+    def __init__(self):
+        self.mean_ = None
+        self.var_ = None
+
+    def fit(self, X):
+        p = X.shape[1]
+        self.mean_ = np.zeros(p)
+        self.var_ = np.zeros(p)
+        for i in range(p):
+            self.mean_[i] = np.mean(X[:, i])
+            self.var_[i] = np.var(X[:, i])
+
+    def transform(self, X, with_std=True, with_mean=True):
+        if self.mean_ is None or self.var_ is None:
+            raise ValueError("Call fit first")
+
+        if with_mean:
+            X = X - self.mean_.reshape(1, -1)
+        if with_std and self.var_.any() != 0:
+            X /= np.sqrt(self.var_).reshape(1, -1)
+        return X
+
+    def fit_transform(self, X, with_std=True, with_mean=True):
+        self.fit(X)
+        return self.transform(X, with_std, with_mean)
 
