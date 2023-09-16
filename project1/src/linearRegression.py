@@ -74,23 +74,23 @@ ytilde_train_rigde = X_train @ beta_ridge
 
 
 
-# showcase how scaling effects result
-np.set_printoptions(precision=5, suppress=True, threshold=np.inf) # type: ignore
-polyScaleShowcase = PolynomialFeatures(5)
-A = polyScaleShowcase.fit_transform(x.reshape(-1,1))
-A_scaled = scaler.fit_transform(A)
-print(A)
-print(A_scaled)
-print(beta)
-print(beta_scaled)
-print(beta_ridge_scaled)
-print(beta_ridge)
+# SHOWCASE HOW SCALING AFFECTS RESULTS
+# np.set_printoptions(precision=5, suppress=True, threshold=np.inf) # type: ignore
+# polyScaleShowcase = PolynomialFeatures(5)
+# A = polyScaleShowcase.fit_transform(x.reshape(-1,1))
+# A_scaled = scaler.fit_transform(A)
+# print(A)
+# print(A_scaled)
+# print(beta)
+# print(beta_scaled)
+# print(beta_ridge_scaled)
+# print(beta_ridge)
 
-print(MSE(y_test,ytilde_test ))
-print(MSE(y_test,ytilde_test_scaled ))
-print(MSE(y_test,ytilde_test_rigde))
-print(MSE(y_test,ytilde_test_scaled_ridge))
-print(MSE(y_test,y_tilde_test_lasso))
+# print(MSE(y_test,ytilde_test ))
+# print(MSE(y_test,ytilde_test_scaled ))
+# print(MSE(y_test,ytilde_test_rigde))
+# print(MSE(y_test,ytilde_test_scaled_ridge))
+# print(MSE(y_test,y_tilde_test_lasso))
 
 
 
@@ -111,4 +111,4 @@ plotFrankefunction(xx,yy,predict.reshape(n,n), fig1, (1,2,2), "Ols")
 fig2 = makeFigure((15,10))
 plotFrankefunction(xx,yy,z, fig2, (1,2,1) ,"Data")
 plotFrankefunction(xx,yy,predict_ridge.reshape(n,n), fig2, (1,2,2), "Ridge") 
-plt.show()
+# plt.show()

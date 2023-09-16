@@ -162,10 +162,10 @@ a resulting insensitivity to irrelevant attributes.
 
 Franke function bla bla bla blablbisdjaidh
 sdhkadhjsiajdsdsah
-\begin{figure*}[h]
-    \centering
-    \resizebox*{0.9\linewidth}{!}{\input{Figure_1.pgf}}
-\end{figure*}
+% \begin{figure*}[h]
+%     \centering
+%     \resizebox*{0.9\linewidth}{!}{\input{Figure_1.pgf}}
+% \end{figure*}
 
 % Acknowledgements should go at the end, before appendices and references
 
@@ -179,49 +179,52 @@ sdhkadhjsiajdsdsah
 \subsection{Discussion on Scaling}
 
 
-\textbf{Unscaled} sample design matrix fitting one-dimensional polynomial of degree 5
-\begin{minted}[style=bw,mathescape ]{python}
-    [[1.      0.      0.      0.      0.      0.     ]
-    [1.      0.25    0.0625  0.01562 0.00391 0.00098]
-    [1.      0.5     0.25    0.125   0.0625  0.03125]
-    [1.      0.75    0.5625  0.42188 0.31641 0.2373 ]
-    [1.      1.      1.      1.      1.      1.     ]]
-
-\end{minted}
-\textbf{Scaled} sample design matrix fitting one-dimensional polynomial of degree 5
-\begin{minted}[style=bw]{python}  
-    [[ 0.      -1.41421 -1.0171  -0.83189 -0.728   -0.66226]
-    [ 0.      -0.70711 -0.84758 -0.7903  -0.71772 -0.65971]
-    [ 0.       0.      -0.33903 -0.49913 -0.56348 -0.58075]
-    [ 0.       0.70711  0.50855  0.29116  0.10488 -0.0433 ]
-    [ 0.       1.41421  1.69516  1.83016  1.90431  1.94603]]
-\end{minted}
-\textbf{Unscaled} $\boldsymbol{\beta}$ after fitting two-dimensional polynomial of degree 5
-\begin{minted}[style=bw]{python}
-    [  0.4097    7.55124   3.79304 -32.85696 -14.83669  -8.81645  45.45889
-    43.33221  20.70625  -7.63623 -21.24552 -51.81866  -7.53731 -29.60175
-    28.57282   0.73824  18.29253  10.60883  -5.52465  16.60259 -16.13743]
-\end{minted}
-\textbf{Scaled} $\boldsymbol{\beta}$ after fitting two-dimensional polynomial of degree 5
-\begin{minted}[style=bw]{python}
-    [ 2.21481  1.1093  -9.93941 -3.32124 -2.6612  13.11848  8.70306  4.14949
-    -2.19979 -5.79259 -9.48697 -1.28166 -5.40093  7.77825  0.19055  3.09519
-    1.60557 -0.83485  2.797   -4.1589 ]
-\end{minted}
-\begin{minted}[style=bw]{python}
-    0.010349396022903145
-    0.010349396024145656
-    0.02106077418650843
-    0.01782525371566323
-\end{minted}
+Unscaled sample design matrix fitting one-dimensional polynomial of degree 5
+\begin{table}[h]
+\tt
+\centering
+\resizebox{0.6\textwidth}{!}{%
+\begin{tabular}{llllll}
+    1. &     0.  &    0.  &    0.   &   0.   &   0.     \\
+    1. &     0.25 &   0.0625 & 0.01562& 0.00391& 0.00098\\
+    1.    &  0.5     &0.25 &   0.125 &  0.0625 & 0.03125\\
+    1.   &   0.75  &  0.5625 & 0.42188 &0.31641& 0.2373 \\
+    1.  &    1.   &   1.  &    1.  &    1.    &  1.
+\end{tabular}%
+}
+\end{table}\\
+Scaled sample design matrix fitting one-dimensional polynomial of degree 5
+\begin{table}[h]
+\tt
+\centering
+\resizebox{0.6\textwidth}{!}{%
+\begin{tabular}{llllll}
+     0. &     -1.41421& -1.0171&  -0.83189& -0.728 &  -0.66226\\
+     0.  &    -0.70711& -0.84758& -0.7903 & -0.71772& -0.65971\\
+     0.  &     0.    &  -0.33903& -0.49913& -0.56348& -0.58075\\
+     0.  &     0.70711&  0.50855&  0.29116 & 0.10488& -0.0433 \\
+     0.  &     1.41421&  1.69516 & 1.83016 & 1.90431&  1.94603
+\end{tabular}%
+}
+\end{table}
+\begin{table}[h]
+\centering
+\resizebox{0.6\textwidth}{!}{%
+\begin{tabular}{ll}
+MSE for OLS on unscaled data:    &   \texttt{0.010349396022903145} \\
+MSE for OLS on scaled data:      &   \texttt{0.010349396024145656} \\
+MSE for Ridge on unscaled data:  &   \texttt{0.02106077418650843} \\
+MSE for Ridge on scaled data:    &   \texttt{0.01782525371566323}
+\end{tabular}%
+}
+\end{table}
 \begin{center}
     \scriptsize
-    the code for genertating this output \footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/ols.py}\cite{MachineLearningProjects_2023}}
+    the code for genertating this output \footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
 \end{center}
 
-First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centerd and not that spread out, which means that initaially by just looking at the data scaling is not that nececary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an exsample $0.1^5 = 0.00001$ this makes the collums of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considerd to bring them back to the same ish order of magnitude. The act of not scaling results in $\beta$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$ (We would imagine that keeping everything in the same order of magnitude is something that the computer likes, perhaps reducing floatingpoint error). Now this alone may not justify why we should scale this dataset, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$ This explains why the MSE for unscaled data is much higher than for scaled data in the ridge case.  
+First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centerd and not that spread out, which means that initaially by just looking at the data scaling is not that nececary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an exsample $0.1^5 = 0.00001$ this makes the collums of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considerd to bring them back to the same ish order of magnitude. The act of not scaling results in $\boldsymbol{\beta}$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$\footnote{We would imagine that keeping everything in the same $0$ order of magnitude is something that the computer likes, perhaps improving performance}. Now this alone may not justify why we should scale this dataset, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$. Now with each $\beta_i$ variying alot, some are getting more penaliesed than others. As we can see the MSE for unscaled data is much higher than for scaled data in the ridge case.
 This leads us to conclude that we should scale the data, making it easier to tweek $\lambda$ and giving us nicer numbers to work with.
-\footnotemark[\value{footnote}]
 
 
 \acks{We would like to acknowledge support for this project
