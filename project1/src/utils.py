@@ -77,7 +77,7 @@ class MyStandardScaler:
 
         if with_mean:
             X = X - self.mean_.reshape(1, -1)
-        if with_std and self.var_.any() != 0:
+        if with_std and self.var_.all() != 0:
             X /= np.sqrt(self.var_).reshape(1, -1)
         return X
 
