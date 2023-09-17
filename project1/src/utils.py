@@ -121,3 +121,34 @@ class MyStandardScaler:
         self.fit(X)
         return self.transform(X, with_std, with_mean)
 
+
+
+
+
+
+
+class OLS:
+    def __init__(self):
+        pass
+
+
+    def fit(self,X,y):
+        self.beta = np.linalg.pinv(X.T @ X) @ X.T @ y
+
+
+    def predict(self,X):
+        return X @ self.beta
+
+
+
+
+
+
+
+class Ridge:
+    def fit(self,X, y, alpha=0):
+        p = X.shape[1]
+        self.beta = np.linalg.inv(X.T @ X + (alpha * np.eye(p))) @ X.T @ y
+
+    def predict(self, X):
+        return X @ self.beta

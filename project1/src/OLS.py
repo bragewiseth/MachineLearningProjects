@@ -2,23 +2,13 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
-from utils import makeData, MSE, R2
+from utils import makeData, MSE, R2, OLS
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
 
-class OLS:
-    def __init__(self):
-        pass
 
-
-    def fit(self,X,y):
-        self.beta = np.linalg.pinv(X.T @ X) @ X.T @ y
-
-
-    def predict(self,X):
-        return X @ self.beta
 
 
 
