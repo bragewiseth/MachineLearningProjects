@@ -30,6 +30,8 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=false, pdfborder={0 0 0}}
 \usepackage{fancyhdr}
+\usepackage{wrapfig}
+\usepackage{adjustbox}
 
 
 
@@ -138,49 +140,78 @@
 \newpage
 
 \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
-\lettrine{T}{}his paper describes the mixtures-of-trees model, a probabilistic 
-model for discrete multidimensional domains.  Mixtures-of-trees 
-generalize the probabilistic trees of 
-in a different and complementary direction to that of Bayesian networks.
-We present efficient algorithms for learning mixtures-of-trees 
-models in maximum likelihood and Bayesian frameworks. 
-We also discuss additional efficiencies that can be
-obtained when data are ``sparse,'' and we present data 
-structures and algorithms that exploit such sparseness.
-Experimental results demonstrate the performance of the 
-model for both density estimation and classification. 
-We also discuss the sense in which tree-based classifiers
-perform an implicit form of feature selection, and demonstrate
-a resulting insensitivity to irrelevant attributes.
+\lettrine{I}{}n this project, we explored the use of different methods for solving linear regres-
+sion on topological data. We emplyed OLS, ridge and lasso methods for linear regression on
+simulated height data using \emph{Franke's Function}, Where the goal was to fit polynomials to minimize the
+mean square error. As well as real topological data with the same goal.
 \end{abstract}
-
 \begin{keywords}
     Linear Regression, Fitting Polynomials, Scaling, Bias-Variance 
 \end{keywords}
 
 \section{Introduction}
 
-Franke function bla bla bla blablbisdjaidh
-sdhkadhjsiajdsdsah
-\begin{figure*}[h]
-    \centering
-    \resizebox*{0.9\linewidth}{!}{\input{Figure_1.pgf}}
-\end{figure*}
+\begin{wrapfigure}{l}{0.3\textwidth}
+    \caption{\small Franke's Function}
+    \label{frankfunc}
+    \begin{center}
+    \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
+    \input{Frank_2.pgf}
+    \end{adjustbox}
+    \end{center}
+\end{wrapfigure}
+To get a smooth start on this project we begin to construct some fake topological data. This can be constructed with
+\emph{Franke's Function}. This gives us a nice dataset to start linear regression. 
+A natrual start would be to use ordinary least squares to try to fit a polynomial to some degree. This is done by
+constructing a design matrix $X$ with the polynomial terms and then solving the linear regression equation
+\begin{equation}
+    \boldsymbol{\beta} = (X^T X)^{-1} X^T \boldsymbol{y}
+\end{equation}
+where $\boldsymbol{\beta}$ is the coefficients of the polynomial and $\boldsymbol{y}$ is the data.
+This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
+\begin{equation}
+    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
+\end{equation}
 
-% Acknowledgements should go at the end, before appendices and references
+\begin{wrapfigure}{r}{0.3\textwidth}
+\begin{center}
+    \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
+    \input{Frank_1.pgf}
+    \end{adjustbox}
+    \caption{\small Franke's Function with noise}
+    \label{frankfuncnoise}
+    \end{center}
+\end{wrapfigure}
 
 
 
-\pagebreak
+where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
+\begin{equation}
+    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
+\end{equation}
+where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
+\begin{equation}
+    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
+\end{equation}
+where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
+\begin{equation}
+    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
+\end{equation}
+where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
+\begin{equation}
+    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
+\end{equation}
+
+
+
+
 
 \section{Ordinary Least Squares}
-\section{Ridge}
-\section{Lasso}
 \subsection{Discussion on Scaling}
 
 
-Unscaled sample design matrix fitting one-dimensional polynomial of degree 5
-\begin{table}[h]
+\begin{table}[!h]
+\caption{Unscaled sample design matrix fitting one-dimensional polynomial of degree 5}
 \tt
 \centering
 \resizebox{0.6\textwidth}{!}{%
@@ -192,9 +223,9 @@ Unscaled sample design matrix fitting one-dimensional polynomial of degree 5
     1.  &    1.   &   1.  &    1.  &    1.    &  1.
 \end{tabular}%
 }
-\end{table}\\
-Scaled sample design matrix fitting one-dimensional polynomial of degree 5
-\begin{table}[h]
+\end{table}
+\begin{table}[!h]
+\caption{Scaled sample design matrix fitting one-dimensional polynomial of degree 5}
 \tt
 \centering
 \resizebox{0.6\textwidth}{!}{%
@@ -222,15 +253,54 @@ MSE for Ridge on scaled data:    &   \texttt{0.01782525371566323}
     \scriptsize
     the code for genertating this output \footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
 \end{center}
-
-First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centerd and not that spread out, which means that initaially by just looking at the data scaling is not that nececary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an exsample $0.1^5 = 0.00001$ this makes the collums of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considerd to bring them back to the same ish order of magnitude. The act of not scaling results in $\boldsymbol{\beta}$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$\footnote{We would imagine that keeping everything in the same $0$ order of magnitude is something that the computer likes, perhaps improving performance}. Now this alone may not justify why we should scale this dataset, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$. Now with each $\beta_i$ variying alot, some are getting more penaliesed than others. As we can see the MSE for unscaled data is much higher than for scaled data in the ridge case.
+First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centerd and not that spread out, which means that initaially by just looking at the data scaling is not that nececary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an exsample $0.1^5 = 0.00001$ this makes the collums of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considerd to bring them back to the same ish order of magnitude \footnote{We would imagine that keeping everything in the same $0$ order of magnitude is something that the computer likes, perhaps improving performance}. The act of not scaling results in $\boldsymbol{\beta}$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$. Now this alone may not justify why we should scale this dataset, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$. Now with each $\beta_i$ variying alot, some are getting more penaliesed than others. As we can see the MSE for unscaled data is much higher than for scaled data in the ridge case.
 This leads us to conclude that we should scale the data, making it easier to tweek $\lambda$ and giving us nicer numbers to work with.
+\subsection{Analysis}
+\begin{figure}[!h]
+    \begin{center}
+    \resizebox*{0.9\linewidth}{!}{\input{Figure_2.pgf}}
+    \caption{Franke's Function}
+    \label{ols}
+    \end{center}
+\end{figure}
+\begin{figure}[!h]
+    \begin{center}
+    \resizebox*{0.7\linewidth}{!}{\input{beta-modelcomplexity.pgf}}
+    \caption{Franke's Function}
+    \label{}
+    \footnote{https}
+    \end{center}
+\end{figure}
+\section{Ridge}
+\section{Lasso}
+\section{Paper \& Pencil}
+The assumption we have made is that there exists a continuous function f (x)
+and a normal distributed error ε ∼ N (0, σ2) which describes our data
+y = f (x) + ε
+We then approximate this function f (x) with our model ˜y from the solution
+of the linear regression equations (ordinary least squares OLS), that is our
+function f is approximated by ˜y where we minimized (y − ˜y)2, with
+˜y = Xβ.
+The matrix X is the so-called design or feature matrix.
+Show that the expectation value of y for a given element i
+E(yi) = ∑
+j
+xij βj = Xi,∗ β,
+and that its variance is
+Var(yi) = σ2.
+Hence, yi ∼ N (Xi,∗ β, σ2), that is y follows a normal distribution with mean
+value Xβ and variance σ2.
+With the OLS expressions for the optimal parameters ˆβ show that
+E( ˆβ) = β.
+Show finally that the variance of β is
+Var( ˆβ) = σ2 (XT X)−1.
+We can use the last expression when we define a so-called confidence interval
+for the parameters β. A given parameter βj is given by the diagonal matrix
+element of the above matrix.
 
 
-\acks{We would like to acknowledge support for this project
-from the National Science Foundation (NSF grant IIS-9988642)
-and the Multidisciplinary Research Program of the Department
-of Defense (MURI N00014-00-1-0637). }
+% Acknowledgements should go at the end, before appendices and references
+\acks{}
 
 % Manual newpage inserted to improve layout of sample file - not
 % needed in general before appendices/bibliography.
@@ -246,33 +316,6 @@ of Defense (MURI N00014-00-1-0637). }
 
 %In this appendix we prove the following theorem from
 %Section~\ref{sec:textree-generalization}:
-
-In this appendix we prove the following theorem from
-Section~6.2:
-
-\noindent
-{\bf Theorem} {\it Let $u,v,w$ be discrete variables such that $v, w$ do
-not co-occur with $u$ (i.e., $u\neq0\;\Rightarrow \;v=w=0$ in a given
-dataset $\dataset$). Let $N_{v0},N_{w0}$ be the number of data points for
-which $v=0, w=0$ respectively, and let $I_{uv},I_{uw}$ be the
-respective empirical mutual information values based on the sample
-$\dataset$. Then
-\[
-	N_{v0} \;>\; N_{w0}\;\;\Rightarrow\;\;I_{uv} \;\leq\;I_{uw}
-\]
-with equality only if $u$ is identically 0.} \hfill\BlackBox
-
-\noindent
-{\bf Proof}. We use the notation:
-\[
-P_v(i) \;=\;\frac{N_v^i}{N},\;\;\;i \neq 0;\;\;\;
-P_{v0}\;\equiv\;P_v(0)\; = \;1 - \sum_{i\neq 0}P_v(i).
-\]
-These values represent the (empirical) probabilities of $v$
-taking value $i\neq 0$ and 0 respectively.  Entropies will be denoted
-by $H$. We aim to show that $\fracpartial{I_{uv}}{P_{v0}} < 0$....\\
-
-{\noindent \em Remainder omitted in this sample. See http://www.jmlr.org/papers/ for full paper.}
 
 
 \vskip 0.2in

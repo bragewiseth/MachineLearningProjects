@@ -2,23 +2,39 @@ import numpy as np
 import matplotlib.pylab as plt
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from sklearn.model_selection import train_test_split
+
+
+
 
 def MSE(y_data,y_model):
     n = np.size(y_model)
     return np.sum((y_data-y_model)**2)/n
 
 
+
+
+
 def R2(y_data,y_model):
     return 1 - np.sum((y_data-y_model)**2)/np.sum((y_data-np.mean(y_model))**2)
 
 
-def fit_beta(X, y):
+
+
+
+def fit_beta(X,y):
     return np.linalg.pinv(X.T @ X) @ X.T @ y
 
 
-def fit_beta_ridge(X, y, l):
+
+def fit_beta_ridge(X,y,Lambda):
     p = X.shape[1]
-    return np.linalg.inv(X.T @ X + (l * np.eye(p))) @ X.T @ y
+    return np.linalg.inv(X.T @ X + (Lambda * np.eye(p))) @ X.T @ y
+
+
+
+
+
 
 
 def FrankeFunction(x,y):
@@ -30,15 +46,20 @@ def FrankeFunction(x,y):
 
 
 
+
+
 def makeFigure(figsize=(10,10)):
     fig = plt.figure(figsize=figsize)
     fig.tight_layout()
     return fig
 
 
+
+
+
 def plotFrankefunction(xx,yy, z, fig, subplot=(1,1,1),title=None ):
     ax = fig.add_subplot(subplot[0],subplot[1], subplot[2],projection='3d')
-    ax.title.set_text(title)
+    ax.set_title(title, fontsize=16)
         # Plot the surface.
     surf = ax.plot_surface(xx, yy, z, cmap=cm.coolwarm, # type: ignore
                         linewidth=0, antialiased=False)
@@ -48,9 +69,24 @@ def plotFrankefunction(xx,yy, z, fig, subplot=(1,1,1),title=None ):
     ax.zaxis.set_major_locator(LinearLocator(10))
     ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
-    fig.colorbar(surf, shrink=0.5, aspect=5)
+    # fig.colorbar(surf, shrink=0.5, aspect=5)
     # Add a color bar which maps values to colors.
     return ax
+
+
+
+
+
+def makeData(n, rand=0., test_size=0.2):
+    x = np.linspace(0, 1, n)
+    y = np.linspace(0, 1, n)
+    xx , yy = np.meshgrid(x,y)
+    z = FrankeFunction(xx, yy) + rand * np.random.randn(n,n)
+    X = np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T    # design matrix
+    X_train, X_test, y_train, y_test = train_test_split(X, z.ravel(), test_size=test_size)
+    return X, z.ravel(),X_train, X_test, y_train, y_test,  xx,yy
+
+
 
 
 
