@@ -146,7 +146,7 @@ class OLS:
 
 
 class Ridge:
-    def fit(self,X, y, alpha=0):
+    def fit(self,X, y, alpha=0.):
         p = X.shape[1]
         self.beta = np.linalg.inv(X.T @ X + (alpha * np.eye(p))) @ X.T @ y
 
