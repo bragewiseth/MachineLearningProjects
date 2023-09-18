@@ -3,13 +3,10 @@ message: "If you use this software, please cite it as below."
 authors:
 - family-names: "Wiseth"
   given-names: "Brage"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
 - family-names: "?"
   given-names: "Eirik"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
 - family-names: "?"
   given-names: "Felix"
-  orcid: https://orcid.org/0000-0000-0000-0000"
 title: "MachineLearningProjects"
 version: 1.0.0
 doi: 10.5281/zenodo.1234
