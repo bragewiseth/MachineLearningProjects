@@ -77,14 +77,28 @@ def plotFrankefunction(xx,yy, z, fig, subplot=(1,1,1),title=None ):
 
 
 
-def makeData(n, rand=0., test_size=0.2):
-    x = np.linspace(0, 1, n)
-    y = np.linspace(0, 1, n)
+def makeDataMesh(n, rand=0., test_size=0.2):
+    x = np.random.uniform(0, 1, n)
+    y = np.random.uniform(0, 1, n)
     xx , yy = np.meshgrid(x,y)
     z = FrankeFunction(xx, yy) + rand * np.random.randn(n,n)
     X = np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T    # design matrix
     X_train, X_test, y_train, y_test = train_test_split(X, z.ravel(), test_size=test_size)
-    return X, z.ravel(),X_train, X_test, y_train, y_test,  xx,yy
+    return X, z.ravel(),X_train, X_test, y_train, y_test
+
+
+def makeData(n, rand=0., test_size=0.2):
+    x = np.random.uniform(0, 1, n)
+    y = np.random.uniform(0, 1, n)
+    z = FrankeFunction(x, y) + rand * np.random.randn(n)
+    X = np.concatenate((x.reshape(-1,1), y.reshape(-1,1)), axis=1)    # design matrix
+    X_train, X_test, y_train, y_test = train_test_split(X, z , test_size=test_size)
+    return X, z, X_train, X_test, y_train, y_test
+
+
+
+
+
 
 
 
