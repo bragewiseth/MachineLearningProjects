@@ -299,6 +299,50 @@ for the parameters β. A given parameter βj is given by the diagonal matrix
 element of the above matrix.
 
 
+We can assume that $y$ follows some function $f$ with some noise $\epsilon$
+$$
+\mathbf{y} = f(\mathbf{x}) + \epsilon
+$$
+$$
+\mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
+$$
+The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\boldsymbol{X}\boldsymbol{\beta}$
+$$
+\mathbb{E}[y_i] = \boldsymbol{X_{i,*}}\boldsymbol{\beta}
+$$
+The variance is defined as
+\begin{align*}
+Var(y_i) &= \mathbb{E}\big[(y_i - \mathbb{E}[y_i])^2\big] = \mathbb{E}\left[y_i^2 - 2y_i\mathbb{E}[y_i] + \mathbb{E}[y_i]^2\right] = \mathbb{E}[y_i^2] - \mathbb{E}[y_i]^2\\
+Var(y_i) &= \mathbb{E}\big[\big(\boldsymbol{X}_{i,*}\boldsymbol{\beta}\big)^2 + 2\epsilon \boldsymbol{X}_{i,*}\boldsymbol{\beta} + \epsilon^2 \big] - (\boldsymbol{X}_{i,*}\boldsymbol{\beta})^2\\
+Var(y_i) &= (\boldsymbol{X}_{i,*}\boldsymbol{\beta})^2 + 2\mathbb{E}[\epsilon]\boldsymbol{X}_{i,*}\boldsymbol{\beta} + \mathbb{E}[\epsilon^2] - (\boldsymbol{X}_{i,*}\boldsymbol{\beta})^2\\
+Var(y_i) &= \mathbb{E}[\epsilon^2] = \sigma^2
+\end{align*}
+for the expected value of $\boldsymbol{\beta}$ we can insert the definition of $\boldsymbol{\beta}$ from earlier
+$$
+\mathbb{E}[\boldsymbol{\hat{\beta}}] = \mathbb{E}[ (\mathbf{X}^{\top} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbb{E}[ \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T}\mathbf{X}\boldsymbol{\beta}=\boldsymbol{\beta}.
+$$
+\begin{align*}
+Var(\boldsymbol{\hat{\beta}}) & = \mathbb{E} \{ [\boldsymbol{\beta} - \mathbb{E}(\boldsymbol{\beta})] [\boldsymbol{\beta} - \mathbb{E}(\boldsymbol{\beta})]^{T} \}
+\\
+& = \mathbb{E} \{ [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \boldsymbol{\beta}] \, [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \boldsymbol{\beta}]^{T} \}
+\\
+& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \boldsymbol{\beta} \, \boldsymbol{\beta}^{T}
+\\
+& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \{ \mathbf{X} \, \boldsymbol{\beta} \, \boldsymbol{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \boldsymbol{\beta} \, \boldsymbol{\beta}^{T}
+\\
+& = \boldsymbol{\beta} \, \boldsymbol{\beta}^{T}  + \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \boldsymbol{\beta} \, \boldsymbol{\beta}^{T}
+\, \, \, = \, \, \, \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1},
+\end{align*}
+
+
+
+
+
+
+\section{Bias \& Variance}
+
+
+
 % Acknowledgements should go at the end, before appendices and references
 \acks{}
 

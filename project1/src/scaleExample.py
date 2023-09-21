@@ -17,14 +17,13 @@ np.random.seed()
 
 
 # Make data set.
-X , y, _,_,_,_ ,xx,yy = makeData(n)
+X , y, x_train, x_test, y_train, y_test  = makeData(n)
 
 
 # preprocessing
 scaler = StandardScaler()
 poly = PolynomialFeatures(maxdegree,include_bias=True)
 
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 X_train = poly.fit_transform(x_train)
 X_test = poly.transform(x_test)
 X_train_scaled = scaler.fit_transform(X_train[:,1:])
