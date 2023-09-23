@@ -8,6 +8,9 @@ from sklearn.model_selection import train_test_split
 
 
 def MSE(y_data,y_model):
+    """
+    Calculates the mean squared error
+    """
     n = np.size(y_model)
     return np.sum((y_data-y_model)**2)/n
 
@@ -16,6 +19,9 @@ def MSE(y_data,y_model):
 
 
 def R2(y_data,y_model):
+    """
+    Calculates the R2 score
+    """
     return 1 - np.sum((y_data-y_model)**2)/np.sum((y_data-np.mean(y_model))**2)
 
 
@@ -23,11 +29,17 @@ def R2(y_data,y_model):
 
 
 def fit_beta(X,y):
+    """
+    Fits beta for OLS
+    """
     return np.linalg.pinv(X.T @ X) @ X.T @ y
 
 
 
 def fit_beta_ridge(X,y,Lambda):
+    """
+    Fits beta for ridge regression
+    """
     p = X.shape[1]
     return np.linalg.inv(X.T @ X + (Lambda * np.eye(p))) @ X.T @ y
 
@@ -38,6 +50,9 @@ def fit_beta_ridge(X,y,Lambda):
 
 
 def FrankeFunction(x,y):
+    """
+    Franke function
+    """
     term1 = 0.75*np.exp(-(0.25*(9*x-2)**2) - 0.25*((9*y-2)**2))
     term2 = 0.75*np.exp(-((9*x+1)**2)/49.0 - 0.1*(9*y+1))
     term3 = 0.5*np.exp(-(9*x-7)**2/4.0 - 0.25*((9*y-3)**2))
@@ -49,6 +64,9 @@ def FrankeFunction(x,y):
 
 
 def makeFigure(figsize=(10,10)):
+    """
+    Makes a figure with tight layout
+    """
     fig = plt.figure(figsize=figsize)
     fig.tight_layout()
     return fig
@@ -58,6 +76,10 @@ def makeFigure(figsize=(10,10)):
 
 
 def plotFrankefunction(xx,yy, z, fig, subplot=(1,1,1),title=None ):
+    """
+    Plots the FrankeFunction on a 3D surface. You need to call makeFigure() first
+    and then pass the figure to this function. You need to call plt.show() after
+    """
     ax = fig.add_subplot(subplot[0],subplot[1], subplot[2],projection='3d')
     ax.set_title(title, fontsize=16)
         # Plot the surface.
@@ -78,6 +100,13 @@ def plotFrankefunction(xx,yy, z, fig, subplot=(1,1,1),title=None ):
 
 
 def makeDataMesh(n, rand=0., test_size=0.2):
+    """
+    Makes data by generating meshgrid of random x and y and then flattening them to vectors
+    this results in squaring the number of data points 'n' 
+    then calling FrankeFunction on the 
+    set of {(x_0,y_0), (x_1,y_1), ... , (x_n,y_n)} pairs
+    returns X, y , X_train, X_test, y_train, y_test
+    """
     x = np.random.uniform(0, 1, n)
     y = np.random.uniform(0, 1, n)
     xx , yy = np.meshgrid(x,y)
@@ -88,6 +117,11 @@ def makeDataMesh(n, rand=0., test_size=0.2):
 
 
 def makeData(n, rand=0., test_size=0.2):
+    """
+    makes data by generating random x and y values and calling FrankeFunction on the 
+    set of {(x_0,y_0), (x_1,y_1), ... , (x_n,y_n)} pairs
+    returns X, y , X_train, X_test, y_train, y_test
+    """
     x = np.random.uniform(0, 1, n)
     y = np.random.uniform(0, 1, n)
     z = FrankeFunction(x, y) + rand * np.random.randn(n)
@@ -109,6 +143,10 @@ def makeData(n, rand=0., test_size=0.2):
 
 
 class MyStandardScaler:
+    """
+    Implements the same basic functionality as sklearn.preprocessing.StandardScaler
+    without the fancy stuff
+    """
     def __init__(self):
         self.mean_ = None
         self.var_ = None
@@ -142,6 +180,10 @@ class MyStandardScaler:
 
 
 class OLS:
+    """
+    Implements the same basic functionality as sklearn.linear_model.LinearRegression
+    without the fancy stuff
+    """
     def __init__(self):
         pass
 
@@ -160,6 +202,10 @@ class OLS:
 
 
 class Ridge:
+    """
+    Implements the same basic functionality as sklearn.linear_model.Ridge
+    without the fancy stuff
+    """
     def fit(self,X, y, alpha=0.):
         p = X.shape[1]
         self.beta = np.linalg.inv(X.T @ X + (alpha * np.eye(p))) @ X.T @ y

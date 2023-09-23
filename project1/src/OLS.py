@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 
 
-
+np.random.seed(2023)
 maxdegree = 5
 n = 100
 X, y, x_train, x_test, y_train, y_test  = makeData(n, rand=0.1)

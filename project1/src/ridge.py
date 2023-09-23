@@ -17,7 +17,7 @@ from utils import MSE, R2, makeData, Ridge, makeFigure, plotFrankefunction
 
 
 
-
+np.random.seed(2023)
 maxdegree = 5
 numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
 n = 100

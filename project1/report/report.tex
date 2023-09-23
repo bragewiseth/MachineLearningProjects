@@ -341,7 +341,47 @@ Var(\boldsymbol{\hat{\beta}}) & = \mathbb{E} \{ [\boldsymbol{\beta} - \mathbb{E}
 
 \section{Bias \& Variance}
 
+\begin{align*}
+    \text{Var}(\boldsymbol{\tilde{y}}) &= \mathbb{E}\left[\left(\tilde{\boldsymbol{y}}-\mathbb{E}\left[\boldsymbol{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\boldsymbol{\tilde{y}}^2] - \mathbb{E}[\boldsymbol{\tilde{y}}]^2\\
+    \mathbb{E}[\boldsymbol{\tilde{y}}^2] &= \mathbb{E}[\boldsymbol{\tilde{y}}]^2 + \text{Var}(\boldsymbol{\tilde{y}})
+\end{align*}
 
+
+\begin{align*}
+\mathbb{E}[\boldsymbol{y}^2] & = \mathbb{E}[\boldsymbol{f} + \boldsymbol{\epsilon}]^2 = \mathbb{E}[\boldsymbol{f}^2 + 2\boldsymbol{f}\boldsymbol{\epsilon} + \boldsymbol{\epsilon}^2]\\
+& = \mathbb{E}[\boldsymbol{f}^2] + 2\mathbb{E}[\boldsymbol{f}\boldsymbol{\epsilon}] + \mathbb{E}[\boldsymbol{\epsilon}^2]\\
+& = \mathbb{E}[\boldsymbol{f}^2] + 2\mathbb{E}[\boldsymbol{f}]\mathbb{E}[\boldsymbol{\epsilon}] + \mathbb{E}[\boldsymbol{\epsilon}^2]\\
+& = \mathbb{E}[\boldsymbol{f}^2]  + \sigma^2
+\end{align*}
+
+
+\begin{align*}
+\mathbb{E}[\boldsymbol{y\tilde{y}}] & = \mathbb{E}[\boldsymbol{f\tilde{y}} + \boldsymbol{\epsilon\tilde{y}}]\\
+& = \mathbb{E}[\boldsymbol{f\tilde{y}}] + \mathbb{E}[\boldsymbol{\epsilon\tilde{y}}]\\
+& = \mathbb{E}[\boldsymbol{f\tilde{y}}] + \mathbb{E}[\boldsymbol{\epsilon}]\mathbb{E}[\boldsymbol{\tilde{y}}]\\
+& = \boldsymbol{f}\mathbb{E}[\boldsymbol{\tilde{y}}]
+\end{align*}
+
+
+\begin{align*}
+\mathbb{E}\left[(\boldsymbol{y}-\boldsymbol{\tilde{y}})^2\right] & = \mathbb{E}[\boldsymbol{y}^2] - 2\mathbb{E}[\boldsymbol{y\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}^2]\\
+& = \boldsymbol{f}^2 + \sigma^2 - 2\boldsymbol{f}\mathbb{E}[\boldsymbol{\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}^2]\\
+& = \boldsymbol{f}^2 + \sigma^2 - 2\boldsymbol{f}\mathbb{E}[\boldsymbol{\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}]^2 + \text{Var}(\boldsymbol{\tilde{y}})\\
+& = (\boldsymbol{f} - \mathbb{E}[\boldsymbol{\tilde{y}}])^2 + \text{Var}(\boldsymbol{\tilde{y}}) + \sigma^2\\
+\end{align*}
+
+
+\begin{align*}
+\mathrm{Bias}[\tilde{y}]& =\mathbb{E}\left[\left(\boldsymbol{y}-\mathbb{E}\left[\boldsymbol{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\boldsymbol{y}^2] - 2\mathbb{E}[\boldsymbol{y}]\mathbb{E}[\boldsymbol{\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}^2]\\
+& = \boldsymbol{f}^2 + \sigma^2 - 2\boldsymbol{f}\mathbb{E}[\boldsymbol{\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}]^2\\
+& = (\boldsymbol{f} - \mathbb{E}[\boldsymbol{\tilde{y}}])^2 + \sigma^2\\
+\end{align*}
+
+
+
+The term \emph{variance} refers to how spread out our observations are. We can for our case think of the observations $\tilde{y}_i$
+as either individual predictions, or the mean of predictions from one test set.\\
+In a sense the bias resembles the mathematical defninition for variance, We can see that the bias term is a distance measure of $\boldsymbol{y}$ from the expected value of $\boldsymbol{\tilde{y}}$. If we take the individual observations approach this can be tough of as A high bias will then result in a large band around $\boldsymbol{\tilde{y}}$ in which $y_i$ will exist. The variance term is a measure of how much the $\boldsymbol{\tilde{y}}$ varies around its own mean. In other terms a high variance model will experience large variance in the predicted values $\boldsymbol{\tilde{y}}$ from one test set to another. Or as a result of this a large variance in score if you will. Now these two terms are in a sense opposites, it is likely that a model with high bias will have low variance and vice versa. This is something we as designers of the model get to tune, if we value a lower bias more than we value a low variance or vice versa, we can choose a model acordingly
 
 % Acknowledgements should go at the end, before appendices and references
 \acks{}
