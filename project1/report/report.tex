@@ -378,7 +378,7 @@ Var(\boldsymbol{\hat{\beta}}) & = \mathbb{E} \{ [\boldsymbol{\beta} - \mathbb{E}
 \end{align*}
 
 
-
+To find $\mathbb{E}[\boldsymbol{\tilde{y}}]$ we can use bootstrap to get different samples for $\boldsymbol{\tilde{y}}$ and then take the mean of that distribution.
 The term \emph{variance} refers to how spread out our observations are. We can for our case think of the observations $\tilde{y}_i$
 as either individual predictions, or the mean of predictions from one test set.\\
 In a sense the bias resembles the mathematical defninition for variance, We can see that the bias term is a distance measure of $\boldsymbol{y}$ from the expected value of $\boldsymbol{\tilde{y}}$. If we take the individual observations approach this can be tough of as A high bias will then result in a large band around $\boldsymbol{\tilde{y}}$ in which $y_i$ will exist. The variance term is a measure of how much the $\boldsymbol{\tilde{y}}$ varies around its own mean. In other terms a high variance model will experience large variance in the predicted values $\boldsymbol{\tilde{y}}$ from one test set to another. Or as a result of this a large variance in score if you will. Now these two terms are in a sense opposites, it is likely that a model with high bias will have low variance and vice versa. This is something we as designers of the model get to tune, if we value a lower bias more than we value a low variance or vice versa, we can choose a model acordingly
