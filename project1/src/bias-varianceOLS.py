@@ -22,7 +22,7 @@ np.random.seed(9282) # 9282 gives a nice plot textbook plot
 n = 100
 maxdegree = 6
 n_boostraps = 100
-
+numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
 error = np.zeros(maxdegree)
 bias = np.zeros(maxdegree)
 variance = np.zeros(maxdegree)
@@ -52,14 +52,11 @@ for degree in range(maxdegree):
         x_ = scaler.transform(x_)
         model.fit(x_, y_)
         y_pred[:, i] = ( model.predict(X_test) + y_train_mean  )
-    print(y_test.reshape(-1,1).shape)
-    print(y_pred.shape)
-    print((y_test.reshape(-1,1) - y_pred.shape).shape)
+        # print(ybeta[:, i])
     polydegree[degree] = degree
     error[degree] = np.mean( np.mean((y_test.reshape(-1,1) - y_pred)**2, axis=1, keepdims=True) )
     bias[degree] = np.mean( (y_test - np.mean(y_pred, axis=1, keepdims=False))**2 )
     variance[degree] = np.mean( np.var(y_pred, axis=1, keepdims=True) )
-    print('{} >= {} + {} = {}'.format(error[degree], bias[degree], variance[degree], bias[degree]+variance[degree]))
 
 fig, ax = plt.subplots()
 ax.plot(polydegree, error,'--', label='Error', color='black')
@@ -72,11 +69,48 @@ plt.show()
 
 
 
+
+
+
+
+
+maxdegree = 2
+n_boostraps = 100
+numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
+
+ybeta = np.zeros((n_boostraps, numfeatures))
 x = np.linspace(0,1,100)
-y = np.linspace(0,1,100)
-xx,yy = np.meshgrid(x,y)
-poly = PolynomialFeatures(7,include_bias=False)
-z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
-fig = makeFigure((8,8))
-plotFrankefunction(xx,yy,z.reshape(100,100), fig, (1,1,1) ,"Franke's Function")
-# plt.show()
+y = np.full(100, 0.5)
+poly = PolynomialFeatures(maxdegree,include_bias=False)
+
+z =  FrankeFunction(x,y) 
+znoise = z + np.random.normal(0,0.1,100)
+X = np.c_[x,y]
+X_train , X_test, z_train, z_test = train_test_split(X, znoise, test_size=0.2)
+y_train_mean = np.mean(z_train)
+z_train = z_train - y_train_mean
+X_train = poly.fit_transform(X_train)
+X_train = scaler.fit_transform(X_train)
+X = poly.fit_transform(X)
+X = scaler.transform(X)
+for i in range(n_boostraps):
+    x_, y_ = resample(X_train, z_train)
+    model.fit(x_, y_)
+    ybeta[i] = np.pad(model.beta, (0, numfeatures -model.beta.size))
+
+
+yys = np.zeros((100,n_boostraps))
+fig, ax = plt.subplots()
+for i, beta in enumerate(ybeta):
+    y = X @ beta + y_train_mean
+    yys[:, i] = y
+    ax.plot(x, y, color='grey', alpha=0.2)
+
+
+ax.fill_between(x, np.mean(yys, axis=1) - 2*np.std(yys, axis=1), np.mean(yys, axis=1) + 2*np.std(yys, axis=1), alpha=0.2, color='orange')
+ax.plot(x, np.mean(yys, axis=1), '--', color='black')
+ax.plot(x, z, label='OLS', color='red')
+ax.set_ylim(0.0,0.7)
+plt.show()
+print("variance: ", np.mean( np.var(yys, axis=1) ))
+print("bias: ", np.mean( (z - np.mean(yys, axis=1))**2 ))
