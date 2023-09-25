@@ -1,3 +1,4 @@
+import matplotlib as mpl
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import PolynomialFeatures
@@ -70,15 +71,22 @@ plt.show()
 
 
 
+mpl.rcParams.update({
+    'font.family': 'serif',
+    'mathtext.fontset': 'cm',
+    'font.size': '16',
+    'xtick.labelsize': '11',
+    'ytick.labelsize': '11',
+    # 'text.usetex': True,
+    'pgf.rcfonts': True,
+})
 
 
 
-
-maxdegree = 2
+maxdegree = 3
 n_boostraps = 100
 numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
 
-ybeta = np.zeros((n_boostraps, numfeatures))
 x = np.linspace(0,1,100)
 y = np.full(100, 0.5)
 poly = PolynomialFeatures(maxdegree,include_bias=False)
@@ -93,24 +101,19 @@ X_train = poly.fit_transform(X_train)
 X_train = scaler.fit_transform(X_train)
 X = poly.fit_transform(X)
 X = scaler.transform(X)
+yys = np.zeros((100,n_boostraps))
+fig, ax = plt.subplots()
 for i in range(n_boostraps):
     x_, y_ = resample(X_train, z_train)
     model.fit(x_, y_)
-    ybeta[i] = np.pad(model.beta, (0, numfeatures -model.beta.size))
+    yys[:,i] = model.predict(X) + y_train_mean
+    ax.plot(x, yys[:,i], '-' ,color='lightsteelblue', alpha=0.5, zorder=0)
 
-
-yys = np.zeros((100,n_boostraps))
-fig, ax = plt.subplots()
-for i, beta in enumerate(ybeta):
-    y = X @ beta + y_train_mean
-    yys[:, i] = y
-    ax.plot(x, y, color='grey', alpha=0.2)
-
-
-ax.fill_between(x, np.mean(yys, axis=1) - 2*np.std(yys, axis=1), np.mean(yys, axis=1) + 2*np.std(yys, axis=1), alpha=0.2, color='orange')
-ax.plot(x, np.mean(yys, axis=1), '--', color='black')
-ax.plot(x, z, label='OLS', color='red')
+ax.fill_between(x, np.mean(yys, axis=1) - np.std(yys, axis=1), np.mean(yys, axis=1) + np.std(yys, axis=1), alpha=0.2, color='blue', label=r'$\pm 1$ std. dev. of $\mathbf{\tilde{y}}$')
+ax.plot(x, np.mean(yys, axis=1), '--', color='navy', label=r'$\mathbb{E}[\mathbf{\tilde{y}}]$')
+ax.plot(x, z, label=r'true function $\mathbf{f}$', color='forestgreen', linewidth=3)
 ax.set_ylim(0.0,0.7)
+plt.legend()
 plt.show()
 print("variance: ", np.mean( np.var(yys, axis=1) ))
 print("bias: ", np.mean( (z - np.mean(yys, axis=1))**2 ))
