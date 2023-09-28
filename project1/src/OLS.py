@@ -13,7 +13,6 @@ import matplotlib.pyplot as plt
 
 
 
-
 np.random.seed(2023)
 maxdegree = 5
 n = 100
