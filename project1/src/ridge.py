@@ -17,13 +17,13 @@ from utils import MSE, R2, makeData, Ridge, makeFigure, plotFrankefunction
 
 
 
-np.random.seed(2023)
+np.random.seed(9282)
 maxdegree = 5
 numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
 n = 100
 numlamdas = 50
 lamdas = np.logspace(1,-6,numlamdas)
-X, y, x_train, x_test, y_train, y_test = makeData(n, rand=0.1)
+_, y, x_train, x_test, y_train, y_test = makeData(n, rand=0.1)
 polydegree = np.zeros(maxdegree)
 trainError  = np.zeros((maxdegree,numlamdas))
 testError  = np.zeros((maxdegree,numlamdas))
@@ -113,10 +113,6 @@ printGrid(trainError, testError, trainR2, testR2, polydegree, lamdas)
 
 
 
-
-
-
-
 # x = np.linspace(0,1,100)
 # y = np.linspace(0,1,100)
 # xx,yy = np.meshgrid(x,y)
@@ -125,3 +121,15 @@ printGrid(trainError, testError, trainR2, testR2, polydegree, lamdas)
 # fig = makeFigure((8,8))
 # plotFrankefunction(xx,yy,z.reshape(100,100), fig, (1,1,1) ,"Franke's Function")
 # plt.show()
+
+
+
+
+
+
+
+"""
+Analysis
+
+We can see that ...
+"""

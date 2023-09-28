@@ -18,7 +18,7 @@ from utils import MSE, R2, makeData
 
 
 
-np.random.seed(2023)
+np.random.seed(9282)
 maxdegree = 5
 numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
 n = 100
@@ -110,3 +110,13 @@ printGrid(trainError, testError, trainR2, testR2, polydegree, lamdas)
 # ax.set_title(r"R2-score over range of $\lambda$ for polynomial of degree $5$")
 
 # plt.show()
+
+
+
+
+
+"""
+Analysis
+
+We can see that ...
+"""

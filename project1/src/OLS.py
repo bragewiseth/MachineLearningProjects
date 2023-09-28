@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 
 
-np.random.seed(2023)
+np.random.seed(9282) # use the same seed for every task
 maxdegree = 5
 n = 100
 X, y, x_train, x_test, y_train, y_test  = makeData(n, rand=0.1)
@@ -45,10 +45,16 @@ for degree in range(maxdegree):
     trainR2[degree] = R2(y_train, model.predict(X_train)+ y_train_mean)
 
 
+
+
+
+
 mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
-    'font.size': '11',
+    'font.size': '16',
+    'xtick.labelsize': '11',
+    'ytick.labelsize': '11',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
@@ -64,13 +70,13 @@ ax[0].set_xlabel("Degree")
 ax[1].set_xlabel("Degree")
 ax[1].set_ylabel("R2")
 ax[0].set_ylabel("MSE")
-ax[0].set_title(r"MSE")
+ax[0].set_title("MSE as a function of complexity")
 ax[0].set(xticks=polydegree)
 ax[1].set(xticks=polydegree)
 ax[0].plot(polydegree, testError, label="test")
 ax[0].plot(polydegree, trainError, label="train")
 ax[0].legend()
-ax[1].set_title("R2")
+ax[1].set_title("R2 as a function of complexity")
 ax[1].plot(polydegree, testR2, label="test")
 ax[1].plot(polydegree, trainR2, label="train")
 ax[1].legend()
@@ -85,5 +91,30 @@ xx,yy = np.meshgrid(x,y)
 poly = PolynomialFeatures(5,include_bias=False)
 z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
 fig = makeFigure((8,8))
-plotFrankefunction(xx,yy,z.reshape(100,100), fig, (1,1,1) ,"Franke's Function")
+plotFrankefunction(xx,yy,z.reshape(100,100), fig, (1,1,1) ,"Approximation of Franke' Function using OLS")
 plt.show()
+
+
+
+
+
+
+
+
+
+
+
+"""
+We can see that if we increase the complexity of the model the MSE and R2 score for the training data improves. 
+"""
+
+
+
+
+
+
+
+
+
+
+

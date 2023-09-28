@@ -3,6 +3,13 @@ import matplotlib.pyplot as plt
 from utils import FrankeFunction, plotFrankefunction, makeFigure
 import numpy as np
 
+
+"""
+This file is used to generate the Franke function plot in the report.
+"""
+
+
+
 # plot 
 matplotlib.rcParams.update({
     'font.family': 'serif',

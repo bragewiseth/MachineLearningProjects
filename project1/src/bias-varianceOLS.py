@@ -117,3 +117,14 @@ plt.legend()
 plt.show()
 print("variance: ", np.mean( np.var(yys, axis=1) ))
 print("bias: ", np.mean( (z - np.mean(yys, axis=1))**2 ))
+
+
+
+
+
+
+
+
+"""
+We can see that
+"""

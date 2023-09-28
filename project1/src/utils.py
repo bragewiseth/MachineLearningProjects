@@ -116,6 +116,10 @@ def makeDataMesh(n, rand=0., test_size=0.2):
     return X, z.ravel(),X_train, X_test, y_train, y_test
 
 
+
+
+
+
 def makeData(n, rand=0., test_size=0.2):
     """
     makes data by generating random x and y values and calling FrankeFunction on the 
