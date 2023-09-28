@@ -105,7 +105,10 @@ plt.show()
 
 
 """
-We can see that if we increase the complexity of the model the MSE and R2 score for the training data improves. 
+Analysis
+
+We can see that if we increase the complexity of the model the MSE and R2 score for the training data improves. Beyond a 5 degree polynomial
+we can suspect that the score will increase even more as the curve shows a clear trend downwards for increasing model complexity. This means
 """
 
 
