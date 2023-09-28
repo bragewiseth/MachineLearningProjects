@@ -194,20 +194,13 @@ where $\lambda$ is a hyperparameter that we can tune to get a better fit. This i
     \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
 \end{equation}
 where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
-\begin{equation}
-    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
-\end{equation}
-where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
-\begin{equation}
-    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
-\end{equation}
+
+
+\subsection{Structure of the report}
 
 
 
-
-
-\section{Ordinary Least Squares}
-\subsection{Discussion on Scaling}
+\section{Discussion on Scaling}
 
 
 \begin{table}[!h]
@@ -247,12 +240,10 @@ MSE for OLS on scaled data:      &   \texttt{0.010349396024145656} \\
 MSE for Ridge on unscaled data:  &   \texttt{0.02106077418650843} \\
 MSE for Ridge on scaled data:    &   \texttt{0.01782525371566323}
 \end{tabular}%
-}
+}\\
+\scriptsize
+the code for genertating this output \footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
 \end{table}
-\begin{center}
-    \scriptsize
-    the code for genertating this output \footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
-\end{center}
 First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centerd and not that spread out, which means that initaially by just looking at the data scaling is not that nececary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an exsample $0.1^5 = 0.00001$ this makes the collums of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considerd to bring them back to the same ish order of magnitude \footnote{We would imagine that keeping everything in the same $0$ order of magnitude is something that the computer likes, perhaps improving performance}. The act of not scaling results in $\boldsymbol{\beta}$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$. Now this alone may not justify why we should scale this dataset, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$. Now with each $\beta_i$ variying alot, some are getting more penaliesed than others. As we can see the MSE for unscaled data is much higher than for scaled data in the ridge case.
 This leads us to conclude that we should scale the data, making it easier to tweek $\lambda$ and giving us nicer numbers to work with.
 \subsection{Analysis}
@@ -271,6 +262,9 @@ This leads us to conclude that we should scale the data, making it easier to twe
     \footnote{https}
     \end{center}
 \end{figure}
+
+\section{Ordinary Least Squares}
+As we increase the order of the polynomial fit we see a corresponding decrease in MSE and increase in R2.
 \section{Ridge}
 \section{Lasso}
 \section{Paper \& Pencil}
