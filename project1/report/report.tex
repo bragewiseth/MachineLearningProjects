@@ -114,7 +114,7 @@
 			\begin{minipage}{0.4\textwidth}
 			\begin{flushright} \normalsize
         \textsc{
-			    eirik@ifi.uio.no\\
+		  eirik@ifi.uio.no\\
           felix@ifi.uio.no\\
           bragewi@ifi.uio.no\\
         }
@@ -142,8 +142,7 @@
 \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
 \lettrine{I}{}n this project, we explored the use of different methods for solving linear regres-
 sion on topological data. We emplyed OLS, ridge and lasso methods for linear regression on
-simulated height data using \emph{Franke's Function}, Where the goal was to fit polynomials to minimize the
-mean square error. As well as real topological data with the same goal.
+simulated height data using \emph{Franke's Function}, Where the goal was to fit polynomials to minimize the mean square error. As well as real topological data with the same goal.
 \end{abstract}
 \begin{keywords}
     Linear Regression, Fitting Polynomials, Scaling, Bias-Variance 
@@ -217,6 +216,9 @@ where $\lambda$ is a hyperparameter that we can tune to get a better fit. This i
 \end{tabular}%
 }
 \end{table}
+
+
+
 \begin{table}[!h]
 \caption{Scaled sample design matrix fitting one-dimensional polynomial of degree 5}
 \tt
@@ -229,8 +231,13 @@ where $\lambda$ is a hyperparameter that we can tune to get a better fit. This i
      0.  &     0.70711&  0.50855&  0.29116 & 0.10488& -0.0433 \\
      0.  &     1.41421&  1.69516 & 1.83016 & 1.90431&  1.94603
 \end{tabular}%
-}
+}\\
+{\scriptsize
+the code for generating this output }\footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
 \end{table}
+
+
+
 \begin{table}[h]
 \centering
 \resizebox{0.6\textwidth}{!}{%
@@ -241,17 +248,20 @@ MSE for Ridge on unscaled data:  &   \texttt{0.02106077418650843} \\
 MSE for Ridge on scaled data:    &   \texttt{0.01782525371566323}
 \end{tabular}%
 }\\
-\scriptsize
-the code for genertating this output \footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
+{\scriptsize
+the code for generating this output }\footnote{yurr}
 \end{table}
-First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centerd and not that spread out, which means that initaially by just looking at the data scaling is not that nececary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an exsample $0.1^5 = 0.00001$ this makes the collums of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considerd to bring them back to the same ish order of magnitude \footnote{We would imagine that keeping everything in the same $0$ order of magnitude is something that the computer likes, perhaps improving performance}. The act of not scaling results in $\boldsymbol{\beta}$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$. Now this alone may not justify why we should scale this dataset, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$. Now with each $\beta_i$ variying alot, some are getting more penaliesed than others. As we can see the MSE for unscaled data is much higher than for scaled data in the ridge case.
-This leads us to conclude that we should scale the data, making it easier to tweek $\lambda$ and giving us nicer numbers to work with.
+
+
+First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centered and not that spread out, which means that initially by just looking at the data scaling is not that necessary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an example $0.1^5 = 0.00001$ this makes the columns of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considered to bring them back to the same order of magnitude. The act of not scaling results in $\boldsymbol{\beta}$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$. Now this alone may not justify why we should scale this data set, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$. Now with each $\beta_i$ varying alot, some are getting more penalized than others. As we can see the MSE for unscaled data is much higher than for scaled data in the ridge case.
+This leads us to conclude that we should scale the data, making it easier to tweak $\lambda$ and giving us nicer numbers to work with.
 \subsection{Analysis}
 \begin{figure}[!h]
     \begin{center}
     \resizebox*{0.9\linewidth}{!}{\input{Figure_2.pgf}}
     \caption{Franke's Function}
     \label{ols}
+    {\scriptsize code for gen  output}\footnote{code for }
     \end{center}
 \end{figure}
 \begin{figure}[!h]
@@ -300,7 +310,7 @@ $$
 $$
 \mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
 $$
-The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\boldsymbol{X}\boldsymbol{\beta}$
+The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approximated by $\boldsymbol{X}\boldsymbol{\beta}$
 $$
 \mathbb{E}[y_i] = \boldsymbol{X_{i,*}}\boldsymbol{\beta}
 $$
@@ -375,7 +385,7 @@ Var(\boldsymbol{\hat{\beta}}) & = \mathbb{E} \{ [\boldsymbol{\beta} - \mathbb{E}
 To find $\mathbb{E}[\boldsymbol{\tilde{y}}]$ we can use bootstrap to get different samples for $\boldsymbol{\tilde{y}}$ and then take the mean of that distribution.
 The term \emph{variance} refers to how spread out our observations are. We can for our case think of the observations $\tilde{y}_i$
 as either individual predictions, or the mean of predictions from one test set.\\
-In a sense the bias resembles the mathematical defninition for variance, We can see that the bias term is a distance measure of $\boldsymbol{y}$ from the expected value of $\boldsymbol{\tilde{y}}$. If we take the individual observations approach this can be tough of as A high bias will then result in a large band around $\boldsymbol{\tilde{y}}$ in which $y_i$ will exist. The variance term is a measure of how much the $\boldsymbol{\tilde{y}}$ varies around its own mean. In other terms a high variance model will experience large variance in the predicted values $\boldsymbol{\tilde{y}}$ from one test set to another. Or as a result of this a large variance in score if you will. Now these two terms are in a sense opposites, it is likely that a model with high bias will have low variance and vice versa. This is something we as designers of the model get to tune, if we value a lower bias more than we value a low variance or vice versa, we can choose a model acordingly
+In a sense the bias resembles the mathematical defninition for variance, We can see that the bias term is a distance measure of $\boldsymbol{y}$ from the expected value of $\boldsymbol{\tilde{y}}$. If we take the individual observations approach this can be tough of as A high bias will then result in a large band around $\boldsymbol{\tilde{y}}$ in which $y_i$ will exist. The variance term is a measure of how much the $\boldsymbol{\tilde{y}}$ varies around its own mean. In other terms a high variance model will experience large variance in the predicted values $\boldsymbol{\tilde{y}}$ from one test set to another. Or as a result of this a large variance in score if you will. Now these two terms are in a sense opposites, it is likely that a model with high bias will have low variance and vice versa. This is something we as designers of the model get to tune, if we value a lower bias more than we value a low variance or vice versa, we can choose a model accordingly
 
 % Acknowledgements should go at the end, before appendices and references
 \acks{}
