@@ -28,7 +28,7 @@
 % \usepackage{fontawesome}
 \usemintedstyle{perldoc}
 \usepackage{hyperref}
-\hypersetup{colorlinks=false, pdfborder={0 0 0}}
+\hypersetup{colorlinks=false, pdfborder={0 0 0},  }
 \usepackage{fancyhdr}
 \usepackage{wrapfig}
 \usepackage{adjustbox}
@@ -142,7 +142,8 @@
 \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
 \lettrine{I}{}n this project, we explored the use of different methods for solving linear regres-
 sion on topological data. We emplyed OLS, ridge and lasso methods for linear regression on
-simulated height data using \emph{Franke's Function}, Where the goal was to fit polynomials to minimize the mean square error. As well as real topological data with the same goal.
+simulated height data using \emph{Franke's Function}, Where the goal was to fit polynomi
+als to minimize the mean square error. As well as real topological data with the same goal.
 \end{abstract}
 \begin{keywords}
     Linear Regression, Fitting Polynomials, Scaling, Bias-Variance 
@@ -150,49 +151,56 @@ simulated height data using \emph{Franke's Function}, Where the goal was to fit 
 
 \section{Introduction}
 
-\begin{wrapfigure}{l}{0.3\textwidth}
-    \caption{\small Franke's Function}
-    \label{frankfunc}
-    \begin{center}
-    \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
-    \input{Frank_2.pgf}
-    \end{adjustbox}
-    \end{center}
-\end{wrapfigure}
+% \begin{wrapfigure}{l}{0.3\textwidth}
+%     \caption{\small Franke's Function}
+%     \label{frankfunc}
+%     \begin{center}
+%     \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
+%     \input{Frank_2.pgf}
+%     \end{adjustbox}
+%     \end{center}
+% \end{wrapfigure}
 To get a smooth start on this project we begin to construct some fake topological data. This can be constructed with
 \emph{Franke's Function}. This gives us a nice dataset to start linear regression. 
 A natrual start would be to use ordinary least squares to try to fit a polynomial to some degree. This is done by
 constructing a design matrix $X$ with the polynomial terms and then solving the linear regression equation
 \begin{equation}
-    \boldsymbol{\beta} = (X^T X)^{-1} X^T \boldsymbol{y}
+    \mathbf{\beta} = (X^T X)^{-1} X^T \mathbf{y}
 \end{equation}
-where $\boldsymbol{\beta}$ is the coefficients of the polynomial and $\boldsymbol{y}$ is the data.
-This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
+where $\mathbf{\beta}$ is the coefficients of the polynomial and $\mathbf{y}$ is the data.
+This is a nice start, but we can do better. We can add a penalty term to the cost 
+function, this is called ridge regression.
 \begin{equation}
-    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
+    \mathbf{\beta} = (X^T X + \lambda I)^{-1} X^T \mathbf{y}
 \end{equation}
 
-\begin{wrapfigure}{r}{0.3\textwidth}
-\begin{center}
-    \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
-    \input{Frank_1.pgf}
-    \end{adjustbox}
-    \caption{\small Franke's Function with noise}
-    \label{frankfuncnoise}
-    \end{center}
-\end{wrapfigure}
+% \begin{wrapfigure}{r}{0.3\textwidth}
+% \begin{center}
+%     \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
+%     \input{Frank_1.pgf}
+%     \end{adjustbox}
+%     \caption{\small Franke's Function with noise}
+%     \label{frankfuncnoise}
+%     \end{center}
+% \end{wrapfigure}
 
 
 
-where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
+where $\lambda$ is a hyperparameter that we can tune to get a better fit. 
+This is a nice start, but we can do better. We can add a penalty term to 
+the cost function, this is called ridge regression.
 \begin{equation}
-    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
+    \mathbf{\beta} = (X^T X + \lambda I)^{-1} X^T \mathbf{y}
 \end{equation}
-where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
+where $\lambda$ is a hyperparameter that we can tune to get a better fit. This 
+is a nice start, but we can do better. We can add a penalty term to the cost 
+function, this is called ridge regression.
 \begin{equation}
-    \boldsymbol{\beta} = (X^T X + \lambda I)^{-1} X^T \boldsymbol{y}
+    \mathbf{\beta} = (X^T X + \lambda I)^{-1} X^T \mathbf{y}
 \end{equation}
-where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a nice start, but we can do better. We can add a penalty term to the cost function, this is called ridge regression.
+where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a
+nice start, but we can do better. We can add a penalty term to the cost function, 
+this is called ridge regression.
 
 
 \subsection{Structure of the report}
@@ -232,8 +240,8 @@ where $\lambda$ is a hyperparameter that we can tune to get a better fit. This i
      0.  &     1.41421&  1.69516 & 1.83016 & 1.90431&  1.94603
 \end{tabular}%
 }\\
-{\scriptsize
-the code for generating this output }\footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
+{\scriptsize the code for generating this output}
+\footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
 \end{table}
 
 
@@ -253,31 +261,46 @@ the code for generating this output }\footnote{yurr}
 \end{table}
 
 
-First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original data was close to zero-centered and not that spread out, which means that initially by just looking at the data scaling is not that necessary. When we add the polynomial terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small as an example $0.1^5 = 0.00001$ this makes the columns of $X_{\text{unscaled}}$ live in their own order of magnitude and scaling should be considered to bring them back to the same order of magnitude. The act of not scaling results in $\boldsymbol{\beta}$ spanning from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$. Now this alone may not justify why we should scale this data set, as scaled and unscaled OLS yields the same MSE. However when doing ridge regression the cost function is directly dependent on the magnitude of $\beta_i$. Now with each $\beta_i$ varying alot, some are getting more penalized than others. As we can see the MSE for unscaled data is much higher than for scaled data in the ridge case.
-This leads us to conclude that we should scale the data, making it easier to tweak $\lambda$ and giving us nicer numbers to work with.
+First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original 
+data was close to zero-centered and not that spread out, which means that initially by 
+just looking at the data scaling is not that necessary. When we add the polynomial
+terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small 
+as an example $0.1^5 = 0.00001$ this makes the columns of $X_{\text{unscaled}}$ live in 
+their own order of magnitude and scaling should be considered to bring them back to the 
+same order of magnitude. The act of not scaling results in $\mathbf{\beta}$ spanning 
+from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$. Now this alone 
+may not justify why we should scale this data set, as scaled and unscaled OLS yields the 
+same MSE. However when doing ridge regression the cost function is directly dependent on 
+the magnitude of $\beta_i$. Now with each $\beta_i$ varying alot, some are getting more 
+penalized than others. As we can see the MSE for unscaled data is much higher than for 
+scaled data in the ridge case.
+This leads us to conclude that we should scale the data, making it easier to 
+tweak $\lambda$ and giving us nicer numbers to work with.
 \subsection{Analysis}
-\begin{figure}[!h]
-    \begin{center}
-    \resizebox*{0.9\linewidth}{!}{\input{Figure_2.pgf}}
-    \caption{Franke's Function}
-    \label{ols}
-    {\scriptsize code for gen  output}\footnote{code for }
-    \end{center}
-\end{figure}
-\begin{figure}[!h]
-    \begin{center}
-    \resizebox*{0.7\linewidth}{!}{\input{beta-modelcomplexity.pgf}}
-    \caption{Franke's Function}
-    \label{}
-    \footnote{https}
-    \end{center}
-\end{figure}
+% \begin{figure}[!h]
+%     \begin{center}
+%     \resizebox*{0.9\linewidth}{!}{\input{Figure_2.pgf}}
+%     \caption{Franke's Function}
+%     \label{ols}
+%     {\scriptsize code for gen  output}\footnote{code for }
+%     \end{center}
+% \end{figure}
+% \begin{figure}[!h]
+%     \begin{center}
+%     \resizebox*{0.7\linewidth}{!}{\input{beta-modelcomplexity.pgf}}
+%     \caption{Franke's Function}
+%     \label{}
+%     \footnote{https}
+%     \end{center}
+% \end{figure}
 
 \section{Ordinary Least Squares}
 As we increase the order of the polynomial fit we see a corresponding decrease in MSE and increase in R2.
 \section{Ridge}
 \section{Lasso}
 \section{Paper \& Pencil}
+\label{sec:PaperPencil}
+
 The assumption we have made is that there exists a continuous function f (x)
 and a normal distributed error ε ∼ N (0, σ2) which describes our data
 y = f (x) + ε
@@ -286,106 +309,61 @@ of the linear regression equations (ordinary least squares OLS), that is our
 function f is approximated by ˜y where we minimized (y − ˜y)2, with
 ˜y = Xβ.
 The matrix X is the so-called design or feature matrix.
-Show that the expectation value of y for a given element i
-E(yi) = ∑
-j
-xij βj = Xi,∗ β,
-and that its variance is
-Var(yi) = σ2.
-Hence, yi ∼ N (Xi,∗ β, σ2), that is y follows a normal distribution with mean
+yi ∼ N (Xi,∗ β, σ2), that is y follows a normal distribution with mean
 value Xβ and variance σ2.
-With the OLS expressions for the optimal parameters ˆβ show that
-E( ˆβ) = β.
-Show finally that the variance of β is
-Var( ˆβ) = σ2 (XT X)−1.
-We can use the last expression when we define a so-called confidence interval
+We can use this when we define a so-called confidence interval
 for the parameters β. A given parameter βj is given by the diagonal matrix
 element of the above matrix.
 
-
-We can assume that $y$ follows some function $f$ with some noise $\epsilon$
-$$
-\mathbf{y} = f(\mathbf{x}) + \epsilon
-$$
-$$
-\mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
-$$
-The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approximated by $\boldsymbol{X}\boldsymbol{\beta}$
-$$
-\mathbb{E}[y_i] = \boldsymbol{X_{i,*}}\boldsymbol{\beta}
-$$
-The variance is defined as
-\begin{align*}
-Var(y_i) &= \mathbb{E}\big[(y_i - \mathbb{E}[y_i])^2\big] = \mathbb{E}\left[y_i^2 - 2y_i\mathbb{E}[y_i] + \mathbb{E}[y_i]^2\right] = \mathbb{E}[y_i^2] - \mathbb{E}[y_i]^2\\
-Var(y_i) &= \mathbb{E}\big[\big(\boldsymbol{X}_{i,*}\boldsymbol{\beta}\big)^2 + 2\epsilon \boldsymbol{X}_{i,*}\boldsymbol{\beta} + \epsilon^2 \big] - (\boldsymbol{X}_{i,*}\boldsymbol{\beta})^2\\
-Var(y_i) &= (\boldsymbol{X}_{i,*}\boldsymbol{\beta})^2 + 2\mathbb{E}[\epsilon]\boldsymbol{X}_{i,*}\boldsymbol{\beta} + \mathbb{E}[\epsilon^2] - (\boldsymbol{X}_{i,*}\boldsymbol{\beta})^2\\
-Var(y_i) &= \mathbb{E}[\epsilon^2] = \sigma^2
-\end{align*}
-for the expected value of $\boldsymbol{\beta}$ we can insert the definition of $\boldsymbol{\beta}$ from earlier
-$$
-\mathbb{E}[\boldsymbol{\hat{\beta}}] = \mathbb{E}[ (\mathbf{X}^{\top} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbb{E}[ \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T}\mathbf{X}\boldsymbol{\beta}=\boldsymbol{\beta}.
-$$
-\begin{align*}
-Var(\boldsymbol{\hat{\beta}}) & = \mathbb{E} \{ [\boldsymbol{\beta} - \mathbb{E}(\boldsymbol{\beta})] [\boldsymbol{\beta} - \mathbb{E}(\boldsymbol{\beta})]^{T} \}
-\\
-& = \mathbb{E} \{ [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \boldsymbol{\beta}] \, [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \boldsymbol{\beta}]^{T} \}
-\\
-& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \boldsymbol{\beta} \, \boldsymbol{\beta}^{T}
-\\
-& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \{ \mathbf{X} \, \boldsymbol{\beta} \, \boldsymbol{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \boldsymbol{\beta} \, \boldsymbol{\beta}^{T}
-\\
-& = \boldsymbol{\beta} \, \boldsymbol{\beta}^{T}  + \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \boldsymbol{\beta} \, \boldsymbol{\beta}^{T}
-\, \, \, = \, \, \, \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1},
-\end{align*}
-
-
-
+Appendix A
 
 
 
 \section{Bias \& Variance}
+\label{sec:BiasVariance}
+
 
 \begin{align*}
-    \text{Var}(\boldsymbol{\tilde{y}}) &= \mathbb{E}\left[\left(\tilde{\boldsymbol{y}}-\mathbb{E}\left[\boldsymbol{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\boldsymbol{\tilde{y}}^2] - \mathbb{E}[\boldsymbol{\tilde{y}}]^2\\
-    \mathbb{E}[\boldsymbol{\tilde{y}}^2] &= \mathbb{E}[\boldsymbol{\tilde{y}}]^2 + \text{Var}(\boldsymbol{\tilde{y}})
+    \text{Var}(\mathbf{\tilde{y}}) &= \mathbb{E}\left[\left(\tilde{\mathbf{y}}-\mathbb{E}\left[\mathbf{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\mathbf{\tilde{y}}^2] - \mathbb{E}[\mathbf{\tilde{y}}]^2\\
+    \mathbb{E}[\mathbf{\tilde{y}}^2] &= \mathbb{E}[\mathbf{\tilde{y}}]^2 + \text{Var}(\mathbf{\tilde{y}})
 \end{align*}
 
 
 \begin{align*}
-\mathbb{E}[\boldsymbol{y}^2] & = \mathbb{E}[\boldsymbol{f} + \boldsymbol{\epsilon}]^2 = \mathbb{E}[\boldsymbol{f}^2 + 2\boldsymbol{f}\boldsymbol{\epsilon} + \boldsymbol{\epsilon}^2]\\
-& = \mathbb{E}[\boldsymbol{f}^2] + 2\mathbb{E}[\boldsymbol{f}\boldsymbol{\epsilon}] + \mathbb{E}[\boldsymbol{\epsilon}^2]\\
-& = \mathbb{E}[\boldsymbol{f}^2] + 2\mathbb{E}[\boldsymbol{f}]\mathbb{E}[\boldsymbol{\epsilon}] + \mathbb{E}[\boldsymbol{\epsilon}^2]\\
-& = \mathbb{E}[\boldsymbol{f}^2]  + \sigma^2
+\mathbb{E}[\mathbf{y}^2] & = \mathbb{E}[\mathbf{f} + \mathbf{\epsilon}]^2 = \mathbb{E}[\mathbf{f}^2 + 2\mathbf{f}\mathbf{\epsilon} + \mathbf{\epsilon}^2]\\
+& = \mathbb{E}[\mathbf{f}^2] + 2\mathbb{E}[\mathbf{f}\mathbf{\epsilon}] + \mathbb{E}[\mathbf{\epsilon}^2]\\
+& = \mathbb{E}[\mathbf{f}^2] + 2\mathbb{E}[\mathbf{f}]\mathbb{E}[\mathbf{\epsilon}] + \mathbb{E}[\mathbf{\epsilon}^2]\\
+& = \mathbb{E}[\mathbf{f}^2]  + \sigma^2
 \end{align*}
 
 
 \begin{align*}
-\mathbb{E}[\boldsymbol{y\tilde{y}}] & = \mathbb{E}[\boldsymbol{f\tilde{y}} + \boldsymbol{\epsilon\tilde{y}}]\\
-& = \mathbb{E}[\boldsymbol{f\tilde{y}}] + \mathbb{E}[\boldsymbol{\epsilon\tilde{y}}]\\
-& = \mathbb{E}[\boldsymbol{f\tilde{y}}] + \mathbb{E}[\boldsymbol{\epsilon}]\mathbb{E}[\boldsymbol{\tilde{y}}]\\
-& = \boldsymbol{f}\mathbb{E}[\boldsymbol{\tilde{y}}]
+\mathbb{E}[\mathbf{y\tilde{y}}] & = \mathbb{E}[\mathbf{f\tilde{y}} + \mathbf{\epsilon\tilde{y}}]\\
+& = \mathbb{E}[\mathbf{f\tilde{y}}] + \mathbb{E}[\mathbf{\epsilon\tilde{y}}]\\
+& = \mathbb{E}[\mathbf{f\tilde{y}}] + \mathbb{E}[\mathbf{\epsilon}]\mathbb{E}[\mathbf{\tilde{y}}]\\
+& = \mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}]
 \end{align*}
 
 
 \begin{align*}
-\mathbb{E}\left[(\boldsymbol{y}-\boldsymbol{\tilde{y}})^2\right] & = \mathbb{E}[\boldsymbol{y}^2] - 2\mathbb{E}[\boldsymbol{y\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}^2]\\
-& = \boldsymbol{f}^2 + \sigma^2 - 2\boldsymbol{f}\mathbb{E}[\boldsymbol{\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}^2]\\
-& = \boldsymbol{f}^2 + \sigma^2 - 2\boldsymbol{f}\mathbb{E}[\boldsymbol{\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}]^2 + \text{Var}(\boldsymbol{\tilde{y}})\\
-& = (\boldsymbol{f} - \mathbb{E}[\boldsymbol{\tilde{y}}])^2 + \text{Var}(\boldsymbol{\tilde{y}}) + \sigma^2\\
+\mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right] & = \mathbb{E}[\mathbf{y}^2] - 2\mathbb{E}[\mathbf{y\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}^2]\\
+& = \mathbf{f}^2 + \sigma^2 - 2\mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}^2]\\
+& = \mathbf{f}^2 + \sigma^2 - 2\mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}]^2 + \text{Var}(\mathbf{\tilde{y}})\\
+& = (\mathbf{f} - \mathbb{E}[\mathbf{\tilde{y}}])^2 + \text{Var}(\mathbf{\tilde{y}}) + \sigma^2\\
 \end{align*}
 
 
 \begin{align*}
-\mathrm{Bias}[\tilde{y}]& =\mathbb{E}\left[\left(\boldsymbol{y}-\mathbb{E}\left[\boldsymbol{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\boldsymbol{y}^2] - 2\mathbb{E}[\boldsymbol{y}]\mathbb{E}[\boldsymbol{\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}^2]\\
-& = \boldsymbol{f}^2 + \sigma^2 - 2\boldsymbol{f}\mathbb{E}[\boldsymbol{\tilde{y}}] + \mathbb{E}[\boldsymbol{\tilde{y}}]^2\\
-& = (\boldsymbol{f} - \mathbb{E}[\boldsymbol{\tilde{y}}])^2 + \sigma^2\\
+\mathrm{Bias}[\tilde{y}]& =\mathbb{E}\left[\left(\mathbf{y}-\mathbb{E}\left[\mathbf{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\mathbf{y}^2] - 2\mathbb{E}[\mathbf{y}]\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}^2]\\
+& = \mathbf{f}^2 + \sigma^2 - 2\mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}]^2\\
+& = (\mathbf{f} - \mathbb{E}[\mathbf{\tilde{y}}])^2 + \sigma^2\\
 \end{align*}
 
 
-To find $\mathbb{E}[\boldsymbol{\tilde{y}}]$ we can use bootstrap to get different samples for $\boldsymbol{\tilde{y}}$ and then take the mean of that distribution.
+To find $\mathbb{E}[\mathbf{\tilde{y}}]$ we can use bootstrap to get different samples for $\mathbf{\tilde{y}}$ and then take the mean of that distribution.
 The term \emph{variance} refers to how spread out our observations are. We can for our case think of the observations $\tilde{y}_i$
 as either individual predictions, or the mean of predictions from one test set.\\
-In a sense the bias resembles the mathematical defninition for variance, We can see that the bias term is a distance measure of $\boldsymbol{y}$ from the expected value of $\boldsymbol{\tilde{y}}$. If we take the individual observations approach this can be tough of as A high bias will then result in a large band around $\boldsymbol{\tilde{y}}$ in which $y_i$ will exist. The variance term is a measure of how much the $\boldsymbol{\tilde{y}}$ varies around its own mean. In other terms a high variance model will experience large variance in the predicted values $\boldsymbol{\tilde{y}}$ from one test set to another. Or as a result of this a large variance in score if you will. Now these two terms are in a sense opposites, it is likely that a model with high bias will have low variance and vice versa. This is something we as designers of the model get to tune, if we value a lower bias more than we value a low variance or vice versa, we can choose a model accordingly
+In a sense the bias resembles the mathematical defninition for variance, We can see that the bias term is a distance measure of $\mathbf{y}$ from the expected value of $\mathbf{\tilde{y}}$. If we take the individual observations approach this can be tough of as A high bias will then result in a large band around $\mathbf{\tilde{y}}$ in which $y_i$ will exist. The variance term is a measure of how much the $\mathbf{\tilde{y}}$ varies around its own mean. In other terms a high variance model will experience large variance in the predicted values $\mathbf{\tilde{y}}$ from one test set to another. Or as a result of this a large variance in score if you will. Now these two terms are in a sense opposites, it is likely that a model with high bias will have low variance and vice versa. This is something we as designers of the model get to tune, if we value a lower bias more than we value a low variance or vice versa, we can choose a model accordingly
 
 % Acknowledgements should go at the end, before appendices and references
 \acks{}
@@ -396,10 +374,170 @@ In a sense the bias resembles the mathematical defninition for variance, We can 
 \newpage
 
 \appendix
-\section*{Appendix A.}
-\label{app:theorem}
+\section{Additional Calculations}
+\label{app:calculations}
 svd
 
+$$
+MSE(\mathbf{y},\mathbf{\tilde{y}}) = \frac{1}{n}
+\sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2,
+$$
+$$
+R^2(\mathbf{y}, \tilde{\mathbf{y}}) = 1 - \frac{\sum_{i=0}^{n - 1} (y_i - \tilde{y}_i)^2}{\sum_{i=0}^{n - 1} (y_i - \bar{y})^2},
+$$
+
+
+$$
+\bar{y} =  \frac{1}{n} \sum_{i=0}^{n - 1} y_i.
+$$
+
+
+adding these two we get
+$$
+    \frac{\partial \left[\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2\right]}{\partial{\mathbf{\beta}}} = 0 = \frac{2}{n}\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y} \implies \beta = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y}
+$$
+
+
+
+The minimization of ridge addition alone is
+$${\displaystyle \min_{\mathbf{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n} \lambda \vert\vert \mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \lambda \mathbf{\beta}$$
+
+
+
+
+We know that 
+$$
+{\displaystyle \min_{\mathbf{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n} \vert\vert\mathbf{y}- \mathbf{X}\mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \mathbf{X}^T\mathbf{X}\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y}
+$$
+
+
+
+
+$$
+{\displaystyle \min_{\mathbf{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n}\sum_{i=0}^{n-1}\left(y_i-\tilde{y}_i\right)^2=\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2,
+$$
+
+
+
+
+$$
+{\displaystyle \min_{\mathbf{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2
+$$
+
+
+
+
+$$
+\hat{\mathbf{\beta}}_{\mathrm{OLS}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y},
+$$
+
+
+
+
+$$
+\hat{\mathbf{\beta}}_{\mathrm{Ridge}} = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y},
+$$
+
+
+
+Use the singular value decomposition of an $n\times p$ matrix $\mathbf{X}$ (our design matrix)
+$$
+\mathbf{X}=\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T,
+$$
+
+
+where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices of dimensions
+$n\times n$ and $p\times p$, respectively, and $\mathbf{\Sigma}$ is an
+$n\times p$ matrix which contains the ingular values only. This material was discussed during the lectures of week 35.
+
+Show that you can write the 
+OLS solutions in terms of the eigenvectors (the columns) of the orthogonal matrix  $\mathbf{U}$ as
+
+
+$$
+\tilde{\mathbf{y}}_{\mathrm{OLS}}=\mathbf{X}\mathbf{\beta}  = \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}.
+$$
+
+
+$$
+\mathbf{X}^T\mathbf{X} = \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^T\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T
+$$
+
+$$
+\tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{X}\mathbf{\beta} = \mathbf{X} \left(\mathbf{X}^T \mathbf{X}\right)^{-1} \mathbf{X}^T \mathbf{y}
+\\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T \left( \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T \right)^{-1} \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
+\\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T {\mathbf{V}^T}^{-1} {\mathbf{\Sigma}^2}^{-1} \mathbf{V}^{-1}  \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
+$$
+using the orthogonality of $\mathbf{V}$ and $\mathbf{U}$ we get. Multiplying with $\mathbf{\Sigma}$ removes columns from $\mathbf{U}$ with eigenvalues equal to zero.
+$$
+\tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{U}\mathbf{U}^T \mathbf{y}= \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}
+$$
+
+
+$$
+\mathbf{y} = f(\mathbf{x})+\mathbf{\varepsilon}
+$$
+
+$$
+\mathbf{\tilde{y}} = \mathbf{X}\mathbf{\beta}.
+$$
+
+$$
+\mathbb{E}(y_i)  =\sum_{j}x_{ij} \beta_j=\mathbf{X}_{i, \ast} \, \mathbf{\beta}
+$$
+
+$$
+{Var}(y_i)  = \sigma^2
+$$
+$$
+{Var}(\mathbf{\hat{\beta}}) = \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1}.
+$$
+
+
+\subsection{calculations for Section \ref{sec:PaperPencil}}
+
+We can assume that $y$ follows some function $f$ with some noise $\epsilon$
+$$
+\mathbf{y} = f(\mathbf{x}) + \epsilon
+$$
+$$
+\mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
+$$
+The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\mathbf{X}\mathbf{\beta}$
+$$
+\mathbb{E}[y_i] = \mathbf{X_{i,*}}\mathbf{\beta}
+$$
+The variance is defined as
+\begin{align*}
+Var(y_i) &= \mathbb{E}\big[(y_i - \mathbb{E}[y_i])^2\big] = \mathbb{E}\left[y_i^2 - 2y_i\mathbb{E}[y_i] + \mathbb{E}[y_i]^2\right] = \mathbb{E}[y_i^2] - \mathbb{E}[y_i]^2\\
+Var(y_i) &= \mathbb{E}\big[\big(\mathbf{X}_{i,*}\mathbf{\beta}\big)^2 + 2\epsilon \mathbf{X}_{i,*}\mathbf{\beta} + \epsilon^2 \big] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
+Var(y_i) &= (\mathbf{X}_{i,*}\mathbf{\beta})^2 + 2\mathbb{E}[\epsilon]\mathbf{X}_{i,*}\mathbf{\beta} + \mathbb{E}[\epsilon^2] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
+Var(y_i) &= \mathbb{E}[\epsilon^2] = \sigma^2
+\end{align*}
+for the expected value of $\mathbf{\beta}$ we can insert the definition of $\mathbf{\beta}$ from earlier
+
+
+$$
+\mathbb{E}[\mathbf{\hat{\beta}}] = \mathbb{E}[ (\mathbf{X}^{\top} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbb{E}[ \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T}\mathbf{X}\mathbf{\beta}=\mathbf{\beta}
+$$
+
+
+\begin{align*}
+Var(\mathbf{\hat{\beta}}) & = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})] [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})]^{T} \}
+\\
+& = \mathbb{E} \{ [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}] \, [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}]^{T} \}
+\\
+& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
+\\
+& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \{ \mathbf{X} \, \mathbf{\beta} \, \mathbf{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
+\\
+& = \mathbf{\beta} \, \mathbf{\beta}^{T}  + \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
+\, \, \, = \, \, \, \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1},
+\end{align*}
 
 
 % Note: in this sample, the section number is hard-coded in. Following
@@ -413,7 +551,7 @@ svd
 \bibliography{report}
 % \bibliographystyle{apalike}
 \bibliographystyle{plain}
-\addcontentsline{toc}{section}{Bibliography}
+% \addcontentsline{toc}{section}{Bibliography}
 \end{document}
 
 
