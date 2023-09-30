@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pylab as plt
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
@@ -63,23 +64,15 @@ def FrankeFunction(x,y):
 
 
 
-def makeFigure(figsize=(10,10)):
-    """
-    Makes a figure with tight layout
-    """
-    fig = plt.figure(figsize=figsize)
-    fig.tight_layout()
-    return fig
 
 
-
-
-
-def plotFrankefunction(xx,yy, z, fig, subplot=(1,1,1),title=None ):
+def plotFrankefunction(xx,yy, z, figsize=(10,10), subplot=(1,1,1),title=None ):
     """
     Plots the FrankeFunction on a 3D surface. You need to call makeFigure() first
     and then pass the figure to this function. You need to call plt.show() after
-    """
+    """    
+    fig = plt.figure(figsize=figsize)
+    fig.tight_layout()
     ax = fig.add_subplot(subplot[0],subplot[1], subplot[2],projection='3d')
     ax.set_title(title, fontsize=16)
         # Plot the surface.
@@ -99,43 +92,16 @@ def plotFrankefunction(xx,yy, z, fig, subplot=(1,1,1),title=None ):
 
 
 
-def makeDataMesh(n, rand=0., test_size=0.2):
+
+
+def readData(path):
     """
-    Makes data by generating meshgrid of random x and y and then flattening them to vectors
-    this results in squaring the number of data points 'n' 
-    then calling FrankeFunction on the 
-    set of {(x_0,y_0), (x_1,y_1), ... , (x_n,y_n)} pairs
-    returns X, y , X_train, X_test, y_train, y_test
+    reads csv file 
     """
-    x = np.random.uniform(0, 1, n)
-    y = np.random.uniform(0, 1, n)
-    xx , yy = np.meshgrid(x,y)
-    z = FrankeFunction(xx, yy) + rand * np.random.randn(n,n)
-    X = np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T    # design matrix
-    X_train, X_test, y_train, y_test = train_test_split(X, z.ravel(), test_size=test_size)
-    return X, z.ravel(),X_train, X_test, y_train, y_test
-
-
-
-
-
-
-def makeData(n, rand=0., test_size=0.2):
-    """
-    makes data by generating random x and y values and calling FrankeFunction on the 
-    set of {(x_0,y_0), (x_1,y_1), ... , (x_n,y_n)} pairs
-    returns X, y , X_train, X_test, y_train, y_test
-    """
-    x = np.random.uniform(0, 1, n)
-    y = np.random.uniform(0, 1, n)
-    z = FrankeFunction(x, y) + rand * np.random.randn(n)
-    X = np.concatenate((x.reshape(-1,1), y.reshape(-1,1)), axis=1)    # design matrix
-    X_train, X_test, y_train, y_test = train_test_split(X, z , test_size=test_size)
-    return X, z, X_train, X_test, y_train, y_test
-
-
-
-
+    df = pd.read_csv(path)
+    X = df[["x","y"]].to_numpy()
+    y = df["z"].to_numpy()
+    return X, y
 
 
 

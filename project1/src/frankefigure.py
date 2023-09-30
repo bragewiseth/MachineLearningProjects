@@ -27,7 +27,10 @@ z = FrankeFunction(xx,yy)
 
 fig = makeFigure((8,8))
 fig1 = makeFigure((8,8))
-plotFrankefunction(xx,yy,z, fig, (1,1,1) ,"Franke's Function")
-z = z + 0.05 * np.random.randn(100,100)
-plotFrankefunction(xx,yy,z, fig1, (1,1,1), "Noisy Franke's Function")
+plotFrankefunction(xx,yy,z, fig, (1,1,1) ,"True function")
+data = readData() 
+fig = plt.figure(figsize=(8,8))
+
+
+
 plt.show()

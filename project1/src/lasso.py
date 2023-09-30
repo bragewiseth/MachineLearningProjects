@@ -18,10 +18,12 @@ from utils import MSE, R2, makeData
 
 
 
-np.random.seed(9282)
+
 maxdegree = 5
-numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
-n = 100
+X, y  = readData("../data/syntheticData.csv")
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9282)
+
+
 numlamdas = 50
 lamdas = np.logspace(1,-6,numlamdas)
 X, y, x_train, x_test, y_train, y_test = makeData(n, rand=0.1)

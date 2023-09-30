@@ -10,7 +10,6 @@ from utils import MSE, fit_beta, fit_beta_ridge ,   makeData
 n = 100
 maxdegree = 5
 Lambda = 0.1
-np.random.seed()
 
 
 

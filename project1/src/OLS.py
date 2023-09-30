@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
-from utils import FrankeFunction, makeData, MSE, R2, OLS, makeFigure, plotFrankefunction
+from utils import FrankeFunction, readData, MSE, R2, OLS, plotFrankefunction
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
@@ -13,10 +13,11 @@ import matplotlib.pyplot as plt
 
 
 
-np.random.seed(9282) # use the same seed for every task
 maxdegree = 5
-n = 100
-X, y, x_train, x_test, y_train, y_test  = makeData(n, rand=0.1)
+X, y  = readData("../data/syntheticData.csv")
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9282)
+
+
 polydegree = np.zeros(maxdegree)
 trainError  = np.zeros(maxdegree)
 testError  = np.zeros(maxdegree)
@@ -35,7 +36,6 @@ for degree in range(maxdegree):
     X_test = scaler.transform(X_test) # type: ignore
     y_train_mean = np.mean(y_train)
     y_train_scaled = y_train - y_train_mean
-    print(X_train.shape)
     model.fit(X_train, y_train_scaled)
     betas[degree] = np.pad(model.beta,(0,20-model.beta.size))
     polydegree[degree] = degree + 1
@@ -90,8 +90,7 @@ y = np.linspace(0,1,100)
 xx,yy = np.meshgrid(x,y)
 poly = PolynomialFeatures(5,include_bias=False)
 z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
-fig = makeFigure((8,8))
-plotFrankefunction(xx,yy,z.reshape(100,100), fig, (1,1,1) ,"Approximation of Franke' Function using OLS")
+plotFrankefunction(xx,yy,z.reshape(100,100), (8,8), (1,1,1) ,"Approximation of Franke' Function using OLS")
 plt.show()
 
 

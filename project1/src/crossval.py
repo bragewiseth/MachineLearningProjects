@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import matplotlib as mpl
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
-from utils import MSE, R2, makeData, Ridge, makeFigure, plotFrankefunction
+from utils import MSE, R2, makeData, Ridge, makeFigure, plotFrankefunction, OLS
 
 
 
@@ -11,14 +11,6 @@ from utils import MSE, R2, makeData, Ridge, makeFigure, plotFrankefunction
 
 
 
-
-
-
-
-
-
-
-np.random.seed(9282)
 maxdegree = 5
 numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
 n = 100
@@ -40,3 +32,52 @@ k = 5
 kfold = KFold(n_splits = k)
 for trainind, testind in kfold.split(X):
     print("TRAIN:", trainind, "TEST:", testind)
+
+
+
+
+
+def CrossVal(designMatrix,y, folds =  5, regtype = "ols",l = 1,ls = 0, random = True):
+
+    def linreg(trainx, trainy, valx, valy, regtype,l,ls):
+        match regtype:
+            case "ols":
+                ols = OLS()
+                ols.fit(trainx,trainy)
+                ypred =ols.predict(valx)
+                score[i] = mse(valy,ypred)
+            case "ridge":
+                ridge = ridge()
+                for j in range( l):
+                    ridge.fit(trainx,trainy,ls[j])
+                    ypred =ridge.predict(valx)
+                    score[i][j] = mse(valy,ypred)
+            case _:
+                return
+
+
+
+    if random:
+        seed = np.random.randint(0,100000)
+
+        rng = np.random.default_rng(seed=seed)
+        rng.shuffle(designmatrix)
+        rng = np.random.default_rng(seed=seed)
+        rng.shuffle(y)
+    foldsize =y.size/folds
+    at =0
+    score = np.zeros((folds, l))
+    for i in range(folds):
+        start = int(np.floor(at))
+        at += foldsize
+        end = int(np.floor(at))
+        trainx = np.delete(designmatrix,slice(start,end),axis=0)
+        trainy = np.delete(y,slice(start,end))
+        valx = designmatrix[start:end,:]
+        valy = y[:,start:end]
+        linreg(trainx,trainy, valx,valy,regtype,l,ls)
+    
+    return np.mean(score,axis=1
+)
+
+

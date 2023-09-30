@@ -19,8 +19,12 @@ def MSE(y_data,y_model):
 
 
 
-np.random.seed(9282) # 9282 gives a nice plot textbook plot
-n = 100
+
+# maxdegree = 5
+X, y  = readData("../data/syntheticData.csv")
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9282)
+
+
 maxdegree = 6
 n_boostraps = 100
 numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
