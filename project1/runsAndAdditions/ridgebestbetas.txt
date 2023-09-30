@@ -1,0 +1,25 @@
+Degree of polynomial =  1.0
+Best test error =       0.02251654561290165     for λ = 1e-06
+Best train error =     0.037124124293633466     for λ = 1e-06
+Best test R2 =         0.8287151122260632       for λ = 1e-06
+Best train R2 =        0.6316101903188465       for λ = 1e-06
+Degree of polynomial =  2.0
+Best test error =      0.014013324840082114     for λ = 1e-06
+Best train error =     0.030501529538240042     for λ = 1e-06
+Best test R2 =         0.8931454466708959       for λ = 1e-06
+Best train R2 =        0.6973274689875093       for λ = 1e-06
+Degree of polynomial =  3.0
+Best test error =      0.009469806204638064     for λ = 0.037275937203149416
+Best train error =     0.018258021674557885     for λ = 1e-06
+Best test R2 =         0.9277687354198274       for λ = 0.037275937203149416
+Best train R2 =        0.8188221471126194       for λ = 1e-06
+Degree of polynomial =  4.0
+Best test error =       0.00888574320285936     for λ = 0.1
+Best train error =     0.013308818188789876     for λ = 1e-06
+Best test R2 =         0.9321771865131678       for λ = 0.1
+Best train R2 =         0.867934043080171       for λ = 1e-06
+Degree of polynomial =  5.0
+Best test error =      0.007712900184494798     for λ = 1.9306977288832537e-05
+Best train error =     0.011382840619912984     for λ = 1e-06
+Best test R2 =         0.9412512943346545       for λ = 1.9306977288832537e-05
+Best train R2 =         0.887045888101399       for λ = 1e-06

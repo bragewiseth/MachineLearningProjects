@@ -1,9 +1,11 @@
+from math import sin
 import numpy as np
+from pandas.core.generic import RandomState
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from random import random, seed
-from utils import MSE, fit_beta, fit_beta_ridge ,   makeData
+from utils import MSE, fit_beta, fit_beta_ridge ,  readData
 
 
 
@@ -14,9 +16,9 @@ Lambda = 0.1
 
 
 
+X, y = readData("../data/syntheticData.csv")
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9829  )
 
-# Make data set.
-X , y, x_train, x_test, y_train, y_test  = makeData(n)
 
 
 # preprocessing
