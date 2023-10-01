@@ -1,4 +1,4 @@
-from numpy.core.fromnumeric import size
+from numpy.core.fromnumeric import argmax, argmin, size
 import matplotlib as mpl
 import numpy as np
 import matplotlib.pyplot as plt
@@ -62,6 +62,11 @@ for degree in range(maxdegree):
     bias[degree] = np.mean( (y_test - np.mean(y_pred, axis=1, keepdims=False))**2 )
     variance[degree] = np.mean( np.var(y_pred, axis=1, keepdims=True) )
 
+
+
+# print best MSE:
+i =  np.argmin(error)
+print("Best MSE = {:25} \tfor polynomial of degree = {}".format(error[i],  i+1))
 
 
 

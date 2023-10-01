@@ -77,8 +77,8 @@
 
 
 \title{{\huge Project 1}}
-\author{\name Eirik \email eirk@ifi.uio.no \\
-       \name Felix  \email felixch@ifi.uio.no \\
+\author{\name Eirik J. \email eirk@ifi.uio.no \\
+       \name Felix H.  \email felixch@ifi.uio.no \\
        \name Brage W. \email bragewi@ifi.uio.no}
 \date{\today}											% Date
 \makeatletter
@@ -98,7 +98,7 @@
 	\centering
     \vspace*{0.5 cm}
     \includegraphics[scale = 0.75]{uio.jpg}\\[1.0 cm]	% University Logo
-    \textsc{\LARGE University of Oslo}\\[2.0 cm]	% University Name
+    \textsc{\LARGE University of Oslo}\\[2.0 cm]	    % University Name
 	\textsc{\Large FYS-STK3155}\\[0.5 cm]				% Course Code
 	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
 	{ \huge \bfseries \@title}\\
@@ -140,43 +140,67 @@
 \newpage
 
 \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
-\lettrine{I}{}n this project, we explored the use of different methods for solving linear regres-
-sion on topological data. We emplyed OLS, ridge and lasso methods for linear regression on
-simulated height data using \emph{Franke's Function}, Where the goal was to fit polynomi
-als to minimize the mean square error. As well as real topological data with the same goal.
+\lettrine{I}{}n this paper, we delve into the realm of machine learning model optimization and evaluation. 
+Our study encompasses various regression techniques, including Ordinary Least Squares (OLS), Ridge, and 
+Lasso regression, to analyze their effectiveness in handling simple and more complex datasets. Additionally, 
+we employ bootstrap resampling and cross-validation methodologies to rigorously assess model performance 
+and enhance generalization.
+A significant portion of our investigation is dedicated to understanding the delicate balance between 
+bias and variance. We explore how regularization methods like Ridge and Lasso impact bias-variance trade-offs, 
+offering insights into the stability and predictive power of these models. Furthermore, we provide empirical 
+evidence of the benefits of cross-validation and bootstrap techniques in mitigating overfitting and improving 
+model robustness. We found that \{ ..results.. \}. Additionally we verify and compare our findings with well 
+established theory and libraris such as SKLearn.
 \end{abstract}
 \begin{keywords}
-    Linear Regression, Fitting Polynomials, Scaling, Bias-Variance 
+    Linear Regression, Scaling, Bias \& Variance 
 \end{keywords}
 
 \section{Introduction}
 
+Machine learning has emerged as a powerful tool in data analysis, providing the ability to uncover complex 
+patterns and relationships in diverse datasets. But, at its core, machine learning is all about finding 
+functions that capture the underlying structure of the data. The use of machine learning algorithms 
+to approximate functions is the essence of this paper.\\
 
-To get a smooth start on this project we begin to construct some fake topological data. This can be constructed with
-\emph{Franke's Function}. This gives us a nice dataset to start linear regression. 
-A natrual start would be to use ordinary least squares to try to fit a polynomial to some degree. This is done by
-constructing a design matrix $X$ with the polynomial terms. Then we can use the closed form solution to find the 
-coefficients $\beta$. This is done by minimizing the mean square error (MSE) between the data and the model.
-\begin{equation}
-    \mathbf{\beta} = (X^T X)^{-1} X^T \mathbf{y}
-\end{equation}
+Our motivation for this research lies in the exploration of machine learning techniques to approximate 
+the terrain on our planet, which can perhaps be described by such a function. Earth's terrain exhibits 
+peaks and troughs, hills and valleys, much like some polynomial functions. Fortunately, we can employ 
+standard linear regression techniques to approximate polynomials, but the terrain presents its own set 
+of challenges. Firstly, the terrain's true underlying function may not be a polynomial at all, and its complexity may 
+vary significantly from one location to another. Secondly, our landscape is teeming with small, intricate 
+details. Some regions are characterized by flat and smooth surfaces, while others are marked by rough and 
+uneven terrain. Focusing too much on these minute details can lead to model overfitting, making it crucial 
+to strike a careful balance between model complexity and generalization.
+In this context, regularization and resampling techniques, including Ridge and Lasso regression with bootstrap
+and cross validation, have proven indispensable. By introducing regularization and resampling, we aim to find 
+the sweet spot between bias and Variance. And getting the best predictions we can with our assumptions.\\
+To embark on this exploration, we will begin with a simpler case: "Franke's function." which mimics our real terrain
+data. This function 
+serves as a foundational starting point, allowing us to assess our model's performance in a controlled 
+environment before venturing into the complexity of real-world terrain data. Through this gradual progression, 
+we provide ourselves wih a framework that can be applied to more complex and varied real-world terrain datasets.\\
+
+\textbf{Data}: We begin by introducing the dataset used for our analysis, highlighting data collection and preprocessing procedures. 
+Understanding the characteristics of the terrain data is fundamental to our modeling endeavor.\\
+\textbf{Methods and Scaling}: Next, we delve into the methodology, encompassing the implementation of polynomial regression 
+models and the application of regularization techniques such as Ridge and Lasso. Additionally, we will discuss the 
+importance of proper scaling for model stability and convergence.\\
+\textbf{Bias-Variance Trade-off}: A significant portion of our study will revolve around the critical concept of bias and 
+variance. We'll explore how regularization methods influence this trade-off and delve into the fine balance between 
+model complexity and generalization.\\
+\textbf{Results}: In this section, we will present the outcomes of our experiments, showcasing the performance of different 
+models and regularization techniques. Through empirical evidence, we aim to provide insights into the effectiveness of our approach.\\
+\textbf{Conclusion}: Finally, we will summarize the key findings and their implications for terrain modeling with machine learning. 
+Our conclusion will underscore the importance of regularization in achieving accurate representations of complex terrains and 
+provide a perspective on future research directions.
 
 
 
 
-
-
-
-1. Introduction
-
-    Briefly introduce the problem or task you are addressing.
-    Mention the importance of linear regression models and scaling techniques in machine learning.
-    State the purpose of the report, i.e., to explore OLS, Ridge, and Lasso regression models, and their impact on bias-variance trade-off through scaling.
-
-2. Data
-
-    Describe the dataset you are using for your analysis.
-    Include information about the features, target variable, and any preprocessing steps applied (e.g., data cleaning).
+% \section{Data}
+% \label{sec:Data}
+%
 % \begin{wrapfigure}{r}{0.3\textwidth}
 % \begin{center}
 %     \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
@@ -196,86 +220,37 @@ coefficients $\beta$. This is done by minimizing the mean square error (MSE) bet
 %     \end{adjustbox}
 %     \end{center}
 % \end{wrapfigure}
-
-4. Linear Regression Models
-4.1 Ordinary Least Squares (OLS)
-
-    Explain the concept of OLS regression.
-    Discuss its advantages and limitations.
-    Present the results of applying OLS to your dataset.
-
-4.2 Ridge Regression
-
-    Explain the concept of Ridge regression.
-    Discuss how it addresses overfitting and its use of L2 regularization.
-    Present the results of applying Ridge regression to your dataset.
-
-4.3 Lasso Regression
-
-    Explain the concept of Lasso regression.
-    Discuss how it addresses overfitting and its use of L1 regularization.
-    Present the results of applying Lasso regression to your dataset.
-
-5. Scaling Techniques
-
-    Discuss the importance of feature scaling in machine learning.
-    Explain common scaling techniques such as Standardization (Z-score scaling) and Min-Max scaling.
-    Apply these scaling techniques to your dataset.
-
-6. Bias-Variance Trade-Off
-
-    Define bias and variance in the context of machine learning models.
-    Discuss how regularization (Ridge and Lasso) impacts the bias-variance trade-off.
-    Present the results of your analysis regarding bias and variance for the different regression models.
-
-7. Results and Discussion
-
-    Summarize the performance metrics of OLS, Ridge, and Lasso models.
-    Discuss any observed trends or differences in model performance.
-    Analyze the impact of scaling on model performance.
-
-8. Conclusion
-
-    Summarize the key findings of your analysis.
-    Discuss the implications of your results for the problem/task you introduced in the introduction.
-
-
-
-
-\section{Data}
-\label{sec:Data}
-
-
-
-
-\section{Linear Regression Models }
-\label{sec:models}
-
-
-
-$$
-MSE(\mathbf{y},\mathbf{\tilde{y}}) = \frac{1}{n}
-\sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2,
-$$
-$$
-R^2(\mathbf{y}, \tilde{\mathbf{y}}) = 1 - \frac{\sum_{i=0}^{n - 1} (y_i - \tilde{y}_i)^2}{\sum_{i=0}^{n - 1} (y_i - \bar{y})^2},
-$$
-
-$$
-\bar{y} =  \frac{1}{n} \sum_{i=0}^{n - 1} y_i.
-$$
-
-
-\subsection{Ordinary Least Squares (OLS)}
-\label{sec:OLS}
-
-\subsection{Ridge Regression}
-\label{sec:Ridge}
-
-\subsection{Lasso Regression}
-\label{sec:Lasso}
-
-
+%
+%
+%
+% \section{Linear Regression Models }
+% \label{sec:models}
+%
+%
+%
+% $$
+% MSE(\mathbf{y},\mathbf{\tilde{y}}) = \frac{1}{n}
+% \sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2,
+% $$
+% $$
+% R^2(\mathbf{y}, \tilde{\mathbf{y}}) = 1 - \frac{\sum_{i=0}^{n - 1} (y_i - \tilde{y}_i)^2}{\sum_{i=0}^{n - 1} (y_i - \bar{y})^2},
+% $$
+%
+% $$
+% \bar{y} =  \frac{1}{n} \sum_{i=0}^{n - 1} y_i.
+% $$
+%
+%
+% \subsection{Ordinary Least Squares (OLS)}
+% \label{sec:OLS}
+%
+% \subsection{Ridge Regression}
+% \label{sec:Ridge}
+%
+% \subsection{Lasso Regression}
+% \label{sec:Lasso}
+%
+%
 % \begin{figure}[!h]
 %     \begin{center}
 %     \resizebox*{0.9\linewidth}{!}{\input{Figure_2.pgf}}
@@ -292,164 +267,180 @@ $$
 %     \footnote{https}
 %     \end{center}
 % \end{figure}
+%
+%
+% \section{Results and Discussion}
+% \label{sec:ResultsDiscussion}
+%
+% As we increase the order of the polynomial fit we see a corresponding decrease in MSE and increase in R2.
+%
+%
+% We see that OLS remains constant since it is not a function of λ. For the MSE from the training set we se that 
+% the MSE wil increase for larger values of λ for rigde regression. This is expected since the OLS wil give the 
+% best approximation for the data it has been trained on (compared to Rigde), while rigde punishes the weights 
+% from becomming too large and therefore gives a not so tight fit. This can explain why rigde does better than 
+% OLS for some values of λ. As stated before the OLS wil try to fit the model to the best of its ability to the 
+% training data, this includes the noise which might not generalize to the test set, hence giving rigde a greater score. 
+% The term for this is called ***overfitting***. And balancing between overfitting and underfitting is called the ***bias variance tradeoff***. 
+%
+% \subsection{Confidence Interval}
+% \label{sec:ConfidenceInterval}
+%
+% The assumption we have made is that there exists a continuous function f (x)
+% and a normal distributed error ε ∼ N (0, σ2) which describes our data
+% y = f (x) + ε
+% We then approximate this function f (x) with our model ˜y from the solution
+% of the linear regression equations (ordinary least squares OLS), that is our
+% function f is approximated by ˜y where we minimized (y − ˜y)2, with
+% ˜y = Xβ.
+% The matrix X is the so-called design or feature matrix.
+% yi ∼ N (Xi,∗ β, σ2), that is y follows a normal distribution with mean
+% value Xβ and variance σ2.
+% We can use this when we define a so-called confidence interval
+% for the parameters β. A given parameter βj is given by the diagonal matrix
+% element of the above matrix.
+% \ref{app:confidenceInterval}
+%
+%
+%
+% \section{The Topic of Scaling}
+% \label{sec:Scaling}
+%
+%
+% \begin{table}[!h]
+% \caption{Unscaled sample design matrix fitting one-dimensional polynomial of degree 5}
+% \tt
+% \centering
+% \resizebox{0.6\textwidth}{!}{%
+% \begin{tabular}{llllll}
+%     1. &     0.  &    0.  &    0.   &   0.   &   0.     \\
+%     1. &     0.25 &   0.0625 & 0.01562& 0.00391& 0.00098\\
+%     1.    &  0.5     &0.25 &   0.125 &  0.0625 & 0.03125\\
+%     1.   &   0.75  &  0.5625 & 0.42188 &0.31641& 0.2373 \\
+%     1.  &    1.   &   1.  &    1.  &    1.    &  1.
+% \end{tabular}%
+% }
+% \end{table}
+%
+%
+%
+% \begin{table}[!h]
+% \caption{Scaled sample design matrix fitting one-dimensional polynomial of degree 5}
+% \tt
+% \centering
+% \resizebox{0.6\textwidth}{!}{%
+% \begin{tabular}{llllll}
+%      0. &     -1.41421& -1.0171&  -0.83189& -0.728 &  -0.66226\\
+%      0.  &    -0.70711& -0.84758& -0.7903 & -0.71772& -0.65971\\
+%      0.  &     0.    &  -0.33903& -0.49913& -0.56348& -0.58075\\
+%      0.  &     0.70711&  0.50855&  0.29116 & 0.10488& -0.0433 \\
+%      0.  &     1.41421&  1.69516 & 1.83016 & 1.90431&  1.94603
+% \end{tabular}%
+% }\\
+% {\scriptsize the code for generating this output}
+% \footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
+% % \end{table}
+%
+%
+%
+% \begin{table}[h]
+% \centering
+% \resizebox{0.6\textwidth}{!}{%
+% \begin{tabular}{ll}
+% MSE for OLS on unscaled data:    &   \texttt{0.010349396022903145} \\
+% MSE for OLS on scaled data:      &   \texttt{0.010349396024145656} \\
+% MSE for Ridge on unscaled data:  &   \texttt{0.02106077418650843} \\
+% MSE for Ridge on scaled data:    &   \texttt{0.01782525371566323}
+% \end{tabular}%
+% }\\
+% {\scriptsize
+% the code for generating this output }
+% \end{table}
+%
+%
+% First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original 
+% data was close to zero-centered and not that spread out, which means that initially by 
+% just looking at the data scaling is not that necessary. When we add the polynomial
+% terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small 
+% as an example $0.1^5 = 0.00001$ this makes the columns of $X_{\text{unscaled}}$ live in 
+% their own order of magnitude and scaling should be considered to bring them back to the 
+% same order of magnitude. The act of not scaling results in $\mathbf{\beta}$ spanning 
+% from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$. Now this alone 
+% may not justify why we should scale this data set, as scaled and unscaled OLS yields the 
+% same MSE. However when doing ridge regression the cost function is directly dependent on 
+% the magnitude of $\beta_i$. Now with each $\beta_i$ varying alot, some are getting more 
+% penalized than others. As we can see the MSE for unscaled data is much higher than for 
+% scaled data in the ridge case.
+% This leads us to conclude that we should scale the data, making it easier to 
+% tweak $\lambda$ and giving us nicer numbers to work with
+%
+%
+%
+%
+%
+%
+%
+% \section{Bias \& Variance}
+% \label{sec:BiasVariance}
+%
+%
+% \begin{align*}
+%     \text{Var}(\mathbf{\tilde{y}}) &= \mathbb{E}\left[\left(\tilde{\mathbf{y}}-\mathbb{E}\left[\mathbf{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\mathbf{\tilde{y}}^2] - \mathbb{E}[\mathbf{\tilde{y}}]^2\\
+%     \mathbb{E}[\mathbf{\tilde{y}}^2] &= \mathbb{E}[\mathbf{\tilde{y}}]^2 + \text{Var}(\mathbf{\tilde{y}})
+% \end{align*}
+%
+%
+% \begin{align*}
+% \mathbb{E}[\mathbf{y}^2] & = \mathbb{E}[\mathbf{f} + \mathbf{\epsilon}]^2 = \mathbb{E}[\mathbf{f}^2 + 2\mathbf{f}\mathbf{\epsilon} + \mathbf{\epsilon}^2]\\
+% & = \mathbb{E}[\mathbf{f}^2] + 2\mathbb{E}[\mathbf{f}\mathbf{\epsilon}] + \mathbb{E}[\mathbf{\epsilon}^2]\\
+% & = \mathbb{E}[\mathbf{f}^2] + 2\mathbb{E}[\mathbf{f}]\mathbb{E}[\mathbf{\epsilon}] + \mathbb{E}[\mathbf{\epsilon}^2]\\
+% & = \mathbb{E}[\mathbf{f}^2]  + \sigma^2
+% \end{align*}
+%
+%
+% \begin{align*}
+% \mathbb{E}[\mathbf{y\tilde{y}}] & = \mathbb{E}[\mathbf{f\tilde{y}} + \mathbf{\epsilon\tilde{y}}]\\
+% & = \mathbb{E}[\mathbf{f\tilde{y}}] + \mathbb{E}[\mathbf{\epsilon\tilde{y}}]\\
+% & = \mathbb{E}[\mathbf{f\tilde{y}}] + \mathbb{E}[\mathbf{\epsilon}]\mathbb{E}[\mathbf{\tilde{y}}]\\
+% & = \mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}]
+% \end{align*}
+%
+%
+% \begin{align*}
+% \mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right] & = \mathbb{E}[\mathbf{y}^2] - 2\mathbb{E}[\mathbf{y\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}^2]\\
+% & = \mathbf{f}^2 + \sigma^2 - 2\mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}^2]\\
+% & = \mathbf{f}^2 + \sigma^2 - 2\mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}]^2 + \text{Var}(\mathbf{\tilde{y}})\\
+% & = (\mathbf{f} - \mathbb{E}[\mathbf{\tilde{y}}])^2 + \text{Var}(\mathbf{\tilde{y}}) + \sigma^2\\
+% \end{align*}
+%
+%
+% \begin{align*}
+% \mathrm{Bias}[\tilde{y}]& =\mathbb{E}\left[\left(\mathbf{y}-\mathbb{E}\left[\mathbf{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\mathbf{y}^2] - 2\mathbb{E}[\mathbf{y}]\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}^2]\\
+% & = \mathbf{f}^2 + \sigma^2 - 2\mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}]^2\\
+% & = (\mathbf{f} - \mathbb{E}[\mathbf{\tilde{y}}])^2 + \sigma^2\\
+% \end{align*}
+%
+%
+% To find $\mathbb{E}[\mathbf{\tilde{y}}]$ we can use bootstrap to get different samples for $\mathbf{\tilde{y}}$ and then take the mean of that distribution.
+% The term \emph{variance} refers to how spread out our observations are. We can for our case think of the observations $\tilde{y}_i$
+% as either individual predictions, or the mean of predictions from one test set.\\
+% In a sense the bias resembles the mathematical defninition for variance, We can see that the bias term is a distance measure of $\mathbf{y}$ from the expected value of $\mathbf{\tilde{y}}$. If we take the individual observations approach this can be tough of as A high bias will then result in a large band around $\mathbf{\tilde{y}}$ in which $y_i$ will exist. The variance term is a measure of how much the $\mathbf{\tilde{y}}$ varies around its own mean. In other terms a high variance model will experience large variance in the predicted values $\mathbf{\tilde{y}}$ from one test set to another. Or as a result of this a large variance in score if you will. Now these two terms are in a sense opposites, it is likely that a model with high bias will have low variance and vice versa. This is something we as designers of the model get to tune, if we value a lower bias more than we value a low variance or vice versa, we can choose a model accordingly
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
 
 
-\section{Results and Discussion}
-\label{sec:ResultsDiscussion}
-
-As we increase the order of the polynomial fit we see a corresponding decrease in MSE and increase in R2.
-
-
-We see that OLS remains constant since it is not a function of λ. For the MSE from the training set we se that 
-the MSE wil increase for larger values of λ for rigde regression. This is expected since the OLS wil give the 
-best approximation for the data it has been trained on (compared to Rigde), while rigde punishes the weights 
-from becomming too large and therefore gives a not so tight fit. This can explain why rigde does better than 
-OLS for some values of λ. As stated before the OLS wil try to fit the model to the best of its ability to the 
-training data, this includes the noise which might not generalize to the test set, hence giving rigde a greater score. 
-The term for this is called ***overfitting***. And balancing between overfitting and underfitting is called the ***bias variance tradeoff***. 
-
-\subsection{Confidence Interval}
-\label{sec:ConfidenceInterval}
-
-The assumption we have made is that there exists a continuous function f (x)
-and a normal distributed error ε ∼ N (0, σ2) which describes our data
-y = f (x) + ε
-We then approximate this function f (x) with our model ˜y from the solution
-of the linear regression equations (ordinary least squares OLS), that is our
-function f is approximated by ˜y where we minimized (y − ˜y)2, with
-˜y = Xβ.
-The matrix X is the so-called design or feature matrix.
-yi ∼ N (Xi,∗ β, σ2), that is y follows a normal distribution with mean
-value Xβ and variance σ2.
-We can use this when we define a so-called confidence interval
-for the parameters β. A given parameter βj is given by the diagonal matrix
-element of the above matrix.
-\ref{app:confidenceInterval}
-
-
-
-\section{The Topic of Scaling}
-\label{sec:Scaling}
-
-
-\begin{table}[!h]
-\caption{Unscaled sample design matrix fitting one-dimensional polynomial of degree 5}
-\tt
-\centering
-\resizebox{0.6\textwidth}{!}{%
-\begin{tabular}{llllll}
-    1. &     0.  &    0.  &    0.   &   0.   &   0.     \\
-    1. &     0.25 &   0.0625 & 0.01562& 0.00391& 0.00098\\
-    1.    &  0.5     &0.25 &   0.125 &  0.0625 & 0.03125\\
-    1.   &   0.75  &  0.5625 & 0.42188 &0.31641& 0.2373 \\
-    1.  &    1.   &   1.  &    1.  &    1.    &  1.
-\end{tabular}%
-}
-\end{table}
-
-
-
-\begin{table}[!h]
-\caption{Scaled sample design matrix fitting one-dimensional polynomial of degree 5}
-\tt
-\centering
-\resizebox{0.6\textwidth}{!}{%
-\begin{tabular}{llllll}
-     0. &     -1.41421& -1.0171&  -0.83189& -0.728 &  -0.66226\\
-     0.  &    -0.70711& -0.84758& -0.7903 & -0.71772& -0.65971\\
-     0.  &     0.    &  -0.33903& -0.49913& -0.56348& -0.58075\\
-     0.  &     0.70711&  0.50855&  0.29116 & 0.10488& -0.0433 \\
-     0.  &     1.41421&  1.69516 & 1.83016 & 1.90431&  1.94603
-\end{tabular}%
-}\\
-{\scriptsize the code for generating this output}
-\footnote{\url{https://github.com/bragewiseth/MachineLearningProjects/blob/main/project1/src/linearRegression.py}\cite{MachineLearningProjects_2023}}
-\end{table}
-
-
-
-\begin{table}[h]
-\centering
-\resizebox{0.6\textwidth}{!}{%
-\begin{tabular}{ll}
-MSE for OLS on unscaled data:    &   \texttt{0.010349396022903145} \\
-MSE for OLS on scaled data:      &   \texttt{0.010349396024145656} \\
-MSE for Ridge on unscaled data:  &   \texttt{0.02106077418650843} \\
-MSE for Ridge on scaled data:    &   \texttt{0.01782525371566323}
-\end{tabular}%
-}\\
-{\scriptsize
-the code for generating this output }
-\end{table}
-
-
-First $x_{\text{unscaled}}$ and $x_{\text{scaled}}$ is not that different, the original 
-data was close to zero-centered and not that spread out, which means that initially by 
-just looking at the data scaling is not that necessary. When we add the polynomial
-terms we can now see that some of the entries of $X_{\text{unscaled}}$ get really small 
-as an example $0.1^5 = 0.00001$ this makes the columns of $X_{\text{unscaled}}$ live in 
-their own order of magnitude and scaling should be considered to bring them back to the 
-same order of magnitude. The act of not scaling results in $\mathbf{\beta}$ spanning 
-from $-50$ to $48$ while scaling gives a smaller span from $-10$ to $13$. Now this alone 
-may not justify why we should scale this data set, as scaled and unscaled OLS yields the 
-same MSE. However when doing ridge regression the cost function is directly dependent on 
-the magnitude of $\beta_i$. Now with each $\beta_i$ varying alot, some are getting more 
-penalized than others. As we can see the MSE for unscaled data is much higher than for 
-scaled data in the ridge case.
-This leads us to conclude that we should scale the data, making it easier to 
-tweak $\lambda$ and giving us nicer numbers to work with
-
-
-
-
-
-
-
-\section{Bias \& Variance}
-\label{sec:BiasVariance}
-
-
-\begin{align*}
-    \text{Var}(\mathbf{\tilde{y}}) &= \mathbb{E}\left[\left(\tilde{\mathbf{y}}-\mathbb{E}\left[\mathbf{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\mathbf{\tilde{y}}^2] - \mathbb{E}[\mathbf{\tilde{y}}]^2\\
-    \mathbb{E}[\mathbf{\tilde{y}}^2] &= \mathbb{E}[\mathbf{\tilde{y}}]^2 + \text{Var}(\mathbf{\tilde{y}})
-\end{align*}
-
-
-\begin{align*}
-\mathbb{E}[\mathbf{y}^2] & = \mathbb{E}[\mathbf{f} + \mathbf{\epsilon}]^2 = \mathbb{E}[\mathbf{f}^2 + 2\mathbf{f}\mathbf{\epsilon} + \mathbf{\epsilon}^2]\\
-& = \mathbb{E}[\mathbf{f}^2] + 2\mathbb{E}[\mathbf{f}\mathbf{\epsilon}] + \mathbb{E}[\mathbf{\epsilon}^2]\\
-& = \mathbb{E}[\mathbf{f}^2] + 2\mathbb{E}[\mathbf{f}]\mathbb{E}[\mathbf{\epsilon}] + \mathbb{E}[\mathbf{\epsilon}^2]\\
-& = \mathbb{E}[\mathbf{f}^2]  + \sigma^2
-\end{align*}
-
-
-\begin{align*}
-\mathbb{E}[\mathbf{y\tilde{y}}] & = \mathbb{E}[\mathbf{f\tilde{y}} + \mathbf{\epsilon\tilde{y}}]\\
-& = \mathbb{E}[\mathbf{f\tilde{y}}] + \mathbb{E}[\mathbf{\epsilon\tilde{y}}]\\
-& = \mathbb{E}[\mathbf{f\tilde{y}}] + \mathbb{E}[\mathbf{\epsilon}]\mathbb{E}[\mathbf{\tilde{y}}]\\
-& = \mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}]
-\end{align*}
-
-
-\begin{align*}
-\mathbb{E}\left[(\mathbf{y}-\mathbf{\tilde{y}})^2\right] & = \mathbb{E}[\mathbf{y}^2] - 2\mathbb{E}[\mathbf{y\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}^2]\\
-& = \mathbf{f}^2 + \sigma^2 - 2\mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}^2]\\
-& = \mathbf{f}^2 + \sigma^2 - 2\mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}]^2 + \text{Var}(\mathbf{\tilde{y}})\\
-& = (\mathbf{f} - \mathbb{E}[\mathbf{\tilde{y}}])^2 + \text{Var}(\mathbf{\tilde{y}}) + \sigma^2\\
-\end{align*}
-
-
-\begin{align*}
-\mathrm{Bias}[\tilde{y}]& =\mathbb{E}\left[\left(\mathbf{y}-\mathbb{E}\left[\mathbf{\tilde{y}}\right]\right)^2\right] = \mathbb{E}[\mathbf{y}^2] - 2\mathbb{E}[\mathbf{y}]\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}^2]\\
-& = \mathbf{f}^2 + \sigma^2 - 2\mathbf{f}\mathbb{E}[\mathbf{\tilde{y}}] + \mathbb{E}[\mathbf{\tilde{y}}]^2\\
-& = (\mathbf{f} - \mathbb{E}[\mathbf{\tilde{y}}])^2 + \sigma^2\\
-\end{align*}
-
-
-To find $\mathbb{E}[\mathbf{\tilde{y}}]$ we can use bootstrap to get different samples for $\mathbf{\tilde{y}}$ and then take the mean of that distribution.
-The term \emph{variance} refers to how spread out our observations are. We can for our case think of the observations $\tilde{y}_i$
-as either individual predictions, or the mean of predictions from one test set.\\
-In a sense the bias resembles the mathematical defninition for variance, We can see that the bias term is a distance measure of $\mathbf{y}$ from the expected value of $\mathbf{\tilde{y}}$. If we take the individual observations approach this can be tough of as A high bias will then result in a large band around $\mathbf{\tilde{y}}$ in which $y_i$ will exist. The variance term is a measure of how much the $\mathbf{\tilde{y}}$ varies around its own mean. In other terms a high variance model will experience large variance in the predicted values $\mathbf{\tilde{y}}$ from one test set to another. Or as a result of this a large variance in score if you will. Now these two terms are in a sense opposites, it is likely that a model with high bias will have low variance and vice versa. This is something we as designers of the model get to tune, if we value a lower bias more than we value a low variance or vice versa, we can choose a model accordingly
 
 
 
@@ -463,176 +454,189 @@ In a sense the bias resembles the mathematical defninition for variance, We can 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+% APPENDIX
 
 % Acknowledgements should go at the end, before appendices and references
 % \acks{}
-
+%
 % Manual newpage inserted to improve layout of sample file - not
 % needed in general before appendices/bibliography.
-
-\newpage
-\appendix
-\phantomsection%
-\addcontentsline{toc}{section}{Appendix}
-\section*{Appendix}
-\label{app:appendix}
-
-\phantomsection%
-\addcontentsline{toc}{subsection}{SVD}
-\subsection*{SVD}
-\label{app:svd}
-svd
-
-
-
-
-
-adding these two we get
-$$
-    \frac{\partial \left[\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2\right]}{\partial{\mathbf{\beta}}} = 0 = \frac{2}{n}\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y} \implies \beta = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y}
-$$
-
-
-
-The minimization of ridge addition alone is
-$${\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n} \lambda \vert\vert \mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \lambda \mathbf{\beta}$$
-
-
-
-
-We know that 
-$$
-{\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n} \vert\vert\mathbf{y}- \mathbf{X}\mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \mathbf{X}^T\mathbf{X}\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y}
-$$
-
-
-
-
-$$
-{\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n}\sum_{i=0}^{n-1}\left(y_i-\tilde{y}_i\right)^2=\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2,
-$$
-
-
-
-
-$$
-{\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2
-$$
-
-
-
-
-$$
-\hat{\mathbf{\beta}}_{\mathrm{OLS}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y},
-$$
-
-
-
-
-$$
-\hat{\mathbf{\beta}}_{\mathrm{Ridge}} = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y},
-$$
-
-
-
-Use the singular value decomposition of an $n\times p$ matrix $\mathbf{X}$ (our design matrix)
-$$
-\mathbf{X}=\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T,
-$$
-
-
-where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices of dimensions
-$n\times n$ and $p\times p$, respectively, and $\mathbf{\Sigma}$ is an
-$n\times p$ matrix which contains the ingular values only. This material was discussed during the lectures of week 35.
-
-Show that you can write the 
-OLS solutions in terms of the eigenvectors (the columns) of the orthogonal matrix  $\mathbf{U}$ as
-
-
-$$
-\tilde{\mathbf{y}}_{\mathrm{OLS}}=\mathbf{X}\mathbf{\beta}  = \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}.
-$$
-
-
-$$
-\mathbf{X}^T\mathbf{X} = \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^T\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T
-$$
-
-$$
-\tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{X}\mathbf{\beta} = \mathbf{X} \left(\mathbf{X}^T \mathbf{X}\right)^{-1} \mathbf{X}^T \mathbf{y}
-\\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T \left( \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T \right)^{-1} \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
-\\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T {\mathbf{V}^T}^{-1} {\mathbf{\Sigma}^2}^{-1} \mathbf{V}^{-1}  \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
-$$
-using the orthogonality of $\mathbf{V}$ and $\mathbf{U}$ we get. Multiplying with $\mathbf{\Sigma}$ removes columns from $\mathbf{U}$ with eigenvalues equal to zero.
-$$
-\tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{U}\mathbf{U}^T \mathbf{y}= \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}
-$$
-
-
-$$
-\mathbf{y} = f(\mathbf{x})+\mathbf{\varepsilon}
-$$
-
-$$
-\mathbf{\tilde{y}} = \mathbf{X}\mathbf{\beta}.
-$$
-
-$$
-\mathbb{E}(y_i)  =\sum_{j}x_{ij} \beta_j=\mathbf{X}_{i, \ast} \, \mathbf{\beta}
-$$
-
-$$
-{Var}(y_i)  = \sigma^2
-$$
-$$
-{Var}(\mathbf{\hat{\beta}}) = \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1}.
-$$
-\phantomsection%
-\addcontentsline{toc}{subsection}{Confidence Interval}
-\subsection*{Math Behind the Confidence Interval section}
-\label{app:confidenceInterval}
-We can assume that $y$ follows some function $f$ with some noise $\epsilon$
-$$
-\mathbf{y} = f(\mathbf{x}) + \epsilon
-$$
-$$
-\mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
-$$
-The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\mathbf{X}\mathbf{\beta}$
-$$
-\mathbb{E}[y_i] = \mathbf{X_{i,*}}\mathbf{\beta}
-$$
-The variance is defined as
-\begin{align*}
-Var(y_i) &= \mathbb{E}\big[(y_i - \mathbb{E}[y_i])^2\big] = \mathbb{E}\left[y_i^2 - 2y_i\mathbb{E}[y_i] + \mathbb{E}[y_i]^2\right] = \mathbb{E}[y_i^2] - \mathbb{E}[y_i]^2\\
-Var(y_i) &= \mathbb{E}\big[\big(\mathbf{X}_{i,*}\mathbf{\beta}\big)^2 + 2\epsilon \mathbf{X}_{i,*}\mathbf{\beta} + \epsilon^2 \big] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
-Var(y_i) &= (\mathbf{X}_{i,*}\mathbf{\beta})^2 + 2\mathbb{E}[\epsilon]\mathbf{X}_{i,*}\mathbf{\beta} + \mathbb{E}[\epsilon^2] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
-Var(y_i) &= \mathbb{E}[\epsilon^2] = \sigma^2
-\end{align*}
-for the expected value of $\mathbf{\beta}$ we can insert the definition of $\mathbf{\beta}$ from earlier
-
-
-$$
-\mathbb{E}[\mathbf{\hat{\beta}}] = \mathbb{E}[ (\mathbf{X}^{\top} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbb{E}[ \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T}\mathbf{X}\mathbf{\beta}=\mathbf{\beta}
-$$
-
-
-\begin{align*}
-Var(\mathbf{\hat{\beta}}) & = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})] [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})]^{T} \}
-\\
-& = \mathbb{E} \{ [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}] \, [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}]^{T} \}
-\\
-& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
-\\
-& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \{ \mathbf{X} \, \mathbf{\beta} \, \mathbf{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
-\\
-& = \mathbf{\beta} \, \mathbf{\beta}^{T}  + \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
-\, \, \, = \, \, \, \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1},
-\end{align*}
+%
+% \newpage
+% \appendix
+% \phantomsection%
+% \addcontentsline{toc}{section}{Appendix}
+% \section*{Appendix}
+% \label{app:appendix}
+%
+% \phantomsection%
+% \addcontentsline{toc}{subsection}{SVD}
+% \subsection*{SVD}
+% \label{app:svd}
+% svd
+%
+%
+%
+%
+%
+% adding these two we get
+% $$
+%     \frac{\partial \left[\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2\right]}{\partial{\mathbf{\beta}}} = 0 = \frac{2}{n}\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y} \implies \beta = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y}
+% $$
+%
+%
+%
+% The minimization of ridge addition alone is
+% $${\displaystyle \min_{\mathbf{\beta}\in
+% {\mathbb{R}}^{p}}}\frac{1}{n} \lambda \vert\vert \mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \lambda \mathbf{\beta}$$
+%
+%
+%
+%
+% We know that 
+% $$
+% {\displaystyle \min_{\mathbf{\beta}\in
+% {\mathbb{R}}^{p}}}\frac{1}{n} \vert\vert\mathbf{y}- \mathbf{X}\mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \mathbf{X}^T\mathbf{X}\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y}
+% $$
+%
+%
+%
+%
+% $$
+% {\displaystyle \min_{\mathbf{\beta}\in
+% {\mathbb{R}}^{p}}}\frac{1}{n}\sum_{i=0}^{n-1}\left(y_i-\tilde{y}_i\right)^2=\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2,
+% $$
+%
+%
+%
+%
+% $$
+% {\displaystyle \min_{\mathbf{\beta}\in
+% {\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2
+% $$
+%
+%
+%
+%
+% $$
+% \hat{\mathbf{\beta}}_{\mathrm{OLS}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y},
+% $$
+%
+%
+%
+%
+% $$
+% \hat{\mathbf{\beta}}_{\mathrm{Ridge}} = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y},
+% $$
+%
+%
+%
+% Use the singular value decomposition of an $n\times p$ matrix $\mathbf{X}$ (our design matrix)
+% $$
+% \mathbf{X}=\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T,
+% $$
+%
+%
+% where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices of dimensions
+% $n\times n$ and $p\times p$, respectively, and $\mathbf{\Sigma}$ is an
+% $n\times p$ matrix which contains the ingular values only. This material was discussed during the lectures of week 35.
+%
+% Show that you can write the 
+% OLS solutions in terms of the eigenvectors (the columns) of the orthogonal matrix  $\mathbf{U}$ as
+%
+%
+% $$
+% \tilde{\mathbf{y}}_{\mathrm{OLS}}=\mathbf{X}\mathbf{\beta}  = \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}.
+% $$
+%
+%
+% $$
+% \mathbf{X}^T\mathbf{X} = \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^T\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T
+% $$
+%
+% $$
+% \tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{X}\mathbf{\beta} = \mathbf{X} \left(\mathbf{X}^T \mathbf{X}\right)^{-1} \mathbf{X}^T \mathbf{y}
+% \\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T \left( \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T \right)^{-1} \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
+% \\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T {\mathbf{V}^T}^{-1} {\mathbf{\Sigma}^2}^{-1} \mathbf{V}^{-1}  \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
+% $$
+% using the orthogonality of $\mathbf{V}$ and $\mathbf{U}$ we get. Multiplying with $\mathbf{\Sigma}$ removes columns from $\mathbf{U}$ with eigenvalues equal to zero.
+% $$
+% \tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{U}\mathbf{U}^T \mathbf{y}= \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}
+% $$
+%
+%
+% $$
+% \mathbf{y} = f(\mathbf{x})+\mathbf{\varepsilon}
+% $$
+%
+% $$
+% \mathbf{\tilde{y}} = \mathbf{X}\mathbf{\beta}.
+% $$
+%
+% $$
+% \mathbb{E}(y_i)  =\sum_{j}x_{ij} \beta_j=\mathbf{X}_{i, \ast} \, \mathbf{\beta}
+% $$
+%
+% $$
+% {Var}(y_i)  = \sigma^2
+% $$
+% $$
+% {Var}(\mathbf{\hat{\beta}}) = \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1}.
+% $$
+% \phantomsection%
+% \addcontentsline{toc}{subsection}{Confidence Interval}
+% \subsection*{Math Behind the Confidence Interval section}
+% \label{app:confidenceInterval}
+% We can assume that $y$ follows some function $f$ with some noise $\epsilon$
+% $$
+% \mathbf{y} = f(\mathbf{x}) + \epsilon
+% $$
+% $$
+% \mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
+% $$
+% The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\mathbf{X}\mathbf{\beta}$
+% $$
+% \mathbb{E}[y_i] = \mathbf{X_{i,*}}\mathbf{\beta}
+% $$
+% The variance is defined as
+% \begin{align*}
+% Var(y_i) &= \mathbb{E}\big[(y_i - \mathbb{E}[y_i])^2\big] = \mathbb{E}\left[y_i^2 - 2y_i\mathbb{E}[y_i] + \mathbb{E}[y_i]^2\right] = \mathbb{E}[y_i^2] - \mathbb{E}[y_i]^2\\
+% Var(y_i) &= \mathbb{E}\big[\big(\mathbf{X}_{i,*}\mathbf{\beta}\big)^2 + 2\epsilon \mathbf{X}_{i,*}\mathbf{\beta} + \epsilon^2 \big] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
+% Var(y_i) &= (\mathbf{X}_{i,*}\mathbf{\beta})^2 + 2\mathbb{E}[\epsilon]\mathbf{X}_{i,*}\mathbf{\beta} + \mathbb{E}[\epsilon^2] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
+% Var(y_i) &= \mathbb{E}[\epsilon^2] = \sigma^2
+% \end{align*}
+% for the expected value of $\mathbf{\beta}$ we can insert the definition of $\mathbf{\beta}$ from earlier
+%
+%
+% $$
+% \mathbb{E}[\mathbf{\hat{\beta}}] = \mathbb{E}[ (\mathbf{X}^{\top} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbb{E}[ \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T}\mathbf{X}\mathbf{\beta}=\mathbf{\beta}
+% $$
+%
+%
+% \begin{align*}
+% Var(\mathbf{\hat{\beta}}) & = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})] [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})]^{T} \}
+% \\
+% & = \mathbb{E} \{ [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}] \, [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}]^{T} \}
+% \\
+% & = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
+% \\
+% & = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \{ \mathbf{X} \, \mathbf{\beta} \, \mathbf{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
+% \\
+% & = \mathbf{\beta} \, \mathbf{\beta}^{T}  + \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
+% \, \, \, = \, \, \, \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1},
+% \end{align*}
 
 
 % Note: in this sample, the section number is hard-coded in. Following
@@ -640,6 +644,23 @@ Var(\mathbf{\hat{\beta}}) & = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf
 
 %In this appendix we prove the following theorem from
 %Section~\ref{sec:textree-generalization}:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \vskip 0.2in
@@ -656,18 +677,4 @@ Var(\mathbf{\hat{\beta}}) & = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf
 
 
 
-% \fontsize{9.5}{11.4}
-% \selectfont
 
-% \begin{figure}[!htb]
-%     \centering
-%     \resizebox{0.28\textwidth}{!}{\input{.pdf_tex}}
-% \end{figure}
-
-% \begin{minipage}[t]{.46\linewidth}
-    % \includegraphics[width=78mm]{.pdf}
-% \end{minipage}
-
-% \begin{tcolorbox}[colframe=white]
-%     \textbf{Oppgave I}
-% \end{tcolorbox}
