@@ -1,17 +1,12 @@
+from numpy.core.fromnumeric import size
+from numpy.lib import polynomial
 from matplotlib import pyplot as plt
 import matplotlib as mpl
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.model_selection import train_test_split
-from utils import MSE, R2, Ridge,  plotFrankefunction, readData
-
-
-
-
-
-
-
-
+from utils import MSE, R2, Ridge,  plotFrankefunction, readData, printGrid
+from sklearn.linear_model import Ridge as SkRidge
 
 
 
@@ -54,19 +49,20 @@ for i, l in enumerate(lamdas):
 
 
 
+skModel = SkRidge(fit_intercept=False, alpha= lamdas[numlamdas-1])
+skModel.fit(X_train,y_train_scaled)
+
+# compare ours with sklearnModel
+print("sklearnModel beta: ", skModel.coef_)
+print("our beta: ", betas[-1,-1])
+print("sklearnModel MSE: ", MSE(y_test, skModel.predict(X_test) + y_train_mean))
+print("our MSE: ", testError[-1,-1])
+print("sklearnModel R2: ", R2(y_test, skModel.predict(X_test) + y_train_mean))
+print("our R2: ", testR2[-1,-1])
 
 
-def printGrid(trainerror, testerror, trainR2, testR2, polydegree, lamdas):
-    for i in range(len(polydegree)):
-        testi  = np.argmin(testerror[i])    # find index of minimum test error (best fit)
-        traini = np.argmin(trainerror[i])   # find index of minimum train error (best fit)
-        testR2i  = np.argmax(testR2[i])     # find index of maximum test R2 (best fit)
-        trainR2i = np.argmax(trainR2[i])    # find index of maximum train R2 (best fit)
-        print("Degree of polynomial = ", polydegree[i])
-        print("Best test error = {:25} \tfor λ = {}".format(testerror[i,testi],  lamdas[testi]))
-        print("Best train error = {:24} \tfor λ = {}".format(trainerror[i,traini],  lamdas[traini]))
-        print("Best test R2 = {:26} \tfor λ = {}".format(testR2[i,testR2i],  lamdas[testR2i]))
-        print("Best train R2 = {:25} \tfor λ = {}".format(trainR2[i,trainR2i],  lamdas[trainR2i]))  
+
+
 
 printGrid(trainError, testError, trainR2, testR2, polydegree, lamdas)
 
@@ -76,27 +72,63 @@ mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
     'font.size': '16',
-    'xtick.labelsize': '11',
-    'ytick.labelsize': '11',
+    'xtick.labelsize': '14',
+    'ytick.labelsize': '14',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
 
-fig1 , ax1 = plt.subplots()
-fig1.suptitle(r"$\mathbf{\beta}$ and model complexity for different $\lambda$")
+fig1 , ax1 = plt.subplots(figsize=(10,8))
 ax1.xticks = lamdas
 ax1.set_xscale("log")
-ax1.set_ylabel(r"$\beta$")
+ax1.set_ylabel(r"$\beta$",size=24)
+ax1.set_xlabel(r"$\lambda$", size=24)
 ax1.plot(lamdas, betas[4,:,:int(((polydegree[4]+1)**2  + (polydegree[4]-1)) / 2)])
-ax1.set_title(r"Degree of polynomial = 5" )
+ax1.set_title(r"Ridge - Fitting of 5th order polynomial using range of $\lambda$")
 
 
 
-plt.show()
+plt.savefig("../runsAndAdditions/betaOverLambdaRidge5.png")
 
 
-fig, ax = plt.subplots(5,1, figsize=(12,4))
-fig.suptitle("R2 for different model complexity and $\lambda$")
+fig, ax = plt.subplots(figsize=(10,7))
+ax.set_xticks(lamdas)
+ax.set_xscale("log")
+ax.plot(lamdas, trainR2[4], label="Train")
+ax.plot(lamdas, testR2[4], label="Test")
+ax.set_xlabel(r"$\lambda$",size=24)
+ax.set_ylabel(r"$R^2$",size=24)
+ax.legend()
+ax.set_title(r"Ridge - Fitting of 5th order polynomial using range of $\lambda$")
+
+plt.savefig("../runsAndAdditions/R2OverLambdaRidge5.png")
+
+
+
+
+
+
+
+
+
+fig1 , ax1 = plt.subplots(5,1, figsize=(18,60))
+fig1.suptitle(r"Ridge - $\mathbf{\beta}$ and model complexity for different $\lambda$")
+fig1.text(0.5, 0.04, r'$\lambda$ for all $x$-axes', ha='center', va='center')
+for i, ax in enumerate(ax1):
+    ax.xticks = lamdas
+    ax.set_xscale("log")
+    ax.set_ylabel(r"$\beta$" ,size=24)
+    ax.plot(lamdas, betas[i,:,:int(((polydegree[i]+1)**2  + (polydegree[i]-1)) / 2)], )
+    ax.text(2, -0.15 + (0.2 * i), str(polydegree[i]) + '. order polynomial' , fontsize = 14, 
+         bbox = dict(facecolor = 'red', alpha = 0.3))
+
+
+
+plt.savefig("../runsAndAdditions/betaOverLambdaRidgeAll.png")
+
+
+fig, ax = plt.subplots(5,1, figsize=(18,60))
+fig.suptitle("Ridge - R2-score for different model complexity and $\lambda$")
 fig.text(0.5, 0.04, r'Degree of polynomial for all $x$-axes', ha='center', va='center')
 fig.text(0.06, 0.5, 'R2-score for all $y$-axes', ha='center', va='center', rotation='vertical')
 for i,axi in enumerate(ax.flatten()):
@@ -105,55 +137,19 @@ for i,axi in enumerate(ax.flatten()):
     axi.plot(lamdas, trainR2[i], label="Train")
     axi.plot(lamdas, testR2[i], label="Test")
     axi.legend()
-    axi.set_title(r"Degree of polynomial" + " = " + str(polydegree[i]), size=12)
+    axi.text(2, 0.8, str(polydegree[i]) + '. order polynomial' , fontsize = 14, 
+         bbox = dict(facecolor = 'red', alpha = 0.3))
 
+plt.savefig("../runsAndAdditions/R2OverLambdaRidgeAll.png")
+
+
+
+
+x = np.linspace(0,1,100)
+y = np.linspace(0,1,100)
+xx,yy = np.meshgrid(x,y)
+poly = PolynomialFeatures(5,include_bias=False)
+z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
+plotFrankefunction(xx,yy,z.reshape(100,100), (8,8), (1,1,1) , "Prediction using ridge")
 plt.show()
-
-
-
-
-
-
-
-
-
-# fig1 , ax1 = plt.subplots(5,1)
-# fig1.suptitle(r"$\mathbf{\beta}$ and model complexity for different $\lambda$")
-# fig1.text(0.5, 0.04, r'$\lambda$ for all $x$-axes', ha='center', va='center')
-# for i, ax in enumerate(ax1):
-#     ax.xticks = lamdas
-#     ax.set_xscale("log")
-#     ax.set_ylabel(r"$\beta$")
-#     ax.plot(lamdas, betas[i,:,:int(((polydegree[i]+1)**2  + (polydegree[i]-1)) / 2)])
-#     ax.set_title(r"Degree of polynimoal" + " = " + str(polydegree[i]),size=12  )
-#
-#
-#
-# plt.show()
-
-
-# fig, ax = plt.subplots(5,1, figsize=(12,4))
-# fig.suptitle("R2 for different model complexity and $\lambda$")
-# fig.text(0.5, 0.04, r'Degree of polynomial for all $x$-axes', ha='center', va='center')
-# fig.text(0.06, 0.5, 'R2-score for all $y$-axes', ha='center', va='center', rotation='vertical')
-# for i,axi in enumerate(ax.flatten()):
-#     axi.set_xticks(lamdas)
-#     axi.set_xscale("log")
-#     axi.plot(lamdas, trainR2[i], label="Train")
-#     axi.plot(lamdas, testR2[i], label="Test")
-#     axi.legend()
-#     axi.set_title(r"Degree of polynomial" + " = " + str(polydegree[i]), size=12)
-#
-# plt.show()
-#
-#
-#
-#
-# x = np.linspace(0,1,100)
-# y = np.linspace(0,1,100)
-# xx,yy = np.meshgrid(x,y)
-# poly = PolynomialFeatures(5,include_bias=False)
-# z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
-# plotFrankefunction(xx,yy,z.reshape(100,100), (8,8), (1,1,1) , "Approximation of Franke' Function using Ridge")
-# plt.show()
 

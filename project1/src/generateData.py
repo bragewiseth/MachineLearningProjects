@@ -5,7 +5,7 @@ from utils import FrankeFunction
 
 np.random.seed(9282)
 n = 100
-rand = 0.1
+rand = 0.08
 
 x = np.random.uniform(0, 1, n)
 y = np.random.uniform(0, 1, n)

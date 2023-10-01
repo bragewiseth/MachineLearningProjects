@@ -11,6 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
 from utils import FrankeFunction, makeData, MSE, R2, OLS, makeFigure, plotFrankefunction, Ridge
 import matplotlib as mpl
+from sklearn.model_selection import KFold
 
 
 
@@ -21,19 +22,21 @@ terrain = np.array(terrain)
 N = 1000
 terrain = terrain[:N,:N]
 # Creates mesh of image pixels
-rng = np.random.default_rng()
 x = np.linspace(0,np.shape(terrain)[0]-1, np.shape(terrain)[0], dtype=int)
 y = np.linspace(0,np.shape(terrain)[1]-1, np.shape(terrain)[1], dtype=int)
-# x = rng.integers(0,np.shape(terrain)[0]-1, np.shape(terrain)[0])
-# y = rng.integers(0,np.shape(terrain)[1]-1, np.shape(terrain)[1])
 x_mesh, y_mesh = np.meshgrid(x,y)
 z = terrain[x_mesh,y_mesh]
-
 X = np.concatenate((x_mesh.ravel().reshape(-1,1), y_mesh.ravel().reshape(-1,1)), axis=1)
+
+
 maxdegree = 50
 scaler = StandardScaler()
 poly = PolynomialFeatures(maxdegree,include_bias=False)
 
+
+
+
+# train_test_split shuffles data so we can use linspace to generate x and y instead of uniform
 x_train, x_test, y_train, y_test = train_test_split(X, z.ravel(), test_size=0.2, shuffle=True)
 y_train_mean = np.mean(y_train)
 X_train = poly.fit_transform(x_train)
@@ -44,7 +47,9 @@ y_train_mean = np.mean(y_train)
 y_train_scaled = y_train - y_train_mean
 model = OLS()
 
-
+k = 5
+kfold = KFold(n_splits = k)
+scores_KFold = np.zeros((numlamdas, k))
 model.fit(X_train, y_train_scaled)
 
 
@@ -52,15 +57,6 @@ model.fit(X_train, y_train_scaled)
 
 
 
-
-
-
-
-
-
-x = np.linspace(0,np.shape(terrain)[0]-1, np.shape(terrain)[0], dtype=int)
-y = np.linspace(0,np.shape(terrain)[1]-1, np.shape(terrain)[1], dtype=int)
-x_mesh, y_mesh = np.meshgrid(x,y)
 z = np.array(terrain[x_mesh,y_mesh],dtype=float) #* 0.001 # km
 
 X = np.concatenate((x_mesh.reshape(-1,1), y_mesh.reshape(-1,1)), axis=1)
@@ -90,11 +86,6 @@ ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 plt.show()
 
 # Show the terrain
-
-
-
-
-
 
 
 

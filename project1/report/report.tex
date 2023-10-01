@@ -151,29 +151,32 @@ als to minimize the mean square error. As well as real topological data with the
 
 \section{Introduction}
 
-% \begin{wrapfigure}{l}{0.3\textwidth}
-%     \caption{\small Franke's Function}
-%     \label{frankfunc}
-%     \begin{center}
-%     \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
-%     \input{Frank_2.pgf}
-%     \end{adjustbox}
-%     \end{center}
-% \end{wrapfigure}
+
 To get a smooth start on this project we begin to construct some fake topological data. This can be constructed with
 \emph{Franke's Function}. This gives us a nice dataset to start linear regression. 
 A natrual start would be to use ordinary least squares to try to fit a polynomial to some degree. This is done by
-constructing a design matrix $X$ with the polynomial terms and then solving the linear regression equation
+constructing a design matrix $X$ with the polynomial terms. Then we can use the closed form solution to find the 
+coefficients $\beta$. This is done by minimizing the mean square error (MSE) between the data and the model.
 \begin{equation}
     \mathbf{\beta} = (X^T X)^{-1} X^T \mathbf{y}
 \end{equation}
-where $\mathbf{\beta}$ is the coefficients of the polynomial and $\mathbf{y}$ is the data.
-This is a nice start, but we can do better. We can add a penalty term to the cost 
-function, this is called ridge regression.
-\begin{equation}
-    \mathbf{\beta} = (X^T X + \lambda I)^{-1} X^T \mathbf{y}
-\end{equation}
 
+
+
+
+
+
+
+1. Introduction
+
+    Briefly introduce the problem or task you are addressing.
+    Mention the importance of linear regression models and scaling techniques in machine learning.
+    State the purpose of the report, i.e., to explore OLS, Ridge, and Lasso regression models, and their impact on bias-variance trade-off through scaling.
+
+2. Data
+
+    Describe the dataset you are using for your analysis.
+    Include information about the features, target variable, and any preprocessing steps applied (e.g., data cleaning).
 % \begin{wrapfigure}{r}{0.3\textwidth}
 % \begin{center}
 %     \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
@@ -184,30 +187,149 @@ function, this is called ridge regression.
 %     \end{center}
 % \end{wrapfigure}
 
+% \begin{wrapfigure}{l}{0.3\textwidth}
+%     \caption{\small Franke's Function}
+%     \label{frankfunc}
+%     \begin{center}
+%     \begin{adjustbox}{clip,trim=4cm 3.4cm 3cm 4.8cm, max width=0.3\textwidth}
+%     \input{Frank_2.pgf}
+%     \end{adjustbox}
+%     \end{center}
+% \end{wrapfigure}
+
+4. Linear Regression Models
+4.1 Ordinary Least Squares (OLS)
+
+    Explain the concept of OLS regression.
+    Discuss its advantages and limitations.
+    Present the results of applying OLS to your dataset.
+
+4.2 Ridge Regression
+
+    Explain the concept of Ridge regression.
+    Discuss how it addresses overfitting and its use of L2 regularization.
+    Present the results of applying Ridge regression to your dataset.
+
+4.3 Lasso Regression
+
+    Explain the concept of Lasso regression.
+    Discuss how it addresses overfitting and its use of L1 regularization.
+    Present the results of applying Lasso regression to your dataset.
+
+5. Scaling Techniques
+
+    Discuss the importance of feature scaling in machine learning.
+    Explain common scaling techniques such as Standardization (Z-score scaling) and Min-Max scaling.
+    Apply these scaling techniques to your dataset.
+
+6. Bias-Variance Trade-Off
+
+    Define bias and variance in the context of machine learning models.
+    Discuss how regularization (Ridge and Lasso) impacts the bias-variance trade-off.
+    Present the results of your analysis regarding bias and variance for the different regression models.
+
+7. Results and Discussion
+
+    Summarize the performance metrics of OLS, Ridge, and Lasso models.
+    Discuss any observed trends or differences in model performance.
+    Analyze the impact of scaling on model performance.
+
+8. Conclusion
+
+    Summarize the key findings of your analysis.
+    Discuss the implications of your results for the problem/task you introduced in the introduction.
 
 
-where $\lambda$ is a hyperparameter that we can tune to get a better fit. 
-This is a nice start, but we can do better. We can add a penalty term to 
-the cost function, this is called ridge regression.
-\begin{equation}
-    \mathbf{\beta} = (X^T X + \lambda I)^{-1} X^T \mathbf{y}
-\end{equation}
-where $\lambda$ is a hyperparameter that we can tune to get a better fit. This 
-is a nice start, but we can do better. We can add a penalty term to the cost 
-function, this is called ridge regression.
-\begin{equation}
-    \mathbf{\beta} = (X^T X + \lambda I)^{-1} X^T \mathbf{y}
-\end{equation}
-where $\lambda$ is a hyperparameter that we can tune to get a better fit. This is a
-nice start, but we can do better. We can add a penalty term to the cost function, 
-this is called ridge regression.
 
 
-\subsection{Structure of the report}
+\section{Data}
+\label{sec:Data}
 
 
 
-\section{Discussion on Scaling}
+
+\section{Linear Regression Models }
+\label{sec:models}
+
+
+
+$$
+MSE(\mathbf{y},\mathbf{\tilde{y}}) = \frac{1}{n}
+\sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2,
+$$
+$$
+R^2(\mathbf{y}, \tilde{\mathbf{y}}) = 1 - \frac{\sum_{i=0}^{n - 1} (y_i - \tilde{y}_i)^2}{\sum_{i=0}^{n - 1} (y_i - \bar{y})^2},
+$$
+
+$$
+\bar{y} =  \frac{1}{n} \sum_{i=0}^{n - 1} y_i.
+$$
+
+
+\subsection{Ordinary Least Squares (OLS)}
+\label{sec:OLS}
+
+\subsection{Ridge Regression}
+\label{sec:Ridge}
+
+\subsection{Lasso Regression}
+\label{sec:Lasso}
+
+
+% \begin{figure}[!h]
+%     \begin{center}
+%     \resizebox*{0.9\linewidth}{!}{\input{Figure_2.pgf}}
+%     \caption{Franke's Function}
+%     \label{ols}
+%     {\scriptsize code for gen  output}\footnote{code for }
+%     \end{center}
+% \end{figure}
+% \begin{figure}[!h]
+%     \begin{center}
+%     \resizebox*{0.7\linewidth}{!}{\input{beta-modelcomplexity.pgf}}
+%     \caption{Franke's Function}
+%     \label{}
+%     \footnote{https}
+%     \end{center}
+% \end{figure}
+
+
+\section{Results and Discussion}
+\label{sec:ResultsDiscussion}
+
+As we increase the order of the polynomial fit we see a corresponding decrease in MSE and increase in R2.
+
+
+We see that OLS remains constant since it is not a function of λ. For the MSE from the training set we se that 
+the MSE wil increase for larger values of λ for rigde regression. This is expected since the OLS wil give the 
+best approximation for the data it has been trained on (compared to Rigde), while rigde punishes the weights 
+from becomming too large and therefore gives a not so tight fit. This can explain why rigde does better than 
+OLS for some values of λ. As stated before the OLS wil try to fit the model to the best of its ability to the 
+training data, this includes the noise which might not generalize to the test set, hence giving rigde a greater score. 
+The term for this is called ***overfitting***. And balancing between overfitting and underfitting is called the ***bias variance tradeoff***. 
+
+\subsection{Confidence Interval}
+\label{sec:ConfidenceInterval}
+
+The assumption we have made is that there exists a continuous function f (x)
+and a normal distributed error ε ∼ N (0, σ2) which describes our data
+y = f (x) + ε
+We then approximate this function f (x) with our model ˜y from the solution
+of the linear regression equations (ordinary least squares OLS), that is our
+function f is approximated by ˜y where we minimized (y − ˜y)2, with
+˜y = Xβ.
+The matrix X is the so-called design or feature matrix.
+yi ∼ N (Xi,∗ β, σ2), that is y follows a normal distribution with mean
+value Xβ and variance σ2.
+We can use this when we define a so-called confidence interval
+for the parameters β. A given parameter βj is given by the diagonal matrix
+element of the above matrix.
+\ref{app:confidenceInterval}
+
+
+
+\section{The Topic of Scaling}
+\label{sec:Scaling}
 
 
 \begin{table}[!h]
@@ -257,7 +379,7 @@ MSE for Ridge on scaled data:    &   \texttt{0.01782525371566323}
 \end{tabular}%
 }\\
 {\scriptsize
-the code for generating this output }\footnote{yurr}
+the code for generating this output }
 \end{table}
 
 
@@ -275,46 +397,11 @@ the magnitude of $\beta_i$. Now with each $\beta_i$ varying alot, some are getti
 penalized than others. As we can see the MSE for unscaled data is much higher than for 
 scaled data in the ridge case.
 This leads us to conclude that we should scale the data, making it easier to 
-tweak $\lambda$ and giving us nicer numbers to work with.
-\subsection{Analysis}
-% \begin{figure}[!h]
-%     \begin{center}
-%     \resizebox*{0.9\linewidth}{!}{\input{Figure_2.pgf}}
-%     \caption{Franke's Function}
-%     \label{ols}
-%     {\scriptsize code for gen  output}\footnote{code for }
-%     \end{center}
-% \end{figure}
-% \begin{figure}[!h]
-%     \begin{center}
-%     \resizebox*{0.7\linewidth}{!}{\input{beta-modelcomplexity.pgf}}
-%     \caption{Franke's Function}
-%     \label{}
-%     \footnote{https}
-%     \end{center}
-% \end{figure}
+tweak $\lambda$ and giving us nicer numbers to work with
 
-\section{Ordinary Least Squares}
-As we increase the order of the polynomial fit we see a corresponding decrease in MSE and increase in R2.
-\section{Ridge}
-\section{Lasso}
-\section{Paper \& Pencil}
-\label{sec:PaperPencil}
 
-The assumption we have made is that there exists a continuous function f (x)
-and a normal distributed error ε ∼ N (0, σ2) which describes our data
-y = f (x) + ε
-We then approximate this function f (x) with our model ˜y from the solution
-of the linear regression equations (ordinary least squares OLS), that is our
-function f is approximated by ˜y where we minimized (y − ˜y)2, with
-˜y = Xβ.
-The matrix X is the so-called design or feature matrix.
-yi ∼ N (Xi,∗ β, σ2), that is y follows a normal distribution with mean
-value Xβ and variance σ2.
-We can use this when we define a so-called confidence interval
-for the parameters β. A given parameter βj is given by the diagonal matrix
-element of the above matrix.
-\ref{app:calculations}
+
+
 
 
 
@@ -364,6 +451,19 @@ The term \emph{variance} refers to how spread out our observations are. We can f
 as either individual predictions, or the mean of predictions from one test set.\\
 In a sense the bias resembles the mathematical defninition for variance, We can see that the bias term is a distance measure of $\mathbf{y}$ from the expected value of $\mathbf{\tilde{y}}$. If we take the individual observations approach this can be tough of as A high bias will then result in a large band around $\mathbf{\tilde{y}}$ in which $y_i$ will exist. The variance term is a measure of how much the $\mathbf{\tilde{y}}$ varies around its own mean. In other terms a high variance model will experience large variance in the predicted values $\mathbf{\tilde{y}}$ from one test set to another. Or as a result of this a large variance in score if you will. Now these two terms are in a sense opposites, it is likely that a model with high bias will have low variance and vice versa. This is something we as designers of the model get to tune, if we value a lower bias more than we value a low variance or vice versa, we can choose a model accordingly
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 % Acknowledgements should go at the end, before appendices and references
 % \acks{}
 
@@ -375,6 +475,7 @@ In a sense the bias resembles the mathematical defninition for variance, We can 
 \phantomsection%
 \addcontentsline{toc}{section}{Appendix}
 \section*{Appendix}
+\label{app:appendix}
 
 \phantomsection%
 \addcontentsline{toc}{subsection}{SVD}
@@ -382,18 +483,8 @@ In a sense the bias resembles the mathematical defninition for variance, We can 
 \label{app:svd}
 svd
 
-$$
-MSE(\mathbf{y},\mathbf{\tilde{y}}) = \frac{1}{n}
-\sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2,
-$$
-$$
-R^2(\mathbf{y}, \tilde{\mathbf{y}}) = 1 - \frac{\sum_{i=0}^{n - 1} (y_i - \tilde{y}_i)^2}{\sum_{i=0}^{n - 1} (y_i - \bar{y})^2},
-$$
 
 
-$$
-\bar{y} =  \frac{1}{n} \sum_{i=0}^{n - 1} y_i.
-$$
 
 
 adding these two we get
@@ -502,7 +593,7 @@ $$
 $$
 \phantomsection%
 \addcontentsline{toc}{subsection}{Confidence Interval}
-\subsection*{Math Behind the Confidence Interval section~\ref{sec:PaperPencil}}
+\subsection*{Math Behind the Confidence Interval section}
 \label{app:confidenceInterval}
 We can assume that $y$ follows some function $f$ with some noise $\epsilon$
 $$

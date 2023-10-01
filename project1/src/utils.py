@@ -37,6 +37,7 @@ def fit_beta(X,y):
 
 
 
+
 def fit_beta_ridge(X,y,Lambda):
     """
     Fits beta for ridge regression
@@ -76,8 +77,7 @@ def plotFrankefunction(xx,yy, z, figsize=(10,10), subplot=(1,1,1),title=None ):
     ax = fig.add_subplot(subplot[0],subplot[1], subplot[2],projection='3d')
     ax.set_title(title, fontsize=16)
         # Plot the surface.
-    surf = ax.plot_surface(xx, yy, z, cmap=cm.coolwarm, # type: ignore
-                        linewidth=0, antialiased=False)
+    surf = ax.plot_surface(xx, yy, z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
 
     # Customize the z axis.
     ax.set_zlim(-0.10, 1.40)
@@ -105,6 +105,19 @@ def readData(path):
 
 
 
+
+
+def printGrid(trainerror, testerror, trainR2, testR2, polydegree, lamdas):
+    for i in range(len(polydegree)):
+        testi  = np.argmin(testerror[i])    # find index of minimum test error (best fit)
+        traini = np.argmin(trainerror[i])   # find index of minimum train error (best fit)
+        testR2i  = np.argmax(testR2[i])     # find index of maximum test R2 (best fit)
+        trainR2i = np.argmax(trainR2[i])    # find index of maximum train R2 (best fit)
+        print("Degree of polynomial = ", polydegree[i])
+        print("Best test error = {:25} \tfor λ = {}".format(testerror[i,testi],  lamdas[testi]))
+        print("Best train error = {:24} \tfor λ = {}".format(trainerror[i,traini],  lamdas[traini]))
+        print("Best test R2 = {:26} \tfor λ = {}".format(testR2[i,testR2i],  lamdas[testR2i]))
+        print("Best train R2 = {:25} \tfor λ = {}".format(trainR2[i,trainR2i],  lamdas[trainR2i]))     
 
 
 

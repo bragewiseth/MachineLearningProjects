@@ -3,35 +3,93 @@ from matplotlib import pyplot as plt
 import matplotlib as mpl
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
-from utils import MSE, R2, makeData, Ridge, makeFigure, plotFrankefunction, OLS
+from sklearn.utils import shuffle
+from utils import MSE, R2, Ridge, makeFigure, plotFrankefunction, OLS, readData, printGrid
+from sklearn.linear_model import Lasso
+from sklearn.model_selection import cross_val_score
 
 
 
 
-
+X, y  = readData("../data/syntheticData.csv")
 
 
 maxdegree = 5
 numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
-n = 100
 numlamdas = 50
-lamdas = np.logspace(1,-6,numlamdas)
-X, y, x_train, x_test, y_train, y_test = makeData(n, rand=0.1)
-poly = PolynomialFeatures(maxdegree, include_bias=False)
-scaler = StandardScaler()
-X_train = poly.fit_transform(x_train)
-X_test = poly.transform(x_test)
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)  # type: ignore
-y_train_mean = np.mean(y_train)
-y_train_scaled = y_train - y_train_mean
+lambdas = np.logspace(1,-6,numlamdas)
+
+
 scaler = StandardScaler()
 model = Ridge()
+polydegree = np.zeros(maxdegree)
+trainError  = np.zeros((maxdegree,numlamdas))
+testError  = np.zeros((maxdegree,numlamdas))
+trainR2  = np.zeros((maxdegree,numlamdas))
+testR2  = np.zeros((maxdegree,numlamdas))
 
-k = 5
+
+
+k = [5,6,7,8,9,10]
 kfold = KFold(n_splits = k)
-for trainind, testind in kfold.split(X):
-    print("TRAIN:", trainind, "TEST:", testind)
+scores_KFold = np.zeros((maxdegree, numlamdas, k))
+
+
+for i, lmb in enumerate(lambdas):
+    ridge = Ridge()
+    ols = OLS()
+    las = Lasso(alpha = lmb)     
+    for j , degree in enumerate(range(maxdegree)):
+        poly = PolynomialFeatures(degree+1, include_bias=False)
+        for trainind, testind in kfold.split(X):
+            x_train, x_test = X[trainind], X[testind]
+            y_train, y_test = y[trainind], y[testind]
+            X_train = poly.fit_transform(x_train)
+            X_train = scaler.fit_transform(X_train)
+            X_test = poly.transform(x_test)
+            X_test = scaler.transform(X_test)  # type: ignore
+            y_train_mean = np.mean(y_train)
+            y_train_scaled = y_train - y_train_mean
+            model.fit(X_train, y_train_scaled, alpha=lmb)
+            y_pred = model.predict(X_test) + y_train_mean 
+            y_predTrain = model.predict(X_train) + y_train_mean
+            scores_KFold[j,i] = MSE(y_test, y_pred )
+            polydegree[degree] = degree + 1
+            testError[degree,i] = MSE(y_test, y_pred )
+            trainError[degree,i] = MSE(y_train, y_predTrain )
+            testR2[degree,i] = R2(y_test, y_pred )
+            trainR2[degree,i] = R2(y_train, y_predTrain )
+
+
+
+estimated_mse_KFold = np.mean(scores_KFold, axis = 1)
+estimated_mse_sklearn = np.zeros(nlambdas)
+for i, lmb in enumerate(lambdas):
+    ridge = Ridge(alpha = lmb)
+
+    X = poly.fit_transform(x[:, np.newaxis])
+    estimated_mse_folds = cross_val_score(ridge, X, y[:, np.newaxis], scoring='neg_mean_squared_error', cv=kfold)
+
+    # cross_val_score return an array containing the estimated negative mse for every fold.
+    # we have to the the mean of every array in order to get an estimate of the mse of the model
+    estimated_mse_sklearn[i] = np.mean(-estimated_mse_folds)
+
+    i += 1
+
+
+
+
+skModel = SkRidge(fit_intercept=False, alpha= lamdas[numlamdas-1])
+skModel.fit(X_train,y_train_scaled)
+
+# compare ours with sklearnModel
+print("sklearnModel beta: ", skModel.coef_)
+print("our beta: ", betas[-1,-1])
+print("sklearnModel MSE: ", MSE(y_test, skModel.predict(X_test) + y_train_mean))
+print("our MSE: ", testError[-1,-1])
+print("sklearnModel R2: ", R2(y_test, skModel.predict(X_test) + y_train_mean))
+print("our R2: ", testR2[-1,-1])
+
 
 
 
@@ -80,4 +138,25 @@ def CrossVal(designMatrix,y, folds =  5, regtype = "ols",l = 1,ls = 0, random = 
     return np.mean(score,axis=1
 )
 
+
+estimated_mse_KFold = np.mean(scores_KFold, axis = 1)
+
+## Cross-validation using cross_val_score from sklearn along with KFold
+
+# kfold is an instance initialized above as:
+# kfold = KFold(n_splits = k)
+
+estimated_mse_sklearn = np.zeros(nlambdas)
+i = 0
+for lmb in lambdas:
+    ridge = Ridge(alpha = lmb)
+
+    X = poly.fit_transform(x[:, np.newaxis])
+    estimated_mse_folds = cross_val_score(ridge, X, y[:, np.newaxis], scoring='neg_mean_squared_error', cv=kfold)
+
+    # cross_val_score return an array containing the estimated negative mse for every fold.
+    # we have to the the mean of every array in order to get an estimate of the mse of the model
+    estimated_mse_sklearn[i] = np.mean(-estimated_mse_folds)
+
+    i += 1
 
