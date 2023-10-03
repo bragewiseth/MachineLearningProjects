@@ -61,12 +61,10 @@ Best train R2 =        0.9010055864126842       for λ = 1e-06
 
 
 [OLS]
-Best test error:      0.005492976007788414
-Best train error:        0.007725652813747564
-Best test R2:         0.9567340476471075
-Best train R2:         0.9186312258475298
-
-
+Best train MSE:  0.007725652813747564
+Best train R2:  0.9186312258475298
+Best test MSE:  0.005492976007788414
+Best test R2:  0.9567340476471075
 
 
 

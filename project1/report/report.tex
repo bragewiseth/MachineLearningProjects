@@ -463,201 +463,234 @@ provide a perspective on future research directions.
 
 
 
+% \acks{}
 
 
 
 % APPENDIX
 
-% Acknowledgements should go at the end, before appendices and references
-% \acks{}
-%
-% Manual newpage inserted to improve layout of sample file - not
-% needed in general before appendices/bibliography.
-%
-% \newpage
-% \appendix
-% \phantomsection%
-% \addcontentsline{toc}{section}{Appendix}
-% \section*{Appendix}
-% \label{app:appendix}
-%
-% \phantomsection%
-% \addcontentsline{toc}{subsection}{SVD}
-% \subsection*{SVD}
-% \label{app:svd}
-% svd
 %
 %
-%
-%
-%
-% adding these two we get
-% $$
-%     \frac{\partial \left[\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2\right]}{\partial{\mathbf{\beta}}} = 0 = \frac{2}{n}\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y} \implies \beta = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y}
-% $$
-%
-%
-%
-% The minimization of ridge addition alone is
-% $${\displaystyle \min_{\mathbf{\beta}\in
-% {\mathbb{R}}^{p}}}\frac{1}{n} \lambda \vert\vert \mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \lambda \mathbf{\beta}$$
-%
-%
-%
-%
-% We know that 
-% $$
-% {\displaystyle \min_{\mathbf{\beta}\in
-% {\mathbb{R}}^{p}}}\frac{1}{n} \vert\vert\mathbf{y}- \mathbf{X}\mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \mathbf{X}^T\mathbf{X}\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y}
-% $$
-%
-%
-%
-%
-% $$
-% {\displaystyle \min_{\mathbf{\beta}\in
-% {\mathbb{R}}^{p}}}\frac{1}{n}\sum_{i=0}^{n-1}\left(y_i-\tilde{y}_i\right)^2=\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2,
-% $$
-%
-%
-%
-%
-% $$
-% {\displaystyle \min_{\mathbf{\beta}\in
-% {\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2
-% $$
-%
-%
-%
-%
-% $$
-% \hat{\mathbf{\beta}}_{\mathrm{OLS}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y},
-% $$
-%
-%
-%
-%
-% $$
-% \hat{\mathbf{\beta}}_{\mathrm{Ridge}} = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y},
-% $$
-%
-%
-%
-% Use the singular value decomposition of an $n\times p$ matrix $\mathbf{X}$ (our design matrix)
-% $$
-% \mathbf{X}=\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T,
-% $$
-%
-%
-% where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices of dimensions
-% $n\times n$ and $p\times p$, respectively, and $\mathbf{\Sigma}$ is an
-% $n\times p$ matrix which contains the ingular values only. This material was discussed during the lectures of week 35.
-%
-% Show that you can write the 
-% OLS solutions in terms of the eigenvectors (the columns) of the orthogonal matrix  $\mathbf{U}$ as
-%
-%
-% $$
-% \tilde{\mathbf{y}}_{\mathrm{OLS}}=\mathbf{X}\mathbf{\beta}  = \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}.
-% $$
-%
-%
-% $$
-% \mathbf{X}^T\mathbf{X} = \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^T\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T
-% $$
-%
-% $$
-% \tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{X}\mathbf{\beta} = \mathbf{X} \left(\mathbf{X}^T \mathbf{X}\right)^{-1} \mathbf{X}^T \mathbf{y}
-% \\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T \left( \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T \right)^{-1} \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
-% \\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T {\mathbf{V}^T}^{-1} {\mathbf{\Sigma}^2}^{-1} \mathbf{V}^{-1}  \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
-% $$
-% using the orthogonality of $\mathbf{V}$ and $\mathbf{U}$ we get. Multiplying with $\mathbf{\Sigma}$ removes columns from $\mathbf{U}$ with eigenvalues equal to zero.
-% $$
-% \tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{U}\mathbf{U}^T \mathbf{y}= \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}
-% $$
-%
-%
-% $$
-% \mathbf{y} = f(\mathbf{x})+\mathbf{\varepsilon}
-% $$
-%
-% $$
-% \mathbf{\tilde{y}} = \mathbf{X}\mathbf{\beta}.
-% $$
-%
-% $$
-% \mathbb{E}(y_i)  =\sum_{j}x_{ij} \beta_j=\mathbf{X}_{i, \ast} \, \mathbf{\beta}
-% $$
-%
-% $$
-% {Var}(y_i)  = \sigma^2
-% $$
-% $$
-% {Var}(\mathbf{\hat{\beta}}) = \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1}.
-% $$
-% \phantomsection%
-% \addcontentsline{toc}{subsection}{Confidence Interval}
-% \subsection*{Math Behind the Confidence Interval section}
-% \label{app:confidenceInterval}
-% We can assume that $y$ follows some function $f$ with some noise $\epsilon$
-% $$
-% \mathbf{y} = f(\mathbf{x}) + \epsilon
-% $$
-% $$
-% \mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
-% $$
-% The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\mathbf{X}\mathbf{\beta}$
-% $$
-% \mathbb{E}[y_i] = \mathbf{X_{i,*}}\mathbf{\beta}
-% $$
-% The variance is defined as
-% \begin{align*}
-% Var(y_i) &= \mathbb{E}\big[(y_i - \mathbb{E}[y_i])^2\big] = \mathbb{E}\left[y_i^2 - 2y_i\mathbb{E}[y_i] + \mathbb{E}[y_i]^2\right] = \mathbb{E}[y_i^2] - \mathbb{E}[y_i]^2\\
-% Var(y_i) &= \mathbb{E}\big[\big(\mathbf{X}_{i,*}\mathbf{\beta}\big)^2 + 2\epsilon \mathbf{X}_{i,*}\mathbf{\beta} + \epsilon^2 \big] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
-% Var(y_i) &= (\mathbf{X}_{i,*}\mathbf{\beta})^2 + 2\mathbb{E}[\epsilon]\mathbf{X}_{i,*}\mathbf{\beta} + \mathbb{E}[\epsilon^2] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
-% Var(y_i) &= \mathbb{E}[\epsilon^2] = \sigma^2
-% \end{align*}
-% for the expected value of $\mathbf{\beta}$ we can insert the definition of $\mathbf{\beta}$ from earlier
-%
-%
-% $$
-% \mathbb{E}[\mathbf{\hat{\beta}}] = \mathbb{E}[ (\mathbf{X}^{\top} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbb{E}[ \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T}\mathbf{X}\mathbf{\beta}=\mathbf{\beta}
-% $$
-%
-%
-% \begin{align*}
-% Var(\mathbf{\hat{\beta}}) & = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})] [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})]^{T} \}
-% \\
-% & = \mathbb{E} \{ [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}] \, [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}]^{T} \}
-% \\
-% & = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
-% \\
-% & = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \{ \mathbf{X} \, \mathbf{\beta} \, \mathbf{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
-% \\
-% & = \mathbf{\beta} \, \mathbf{\beta}^{T}  + \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
-% \, \, \, = \, \, \, \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1},
-% \end{align*}
+\newpage
+\appendix
+\phantomsection%
+\addcontentsline{toc}{section}{Appendix}
+\section*{Appendix}
+\label{app:appendix}
+
+appendix
 
 
-% Note: in this sample, the section number is hard-coded in. Following
-% proper LaTeX conventions, it should properly be coded as a reference:
 
-%In this appendix we prove the following theorem from
-%Section~\ref{sec:textree-generalization}:
+\phantomsection%
+\addcontentsline{toc}{subsection}{Analytical Least Squares}
+\subsection*{analytical}
+\label{app:analytical}
+
+
+
+
+adding these two we get
+$$
+    \frac{\partial \left[\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2\right]}{\partial{\mathbf{\beta}}} = 0 = \frac{2}{n}\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y} \implies \beta = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y}
+$$
+
+
+
+The minimization of ridge addition alone is
+$${\displaystyle \min_{\mathbf{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n} \lambda \vert\vert \mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \lambda \mathbf{\beta}$$
+
+
+
+
+We know that
+
+$$
+{\displaystyle \min_{\mathbf{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n} \vert\vert\mathbf{y}- \mathbf{X}\mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \mathbf{X}^T\mathbf{X}\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y}
+$$
+
+
+
+
+$$
+{\displaystyle \min_{\mathbf{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n}\sum_{i=0}^{n-1}\left(y_i-\tilde{y}_i\right)^2=\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2,
+$$
+
+
+
+
+$$
+{\displaystyle \min_{\mathbf{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2
+$$
+
+
+
+
+$$
+\hat{\mathbf{\beta}}_{\mathrm{OLS}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y},
+$$
+
+
+
+
+$$
+\hat{\mathbf{\beta}}_{\mathrm{Ridge}} = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y},
+$$
 
 
 
 
 
+\phantomsection%
+\addcontentsline{toc}{subsection}{SVD}
+\subsection*{SVD}
+\label{app:svd}
+
+
+
+Use the singular value decomposition of an $n\times p$ matrix $\mathbf{X}$ (our design matrix)
+
+$$
+\mathbf{X}=\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T,
+$$
+
+
+where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices of dimensions
+$n\times n$ and $p\times p$, respectively, and $\mathbf{\Sigma}$ is an
+$n\times p$ matrix which contains the ingular values only. This material was discussed during the lectures of week 35.
+
+Show that you can write the 
+OLS solutions in terms of the eigenvectors (the columns) of the orthogonal matrix  $\mathbf{U}$ as
+
+
+$$
+\tilde{\mathbf{y}}_{\mathrm{OLS}}=\mathbf{X}\mathbf{\beta}  = \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}.
+$$
+
+
+$$
+\mathbf{X}^T\mathbf{X} = \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T\mathbf{U}\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^T\mathbf{\Sigma}\mathbf{V}^T = \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T
+$$
+
+$$
+\tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{X}\mathbf{\beta} = \mathbf{X} \left(\mathbf{X}^T \mathbf{X}\right)^{-1} \mathbf{X}^T \mathbf{y}
+\\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T \left( \mathbf{V}\mathbf{\Sigma}^2\mathbf{V}^T \right)^{-1} \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
+\\ = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^T {\mathbf{V}^T}^{-1} {\mathbf{\Sigma}^2}^{-1} \mathbf{V}^{-1}  \mathbf{V}\mathbf{\Sigma}^T\mathbf{U}^T \mathbf{y}
+$$
+
+using the orthogonality of $\mathbf{V}$ and $\mathbf{U}$ we get. Multiplying with $\mathbf{\Sigma}$ removes columns from $\mathbf{U}$ with eigenvalues equal to zero.
+
+$$
+\tilde{\mathbf{y}}_{\mathrm{OLS}} = \mathbf{U}\mathbf{U}^T \mathbf{y}= \sum_{j=0}^{p-1}\mathbf{u}_j\mathbf{u}_j^T\mathbf{y}
+$$
 
 
 
 
+\phantomsection%
+\addcontentsline{toc}{subsection}{Confidence Interval}
+\subsection*{Math Behind the Confidence Interval section}
+\label{app:confidenceInterval}
+We can assume that $y$ follows some function $f$ with some noise $\epsilon$
+
+$$
+\mathbf{y} = f(\mathbf{x})+\mathbf{\varepsilon}
+$$
+
+$$
+\mathbf{\tilde{y}} = \mathbf{X}\mathbf{\beta}.
+$$
+
+$$
+\mathbb{E}(y_i)  =\sum_{j}x_{ij} \beta_j=\mathbf{X}_{i, \ast} \, \mathbf{\beta}
+$$
+
+$$
+{Var}(y_i)  = \sigma^2
+$$
+
+$$
+{Var}(\mathbf{\hat{\beta}}) = \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1}.
+$$
+$$
+\mathbf{y} = f(\mathbf{x}) + \epsilon
+$$
+
+$$
+\mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
+$$
+
+The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\mathbf{X}\mathbf{\beta}$
+
+$$
+\mathbb{E}[y_i] = \mathbf{X_{i,*}}\mathbf{\beta}
+$$
+
+The variance is defined as
+\begin{align*}
+Var(y_i) &= \mathbb{E}\big[(y_i - \mathbb{E}[y_i])^2\big] = \mathbb{E}\left[y_i^2 - 2y_i\mathbb{E}[y_i] + \mathbb{E}[y_i]^2\right] = \mathbb{E}[y_i^2] - \mathbb{E}[y_i]^2\\
+Var(y_i) &= \mathbb{E}\big[\big(\mathbf{X}_{i,*}\mathbf{\beta}\big)^2 + 2\epsilon \mathbf{X}_{i,*}\mathbf{\beta} + \epsilon^2 \big] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
+Var(y_i) &= (\mathbf{X}_{i,*}\mathbf{\beta})^2 + 2\mathbb{E}[\epsilon]\mathbf{X}_{i,*}\mathbf{\beta} + \mathbb{E}[\epsilon^2] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
+Var(y_i) &= \mathbb{E}[\epsilon^2] = \sigma^2
+\end{align*}
+for the expected value of $\mathbf{\beta}$ we can insert the definition of $\mathbf{\beta}$ from earlier
+
+
+$$
+\mathbb{E}[\mathbf{\hat{\beta}}] = \mathbb{E}[ (\mathbf{X}^{\top} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1}\mathbf{X}^{T} \mathbb{E}[ \mathbf{Y}]=(\mathbf{X}^{T} \mathbf{X})^{-1} \mathbf{X}^{T}\mathbf{X}\mathbf{\beta}=\mathbf{\beta}
+$$
+
+
+\begin{align*}
+Var(\mathbf{\hat{\beta}}) & = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})] [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})]^{T} \}
+\\
+& = \mathbb{E} \{ [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}] \, [(\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \mathbf{y} - \mathbf{\beta}]^{T} \}
+\\
+& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
+\\
+& = (\mathbf{X}^{T} \mathbf{X})^{-1} \, \mathbf{X}^{T} \, \{ \mathbf{X} \, \mathbf{\beta} \, \mathbf{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \} \, \mathbf{X} \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
+\\
+& = \mathbf{\beta} \, \mathbf{\beta}^{T}  + \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
+\, \, \, = \, \, \, \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1},
+\end{align*}
 
 
 
+ridge
 
 
+$$
+\mathbb{E} \big[ \hat{\boldsymbol{\beta}}^{\mathrm{Ridge}} \big]=(\mathbf{X}^{T} \mathbf{X} + \lambda \mathbf{I}_{pp})^{-1} (\mathbf{X}^{\top} \mathbf{X})\boldsymbol{\beta}.
+$$
+
+
+$$
+{Var}[\hat{\boldsymbol{\beta}}^{\mathrm{Ridge}}]=\sigma^2[  \mathbf{X}^{T} \mathbf{X} + \lambda \mathbf{I} ]^{-1}  \mathbf{X}^{T}\mathbf{X} \{ [  \mathbf{X}^{\top} \mathbf{X} + \lambda \mathbf{I} ]^{-1}\}^{T},
+$$
+
+
+$$
+\mathbb{E}[\boldsymbol{\hat{\beta}}^{\mathrm{Ridge}}] = \mathbb{E}\left[ \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\boldsymbol{X}^T\boldsymbol{y}\right]=\left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\boldsymbol{X}^T \mathbb{E}[ \mathbf{Y}]=\left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\boldsymbol{\beta}
+$$
+
+
+\begin{align*}
+Var(\boldsymbol{\hat{\beta}}^{\mathrm{Ridge}}) & = \mathbb{E} \{ [\boldsymbol{\beta} - \mathbb{E}(\boldsymbol{\beta})] [\boldsymbol{\beta} - \mathbb{E}(\boldsymbol{\beta})]^{T} \}
+\\
+& = \mathbb{E} \left\{ \left[\left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\boldsymbol{X}^T\boldsymbol{y} - \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\boldsymbol{\beta}\right]
+ \, 
+ \left[\left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\boldsymbol{X}^T\boldsymbol{y} - \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\boldsymbol{\beta}\right]^{T} \right\}
+ \\
+ & = \mathbb{E} \left\{ \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\boldsymbol{X}^T \, \mathbf{y} \, \mathbf{y}^{T} \, \boldsymbol{X} \, \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1} - \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\boldsymbol{\beta} \, \boldsymbol{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1} \right\}
+ \\
+& =  \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\boldsymbol{X}^T \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1} - \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\boldsymbol{\beta} \, \boldsymbol{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}
+\\
+& = \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\boldsymbol{X}^T \, \left(\mathbf{X} \, \boldsymbol{\beta} \, \boldsymbol{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \mathbf{I}\right) \, \mathbf{X} \, \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1} - \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\boldsymbol{\beta} \, \boldsymbol{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \left(\boldsymbol{X}^T\boldsymbol{X}+\lambda\boldsymbol{I}_{pp}\right)^{-1}
+\end{align*}
 
 
 
