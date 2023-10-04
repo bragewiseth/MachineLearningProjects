@@ -77,14 +77,23 @@ def plotFrankefunction(xx,yy, z, figsize=(10,10), subplot=(1,1,1),title=None ):
     ax = fig.add_subplot(subplot[0],subplot[1], subplot[2],projection='3d')
     ax.set_title(title, fontsize=16)
         # Plot the surface.
-    surf = ax.plot_surface(xx, yy, z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
-
+    surf = ax.plot_surface(xx, yy, z, cmap="plasma", linewidth=0, antialiased=False,alpha=0.5)
+    ax.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+    ax.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+    ax.w_xaxis.line.set_color((1.0, 1.0, 1.0, 0.0))
+    ax.w_yaxis.line.set_color((1.0, 1.0, 1.0, 0.0))
+    ax.w_zaxis.line.set_color((1.0, 1.0, 1.0, 0.0))
+    # ax.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 1.0))
     # Customize the z axis.
     ax.set_zlim(-0.10, 1.40)
-    ax.zaxis.set_major_locator(LinearLocator(10))
-    ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+    # ax.zaxis.set_ticks_position('none')
+    ax.set_zticks([])
 
-    # fig.colorbar(surf, shrink=0.5, aspect=5)
+    # ax.w_zaxis.line.set_visible(False)
+    # ax.zaxis.set_major_locator(LinearLocator(5))
+    # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+    fig.colorbar(surf, shrink=0.5, aspect=5)
     # Add a color bar which maps values to colors.
     return ax
 
@@ -172,7 +181,7 @@ class OLS:
 
 
     def fit(self,X,y):
-        self.beta = np.linalg.pinv(X.T @ X) @ X.T @ y
+        self.beta = np.linalg.inv(X.T @ X) @ X.T @ y
 
 
     def predict(self,X):

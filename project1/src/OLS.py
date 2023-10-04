@@ -66,7 +66,7 @@ print("Best test R2: ", max(testR2))
 poly = PolynomialFeatures(5, include_bias=False)
 X = poly.fit_transform(X)
 X = scaler.fit_transform(X)
-print("confidence interval for beta when degree of polynomial = 5: ", np.var(y) * np.linalg.inv(X.T @ X))
+print("confidence interval for beta when degree of polynomial = 5: ", np.diag(np.var(y) * np.linalg.inv(X.T @ X)))
 
 
 mpl.rcParams.update({

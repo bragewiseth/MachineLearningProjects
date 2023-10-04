@@ -17,16 +17,21 @@ from sklearn.model_selection import cross_val_score
 
 ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 # Load the terrain
+# terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_1.tif'))
 terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_2.tif'))
 terrain = np.array(terrain)
-N = 1000
+N = 1800
+n = 1000 
 terrain = terrain[:N,:N]
 # Creates mesh of image pixels
 x0 = np.linspace(0,np.shape(terrain)[0]-1, np.shape(terrain)[0], dtype=int)
 x1 = np.linspace(0,np.shape(terrain)[1]-1, np.shape(terrain)[1], dtype=int)
+x0sample = np.random.randint(0, N, n)
+x1sample = np.random.randint(0, N, n)
 x_mesh, y_mesh = np.meshgrid(x0,x1)
-y = terrain[x_mesh,y_mesh].ravel()
-X = np.concatenate((x_mesh.ravel().reshape(-1,1), y_mesh.ravel().reshape(-1,1)), axis=1)
+terrain = terrain[x_mesh,y_mesh]
+y = terrain[x0sample,x1sample].ravel().reshape(-1,1)
+X = np.concatenate((x0sample.reshape(-1,1), x1sample.reshape(-1,1)), axis=1)
 
 
 # we introduce a final test set since we have more data
@@ -34,58 +39,57 @@ x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle
 k = 8
 
 
-maxdegree = 5
-numfeatures = int(((maxdegree+1) **2 + (maxdegree-1)) / 2)
-numlamdas = 2
-lambdas = np.logspace(1,-6,numlamdas)
-polydegree = np.zeros(maxdegree)
+lambdas = [0.00001 ,0.0001, 0.001, 0.01,0.1, 1, 10 ] 
+degrees = [3,5,8,10,12,15,18,20,22]
+numlamdas = len(lambdas)
+numdegrees = len(degrees)
+polydegree = np.zeros(numdegrees)
 
 scaler = StandardScaler()
-k = 6
+k = 8
 kfold = KFold(n_splits = k)
-scores_KFold_R2OLS = np.zeros((maxdegree, numlamdas, k))
-scores_KFoldOLS = np.zeros((maxdegree, numlamdas, k))
-scores_KFold_R2Ridge = np.zeros((maxdegree, numlamdas, k))
-scores_KFoldRidge = np.zeros((maxdegree, numlamdas, k))
-scores_KFold_R2Lasso = np.zeros((maxdegree, numlamdas, k))
-scores_KFoldLasso = np.zeros((maxdegree, numlamdas, k))
+scores_KFold_R2OLS = np.zeros((numdegrees, numlamdas, k))
+scores_KFoldOLS = np.zeros((numdegrees, numlamdas, k))
+scores_KFold_R2Ridge = np.zeros((numdegrees, numlamdas, k))
+scores_KFoldRidge = np.zeros((numdegrees, numlamdas, k))
+scores_KFold_R2Lasso = np.zeros((numdegrees, numlamdas, k))
+scores_KFoldLasso = np.zeros((numdegrees, numlamdas, k))
 
 
-# for i, lmb in enumerate(lambdas):
-#     ridge = Ridge()
-#     ols = OLS()
-#     lasso = Lasso(alpha = lmb )     
-#     for j , degree in enumerate(range(4,maxdegree)):
-#         poly = PolynomialFeatures(degree+1, include_bias=False)
-#         k = 0
-        # for trainind, testind in kfold.split(x_train):
-        #     x_train_fold, x_val_fold = x_train[trainind], x_train[testind]
-        #     y_train_fold, y_val_fold = y_train[trainind], y_train[testind]
-        #     X_train = poly.fit_transform(x_train_fold)
-        #     X_train = scaler.fit_transform(X_train)
-        #     X_test = poly.transform(x_val_fold)
-        #     X_test = scaler.transform(X_test)  # type: ignore
-        #     y_train_mean = np.mean(y_train_fold)
-        #     y_train_scaled = y_train_fold - y_train_mean
-        #     ridge.fit(X_train, y_train_scaled, alpha=lmb)
-        #     ols.fit(X_train, y_train_scaled)
+for i, lmb in enumerate(lambdas):
+    ridge = Ridge()
+    ols = OLS()
+    lasso = Lasso(alpha = lmb )     
+    for j , degree in enumerate(degrees):
+        poly = PolynomialFeatures(degree, include_bias=False)
+        k = 0
+        for trainind, testind in kfold.split(x_train):
+            x_train_fold, x_val_fold = x_train[trainind], x_train[testind]
+            y_train_fold, y_val_fold = y_train[trainind], y_train[testind]
+            X_train = poly.fit_transform(x_train_fold)
+            X_train = scaler.fit_transform(X_train)
+            X_test = poly.transform(x_val_fold)
+            X_test = scaler.transform(X_test)  # type: ignore
+            y_train_mean = np.mean(y_train_fold)
+            y_train_scaled = y_train_fold - y_train_mean
+            ridge.fit(X_train, y_train_scaled, alpha=lmb)
+            ols.fit(X_train, y_train_scaled)
             # lasso.fit(X_train, y_train_scaled)
-            # scores_KFoldOLS[j,i,k] = MSE(y_val_fold, ols.predict(X_test) + y_train_mean)
-            # scores_KFold_R2OLS[j,i,k] = R2(y_val_fold, ols.predict(X_test) + y_train_mean)
-            # scores_KFoldRidge[j,i,k] = MSE(y_val_fold, ridge.predict(X_test) + y_train_mean)
-            # scores_KFold_R2Ridge[j,i,k] = R2(y_val_fold, ridge.predict(X_test) + y_train_mean)
+            scores_KFoldOLS[j,i,k] = MSE(y_val_fold, ols.predict(X_test) + y_train_mean)
+            scores_KFold_R2OLS[j,i,k] = R2(y_val_fold, ols.predict(X_test) + y_train_mean)
+            scores_KFoldRidge[j,i,k] = MSE(y_val_fold, ridge.predict(X_test) + y_train_mean)
+            scores_KFold_R2Ridge[j,i,k] = R2(y_val_fold, ridge.predict(X_test) + y_train_mean)
             # scores_KFoldLasso[j,i,k] = MSE(y_val_fold, lasso.predict(X_test) + y_train_mean)
             # scores_KFold_R2Lasso[j,i,k] = R2(y_val_fold, lasso.predict(X_test) + y_train_mean)
-            # polydegree[degree] = degree + 1
-            # k += 1
+            k += 1
 
 
-# estimated_mse_KFoldOLS = np.mean(scores_KFoldOLS, axis = 2)
-# estimated_mse_KFold_R2OLS = np.mean(scores_KFold_R2OLS, axis = 2)
-# estimated_mse_KFoldRidge = np.mean(scores_KFoldRidge, axis = 2)
-# estimated_mse_KFold_R2Ridge = np.mean(scores_KFold_R2Ridge, axis = 2)
-# estimated_mse_KFoldLasso = np.mean(scores_KFoldLasso, axis = 2)
-# estimated_mse_KFold_R2Lasso = np.mean(scores_KFold_R2Lasso, axis = 2)
+estimated_mse_KFoldOLS = np.mean(scores_KFoldOLS, axis = 2)
+estimated_mse_KFold_R2OLS = np.mean(scores_KFold_R2OLS, axis = 2)
+estimated_mse_KFoldRidge = np.mean(scores_KFoldRidge, axis = 2)
+estimated_mse_KFold_R2Ridge = np.mean(scores_KFold_R2Ridge, axis = 2)
+estimated_mse_KFoldLasso = np.mean(scores_KFoldLasso, axis = 2)
+estimated_mse_KFold_R2Lasso = np.mean(scores_KFold_R2Lasso, axis = 2)
 
 
 
@@ -104,9 +108,9 @@ def findParmas(error,  R2score , polydegree, lamdas=None):
 
 
 
-# findParmas(estimated_mse_KFoldOLS, estimated_mse_KFold_R2OLS, polydegree )
-# findParmas(estimated_mse_KFoldRidge, estimated_mse_KFold_R2Ridge, polydegree, lambdas)
-# findParmas(estimated_mse_KFoldLasso, estimated_mse_KFold_R2Lasso, polydegree, lambdas)
+findParmas(estimated_mse_KFoldOLS, estimated_mse_KFold_R2OLS, degrees )
+findParmas(estimated_mse_KFoldRidge, estimated_mse_KFold_R2Ridge, degrees, lambdas)
+findParmas(estimated_mse_KFoldLasso, estimated_mse_KFold_R2Lasso, degrees, lambdas)
 
 
 
@@ -124,20 +128,33 @@ mpl.rcParams.update({
 
 
 
+fix1 , ax1 = plt.subplots(figsize=(10,10))
+ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
+ax1.set_xlabel("Lambda")
+ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
+ax1.set_yticks(np.arange(len(degrees)), labels=degrees)
+ax1.set_ylabel(r"values of $\beta$")
+im = ax1.imshow(estimated_mse_KFold_R2Ridge, cmap="plasma")
+cbar = ax1.figure.colorbar(im, ax=ax1) 
+cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
+# plt.savefig("../runsAndAdditions/tullll.png")
+plt.show()
+
 
 
 
 
 ols = OLS()
-poly = PolynomialFeatures(10, include_bias=False)
-Xa = poly.fit_transform(x_train)
-Xa = scaler.fit_transform(Xa)
+poly = PolynomialFeatures(12, include_bias=False) 
+X_train = poly.fit_transform(x_train) 
+X_train = scaler.fit_transform(X_train)
 y_train_mean = np.mean(y_train)
 y_train_scaled = y_train - y_train_mean
-ols.fit(Xa,y_train_scaled )
-X = poly.fit_transform(X)
-X = scaler.transform(X)
-zpred = ols.predict(X) + y_train_mean
+ols.fit(X_train,y_train_scaled )
+A = np.concatenate((x_mesh.ravel().reshape(-1,1), y_mesh.ravel().reshape(-1,1)), axis=1)
+A = poly.fit_transform(A)
+A = scaler.transform(A)
+zpred = ols.predict(A) + y_train_mean
 
 
 
@@ -145,7 +162,10 @@ fig = plt.figure(figsize=(10,10))
 ax = fig.add_subplot(1,1,1,projection='3d')
 ax.set_title("ff", fontsize=16)
     # Plot the surface.
+zpred[zpred>1300]= np.nan
+zpred[zpred<0]= np.nan
 surf = ax.plot_surface(x_mesh, y_mesh, zpred.reshape(N,N), cmap="plasma", linewidth=0, antialiased=True)
+
 
 # Customize the z axis.
 ax.set_zlim(0, 2000)
@@ -155,7 +175,7 @@ ax.set_zlabel('km')
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
-# fig.colorbar(surf, shrink=0.5, aspect=5)
+fig.colorbar(surf, shrink=0.5, aspect=5)
 # Add a color bar which maps values to colors.
 plt.show()
 
@@ -169,7 +189,7 @@ fig = plt.figure(figsize=(10,10))
 ax = fig.add_subplot(1,1,1,projection='3d')
 ax.set_title("ff", fontsize=16)
     # plot the surface.
-surf = ax.plot_surface(x_mesh, y_mesh, y.reshape(N,N), cmap='plasma', linewidth=0, antialiased=True)
+surf = ax.plot_surface(x_mesh, y_mesh, terrain, cmap='plasma', linewidth=0, antialiased=True)
 
 # customize the z axis.
 ax.set_zlim(0, 2000)
@@ -191,7 +211,7 @@ plt.show()
 
 plt.figure()
 plt.title('terrain over norway 1')
-plt.imshow(terrain, cmap='gray')
+plt.imshow(terrain, cmap='plasma')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.show()
