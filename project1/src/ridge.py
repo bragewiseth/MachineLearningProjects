@@ -69,8 +69,9 @@ printGrid(trainError, testError, trainR2, testR2, polydegree, lamdas)
 poly = PolynomialFeatures(5, include_bias=False)
 X = poly.fit_transform(X)
 X = scaler.fit_transform(X)
-
 print("confidence interval for beta when degree of polynomial = 5: ", np.var(y) * np.linalg.inv(X.T @ X))
+
+
 
 mpl.rcParams.update({
     'font.family': 'serif',

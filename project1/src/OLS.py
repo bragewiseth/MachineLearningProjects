@@ -44,7 +44,6 @@ for degree in range(maxdegree):
     trainError[degree] = MSE(y_train, model.predict(X_train) + y_train_mean)
     testR2[degree] = R2(y_test, model.predict(X_test) + y_train_mean)
     trainR2[degree] = R2(y_train, model.predict(X_train)+ y_train_mean)
-    print("confidence interval for beta: ", np.var(y) * np.linalg.inv(X_test.T @ X_test))
     if (degree == maxdegree -1) :
         sklearnModel.fit(X_train, y_train_scaled )
 
@@ -63,6 +62,11 @@ print("Best train R2: ", max(trainR2))
 print("Best test MSE: ", min(testError))
 print("Best test R2: ", max(testR2))
 
+
+poly = PolynomialFeatures(5, include_bias=False)
+X = poly.fit_transform(X)
+X = scaler.fit_transform(X)
+print("confidence interval for beta when degree of polynomial = 5: ", np.var(y) * np.linalg.inv(X.T @ X))
 
 
 mpl.rcParams.update({
