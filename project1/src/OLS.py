@@ -48,6 +48,7 @@ for degree in range(maxdegree):
         sklearnModel.fit(X_train, y_train_scaled )
 
 
+
 # compare ours with sklearnModel
 print("sklearnModel beta: ", sklearnModel.coef_)
 print("our beta: ", betas[-1])

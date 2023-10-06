@@ -56,7 +56,6 @@ for degree in range(maxdegree):
         x_ = scaler.transform(x_)
         model.fit(x_, y_)
         y_pred[:, i] = ( model.predict(X_test) + y_train_mean  )
-        # print(ybeta[:, i])
     polydegree[degree] = degree
     error[degree] = np.mean( np.mean((y_test.reshape(-1,1) - y_pred)**2, axis=1, keepdims=True) )
     bias[degree] = np.mean( (y_test - np.mean(y_pred, axis=1, keepdims=False))**2 )

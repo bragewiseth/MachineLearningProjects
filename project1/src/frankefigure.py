@@ -42,12 +42,17 @@ fig = plt.figure(figsize=(8,8))
 fig.tight_layout()
 ax = fig.add_subplot(projection='3d')
 
-# ax.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.2))
-# ax.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.2))
-# ax.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.2))
+
 ax.set_title("Data", fontsize=16)
-ax.plot_surface(xx, yy, z, cmap="plasma", linewidth=0, antialiased=False, alpha=0.4)
-ax.scatter(X[:,0],X[:,1], y , c=y, cmap="cool", alpha=1) 
+ax.plot_surface(xx, yy, z, cmap="bone", linewidth=0, antialiased=False, alpha=0.2)
+surf = ax.scatter(X[:,0],X[:,1], y , c=y, cmap="cool", alpha=1) 
 ax.set_zlim(-0.10, 1.40)
 # plt.savefig("../runsAndAdditions/frankefigurenoise.png")
+ax.set_zticks([])
+
+
+    # ax.zaxis.set_major_locator(LinearLocator(5))
+    # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+fig.colorbar(surf, shrink=0.5, aspect=5)
 plt.show()
