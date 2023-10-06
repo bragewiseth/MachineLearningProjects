@@ -89,113 +89,62 @@ Best MSE =      0.016088065634204392    for polynomial of degree = 4
 
 CROSSVAL:
 
-K=5
+K=7 (our best k)
 
 [OLS]
-Degree of polynomial =  1.0
-Best error =       0.03260701646652334
-Best R2 =         0.6333959251927374
-Degree of polynomial =  2.0
-Best error =      0.026037291679784906
-Best R2 =         0.6954164865645384
-Degree of polynomial =  3.0
-Best error =       0.01834054174297952
-Best R2 =         0.7789075156693716
-Degree of polynomial =  4.0
-Best error =       0.02197850918726692
-Best R2 =         0.7758019919268164
-Degree of polynomial =  5.0
-Best error =      0.019581851602777266
-Best R2 =         0.7710292595964187
+Degree of polynomial =  1
+Best error =      0.032568821688131314
+Best R2 =         0.6249935408302865
+Degree of polynomial =  2
+Best error =      0.026370518092213212
+Best R2 =         0.6931077901182782
+Degree of polynomial =  3
+Best error =      0.017208498497582804
+Best R2 =         0.7696499279594985
+Degree of polynomial =  4
+Best error =       0.01305594521063286
+Best R2 =         0.8332065770754105
+Degree of polynomial =  5
+Best error =      0.013943074194518875
+Best R2 =          0.815655081193175
+
 
 
 [RIDGE]
-Degree of polynomial =  1.0
-Best error =       0.03250450176832307  for λ = 2.682695795279726
-Best R2 =         0.6438900500203524    for λ = 10.0
-Degree of polynomial =  2.0
-Best error =       0.02532721456602719  for λ = 0.5179474679231213
-Best R2 =         0.7057208747103141    for λ = 0.7196856730011522
-Degree of polynomial =  3.0
-Best error =      0.018245997605953825  for λ = 0.019306977288832516
-Best R2 =         0.7877669242539473    for λ = 0.037275937203149416
-Degree of polynomial =  4.0
-Best error =      0.015889618415990684  for λ = 0.001389495494373139
-Best R2 =         0.8165095830806702    for λ = 0.001
-Degree of polynomial =  5.0
-Best error =      0.017232172818976717  for λ = 0.0071968567300115215
-Best R2 =         0.8077315932121856    for λ = 0.0071968567300115215
+Degree of polynomial =  1
+Best error =       0.03251271070665972  for λ = 2.3357214690901227
+Best R2 =         0.6421193578304928    for λ = 10.0
+Degree of polynomial =  2
+Best error =       0.02609248938064094  for λ = 0.545559478116852
+Best R2 =         0.6968639946471251    for λ = 0.545559478116852
+Degree of polynomial =  3
+Best error =      0.017199974167156958  for λ = 0.0033598182862837845
+Best R2 =          0.782994166675766    for λ = 0.06158482110660267
+Degree of polynomial =  4
+Best error =      0.013062592706354525  for λ = 1e-05
+Best R2 =         0.8331462430078058    for λ = 1e-05
+Degree of polynomial =  5
+Best error =      0.013643371662013019  for λ = 0.0016237767391887226
+Best R2 =         0.8275888195570534    for λ = 0.0033598182862837845
+
 
 
 [LASSO]
-Degree of polynomial =  1.0
-Best error =       0.03256545431783543  for λ = 0.0037275937203149418
-Best R2 =         0.6390328102343636    for λ = 0.01389495494373139
-Degree of polynomial =  2.0
-Best error =      0.025547167697247013  for λ = 0.0007196856730011528
-Best R2 =         0.7009085416464752    for λ = 0.0037275937203149418
-Degree of polynomial =  3.0
-Best error =      0.017098475210806766  for λ = 0.00037275937203149455
-Best R2 =         0.8055054480932666    for λ = 0.0005179474679231213
-Degree of polynomial =  4.0
-Best error =      0.017557593522238426  for λ = 0.001
-Best R2 =         0.7985870061380155    for λ = 0.001
-Degree of polynomial =  5.0
-Best error =        0.0178189713541982  for λ = 0.001389495494373139
-Best R2 =         0.7957233143408755    for λ = 0.001389495494373139
-
-K=6
-
-Degree of polynomial =  1.0
-Best error =         0.031417746285695
-Best R2 =         0.6937517469620308
-Degree of polynomial =  2.0
-Best error =       0.02523739224588388
-Best R2 =         0.7555611617191681
-Degree of polynomial =  3.0
-Best error =      0.017155756727969037
-Best R2 =         0.8099729946891031
-Degree of polynomial =  4.0
-Best error =      0.022511368206953847
-Best R2 =         0.7794380491425447
-Degree of polynomial =  5.0
-Best error =      0.025308412544970033
-Best R2 =         0.7543975917720376
-
-
-Degree of polynomial =  1.0
-Best error =       0.03130811391262867  for λ = 2.682695795279726
-Best R2 =         0.6952777694627975    for λ = 3.72759372031494
-Degree of polynomial =  2.0
-Best error =      0.024674604134681397  for λ = 0.5179474679231213
-Best R2 =         0.7613123830561342    for λ = 0.5179474679231213
-Degree of polynomial =  3.0
-Best error =      0.016988285913409448  for λ = 0.019306977288832516
-Best R2 =         0.8249249687932351    for λ = 0.07196856730011521
-Degree of polynomial =  4.0
-Best error =      0.015095533952597386  for λ = 0.001389495494373139
-Best R2 =         0.8338962762572476    for λ = 0.001389495494373139
-Degree of polynomial =  5.0
-Best error =       0.01714556200179562  for λ = 0.01
-Best R2 =         0.8181141669731845    for λ = 0.01
-
-
-Degree of polynomial =  1.0
-Best error =       0.03133648409358492  for λ = 0.005179474679231213
-Best R2 =         0.6949113463259978    for λ = 0.0071968567300115215
-Degree of polynomial =  2.0
-Best error =      0.024776134620909575  for λ = 0.002682695795279727
-Best R2 =         0.7593796890898453    for λ = 0.002682695795279727
-Degree of polynomial =  3.0
-Best error =       0.01616421179913671  for λ = 0.00037275937203149455
-Best R2 =         0.8331686225157667    for λ = 0.0005179474679231213
-Degree of polynomial =  4.0
-Best error =      0.016444607229414335  for λ = 0.001
-Best R2 =         0.8287344550025734    for λ = 0.001
-Degree of polynomial =  5.0
-Best error =      0.016948706799202306  for λ = 0.001389495494373139
-Best R2 =         0.8237513991454706    for λ = 0.001389495494373139
-
+Degree of polynomial =  1
+Best error =       0.03255825109911235  for λ = 0.0016237767391887226
+Best R2 =         0.6351932984823527    for λ = 0.01438449888287663
+Degree of polynomial =  2
+Best error =      0.026256779198633232  for λ = 0.00037926901907322537
+Best R2 =          0.695301120868761    for λ = 0.0033598182862837845
+Degree of polynomial =  3
+Best error =      0.016412064981827023  for λ = 0.00037926901907322537
+Best R2 =         0.7980383477585027    for λ = 0.0007847599703514623
+Degree of polynomial =  4
+Best error =       0.01579410535334095  for λ = 1e-05
+Best R2 =         0.7976215875621799    for λ = 1e-05
+Degree of polynomial =  5
+Best error =      0.014476201886552806  for λ = 1e-05
+Best R2 =         0.8250779214088269    for λ = 1e-05
 
 
 
