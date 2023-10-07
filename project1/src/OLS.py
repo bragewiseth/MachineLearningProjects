@@ -12,38 +12,52 @@ from sklearn.linear_model import LinearRegression
 
 
 
-
+#maximum degree of the polynomial
 maxdegree = 5
 X, y  = readData("../data/syntheticData.csv")
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9282)
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
 
-
+# Arrays to store results for different polynomial degrees
 polydegree = np.zeros(maxdegree)
 trainError  = np.zeros(maxdegree)
 testError  = np.zeros(maxdegree)
 trainR2  = np.zeros(maxdegree)
 testR2  = np.zeros(maxdegree)
 betas = np.zeros((maxdegree,20))
+
+#initializing standard scaler, our OLS model, the sklearn OLS model
 scaler = StandardScaler()
-y_train_mean = np.mean(y_train)
 model = OLS()
 sklearnModel = LinearRegression(fit_intercept=False)
+y_train_mean = np.mean(y_train)
 
 for degree in range(maxdegree):
+    #Creating polynomial features for the given degree
     poly = PolynomialFeatures(degree+1,include_bias=False)
     X_train = poly.fit_transform(x_train)
     X_test = poly.transform(x_test)
+    #Scale the features using the scaler
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test) # type: ignore
+
     y_train_mean = np.mean(y_train)
+
+    #Center the target variable
     y_train_scaled = y_train - y_train_mean
+
+    #Fitting the OLS model
     model.fit(X_train, y_train_scaled)
+
+    #Padding the beta values to match the expected shape
     betas[degree] = np.pad(model.beta,(0,20-model.beta.size))
+
+    #Storing relevant metrics for the current degree
     polydegree[degree] = degree + 1
     testError[degree] = MSE(y_test, model.predict(X_test) + y_train_mean)
     trainError[degree] = MSE(y_train, model.predict(X_train) + y_train_mean)
     testR2[degree] = R2(y_test, model.predict(X_test) + y_train_mean)
     trainR2[degree] = R2(y_train, model.predict(X_train)+ y_train_mean)
+    #Fit the scikit-learn model for the last degree
     if (degree == maxdegree -1) :
         sklearnModel.fit(X_train, y_train_scaled )
 
@@ -69,7 +83,7 @@ X = poly.fit_transform(X)
 X = scaler.fit_transform(X)
 print("confidence interval for beta when degree of polynomial = 5: ", np.diag(np.var(y) * np.linalg.inv(X.T @ X)))
 
-
+#plot configuration for matplotlib
 mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
