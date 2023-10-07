@@ -30,16 +30,16 @@ betas = np.zeros((maxdegree,numlamdas,numfeatures))
 y_train_mean = np.mean(y_train)
 y_train_scaled = y_train - y_train_mean
 scaler = StandardScaler()
-model = Ridge()
 
 for i, l in enumerate(lamdas):
+    model = Ridge( alpha=l )
     for degree in range(maxdegree):
         poly = PolynomialFeatures(degree+1, include_bias=False)
         X_train = poly.fit_transform(x_train)
         X_test = poly.transform(x_test)
         X_train = scaler.fit_transform(X_train)
         X_test = scaler.transform(X_test)  # type: ignore
-        model.fit(X_train, y_train_scaled, alpha=l)
+        model.fit(X_train, y_train_scaled)
         betas[degree,i] = np.pad(model.beta, (0, numfeatures -model.beta.size))
         polydegree[degree] = degree + 1
         testError[degree,i] = MSE(y_test, model.predict(X_test) + y_train_mean)

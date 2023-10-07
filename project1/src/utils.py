@@ -192,9 +192,13 @@ class Ridge:
     Implements the same basic functionality as sklearn.linear_model.Ridge
     without the fancy stuff
     """
-    def fit(self,X, y, alpha=0.):
+    def __init__(self, alpha=0.0):
+        self.alpha = alpha
+
+
+    def fit(self,X, y):
         p = X.shape[1]
-        self.beta = np.linalg.inv(X.T @ X + (alpha * np.eye(p))) @ X.T @ y
+        self.beta = np.linalg.inv(X.T @ X + (self.alpha * np.eye(p))) @ X.T @ y
 
     def predict(self, X):
         return X @ self.beta

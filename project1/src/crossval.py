@@ -57,7 +57,7 @@ for n, k_i in enumerate(karray):
     scores_KFoldLasso = np.zeros((maxdegree, numlamdas, k_i))
 
     for i, lmb in enumerate(lambdas):
-        ridge = Ridge()
+        ridge = Ridge( alpha=lmb)
         ols = OLS()
         lasso = Lasso(alpha = lmb ,max_iter=10000 )     
         for j , degree in enumerate(range(maxdegree)):
@@ -72,7 +72,7 @@ for n, k_i in enumerate(karray):
                 X_test = scaler.transform(X_test)  # type: ignore
                 y_train_mean = np.mean(y_train)
                 y_train_scaled = y_train - y_train_mean
-                ridge.fit(X_train, y_train_scaled, alpha=lmb)
+                ridge.fit(X_train, y_train_scaled)
                 ols.fit(X_train, y_train_scaled)
                 lasso.fit(X_train, y_train_scaled)
                 scores_KFoldOLS[j,i,k] = MSE(y_test, ols.predict(X_test) + y_train_mean)
