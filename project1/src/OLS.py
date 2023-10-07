@@ -15,7 +15,7 @@ from sklearn.linear_model import LinearRegression
 #maximum degree of the polynomial
 maxdegree = 5
 X, y  = readData("../data/syntheticData.csv")
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9282)
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
 
 # Arrays to store results for different polynomial degrees
 polydegree = np.zeros(maxdegree)
