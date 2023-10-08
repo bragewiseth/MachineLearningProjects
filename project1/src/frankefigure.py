@@ -45,7 +45,7 @@ ax = fig.add_subplot(projection='3d')
 
 ax.set_title("Data", fontsize=16)
 ax.plot_surface(xx, yy, z, cmap="bone", linewidth=0, antialiased=False, alpha=0.2)
-surf = ax.scatter(X[:,0],X[:,1], y , c=y, cmap="cool", alpha=1) 
+surf = ax.scatter(X[:,0],X[:,1], y , c=y, cmap='viridis', alpha=1) 
 ax.set_zlim(-0.10, 1.40)
 # plt.savefig("../runsAndAdditions/frankefigurenoise.png")
 ax.set_zticks([])

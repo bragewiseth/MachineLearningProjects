@@ -161,7 +161,7 @@ plt.savefig("../runsAndAdditions/heatmapCrossval.png")
 
 
 fix1 , ax1 = plt.subplots(figsize=(10,10))
-ax1.set_title("MSE for various k")
+ax1.set_title("OLS MSE for various k")
 ax1.set_xlabel("k",size=20)
 ax1.set_ylabel(r"MSE")
 ax1.plot(karray, bestk)

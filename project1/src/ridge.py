@@ -32,7 +32,7 @@ y_train_scaled = y_train - y_train_mean
 scaler = StandardScaler()
 
 for i, l in enumerate(lamdas):
-    model = Ridge( alpha=l )
+    model = Ridge( alpha=l , maxiter=10000)
     for degree in range(maxdegree):
         poly = PolynomialFeatures(degree+1, include_bias=False)
         X_train = poly.fit_transform(x_train)

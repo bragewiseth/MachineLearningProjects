@@ -11,7 +11,7 @@ import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
-from utils import FrankeFunction, readData , MSE, R2, OLS,  plotFrankefunction
+from utils import FrankeFunction, readData , OLS 
 
 
 def MSE(y_data,y_model):
@@ -40,7 +40,6 @@ testR2  = np.zeros(maxdegree)
 scaler = StandardScaler()
 y_train_mean = np.mean(y_train)
 model = OLS()
-
 for degree in range(maxdegree):
     
     poly = PolynomialFeatures(degree+1,include_bias=False)
@@ -52,10 +51,10 @@ for degree in range(maxdegree):
     for i in range(n_boostraps):
         x_, y_ = resample(x_train, y_train)
         y_ = y_ - y_train_mean
-        x_ = poly.transform(x_)
+        x_ = poly.fit_transform(x_)
         x_ = scaler.transform(x_)
         model.fit(x_, y_)
-        y_pred[:, i] = ( model.predict(X_test) + y_train_mean  )
+        y_pred[:, i] = model.predict(X_test) + y_train_mean
     polydegree[degree] = degree
     error[degree] = np.mean( np.mean((y_test.reshape(-1,1) - y_pred)**2, axis=1, keepdims=True) )
     bias[degree] = np.mean( (y_test - np.mean(y_pred, axis=1, keepdims=False))**2 )

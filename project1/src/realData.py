@@ -18,7 +18,7 @@ terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_1.tif'
 # terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_2.tif'))
 terrain = np.array(terrain)
 N = 1800
-n = 4000 
+n = 10000 
 terrain = terrain[:N,:N]
 x0sample = np.random.randint(0, N, n)
 x1sample = np.random.randint(0, N, n)
@@ -31,11 +31,11 @@ x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle
 
 
 lambdas = [0.00001 ,0.0001, 0.001, 0.01,0.1, 1 ] 
-degrees = [5,8,10,12,15,45]
+degrees = [5,8,10,15, 20,30,46]
 numlamdas = len(lambdas)
 numdegrees = len(degrees)
 
-numfolds = 7
+numfolds = 10
 kfold = KFold(n_splits = numfolds)
 scores_KFold_R2OLS = np.zeros((numdegrees, numlamdas, numfolds))
 scores_KFoldOLS = np.zeros((numdegrees, numlamdas, numfolds))
@@ -43,8 +43,7 @@ scores_KFold_R2Ridge = np.zeros((numdegrees, numlamdas, numfolds))
 scores_KFoldRidge = np.zeros((numdegrees, numlamdas, numfolds))
 scores_KFold_R2Lasso = np.zeros((numdegrees, numlamdas, numfolds))
 scores_KFoldLasso = np.zeros((numdegrees, numlamdas, numfolds))
-bias = np.zeros(numdegrees)
-variance = np.zeros(numdegrees)
+scores = np.zeros((numdegrees, numlamdas))
 scaler = StandardScaler()
 
 for j , degree in enumerate(degrees):
@@ -54,7 +53,7 @@ for j , degree in enumerate(degrees):
         lasso = Lasso(alpha = lmb ) 
         ridge = Ridge( alpha=lmb )
         k = 0
-        pred = np.empty((y_test.shape[0], numfolds))
+        pred = np.empty((y_test.ravel().shape[0], numfolds))
         for trainind, testind in kfold.split(x_train):
             x_train_fold, x_val_fold = x_train[trainind], x_train[testind]
             y_train_fold, y_val_fold = y_train[trainind], y_train[testind]
@@ -75,11 +74,9 @@ for j , degree in enumerate(degrees):
             scores_KFold_R2Ridge[j,i,k] = R2(y_val_fold, ridge.predict(X_val) + y_train_mean)
             # scores_KFoldLasso[j,i,k] = MSE(y_val_fold, lasso.predict(X_val) + y_train_mean)
             # scores_KFold_R2Lasso[j,i,k] = R2(y_val_fold, lasso.predict(X_val) + y_train_mean)
-            if ( i == 1 ):
-                pred[:,k] = (ridge.predict(X_test) + y_train_mean).ravel()
             k += 1
-    bias[j] = np.mean( (y_test - np.mean(pred, axis=1, keepdims=False))**2 )
-    variance[j] = np.mean( np.var(pred, axis=1, keepdims=True) )
+        scores[j,i] = MSE(y_test, ridge.predict(X_test) + y_train_mean)
+
 
 estimated_mse_KFoldOLS = np.mean(scores_KFoldOLS, axis = 2)
 estimated_mse_KFold_R2OLS = np.mean(scores_KFold_R2OLS, axis = 2)
@@ -88,7 +85,7 @@ estimated_mse_KFold_R2Ridge = np.mean(scores_KFold_R2Ridge, axis = 2)
 estimated_mse_KFoldLasso = np.mean(scores_KFoldLasso, axis = 2)
 estimated_mse_KFold_R2Lasso = np.mean(scores_KFold_R2Lasso, axis = 2)
 
-
+variance = np.var(scores_KFoldRidge, axis = 2)
 
 
 def findParmas(error,  R2score , polydegree, lamdas=None):
@@ -142,7 +139,20 @@ ax1.set_xlabel("Lambda")
 ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
 ax1.set_yticks(np.arange(len(degrees)), labels=degrees)
 ax1.set_ylabel(r"values of $\beta$")
-im = ax1.imshow(estimated_mse_KFoldRidge, cmap="plasma")
+im = ax1.imshow(estimated_mse_KFoldRidge + variance, cmap="plasma")
+cbar = ax1.figure.colorbar(im, ax=ax1) 
+cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
+# plt.savefig("../runsAndAdditions/tullll.png")
+plt.show()
+
+
+fix1 , ax1 = plt.subplots(figsize=(10,10))
+ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
+ax1.set_xlabel("Lambda")
+ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
+ax1.set_yticks(np.arange(len(degrees)), labels=degrees)
+ax1.set_ylabel(r"values of $\beta$")
+im = ax1.imshow(scores, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
 # plt.savefig("../runsAndAdditions/tullll.png")
@@ -150,17 +160,16 @@ plt.show()
 
 
 
-
-fig, ax = plt.subplots(figsize=(10, 10))
-ax.set_xlabel('Model complexity')
-ax.set_ylabel('Error')
-ax.set_title('Bias-variance tradeoff')
-# ax.plot(polydegree, estimated_mse_KFoldOLS[:,0],'--', label='Error', color='black')
-ax.plot(degrees, bias, label='bias', color='purple')
-ax.plot(degrees, variance, label='Variance', color='teal')
-# ax.set_yscale('log')
-plt.legend()
-# plt.savefig('../runsAndAdditions/bias-varianceRealData.png')
+fix1 , ax1 = plt.subplots(figsize=(10,10))
+ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
+ax1.set_xlabel("Lambda")
+ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
+ax1.set_yticks(np.arange(len(degrees)), labels=degrees)
+ax1.set_ylabel(r"values of $\beta$")
+im = ax1.imshow(variance, cmap="plasma")
+cbar = ax1.figure.colorbar(im, ax=ax1) 
+cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
+# plt.savefig("../runsAndAdditions/tullll.png")
 plt.show()
 
 

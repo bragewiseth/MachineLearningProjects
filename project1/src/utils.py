@@ -175,7 +175,7 @@ class OLS:
 
 
     def fit(self,X,y):
-        self.beta = np.linalg.inv(X.T @ X) @ X.T @ y
+        self.beta = np.linalg.pinv(X.T @ X) @ X.T @ y
 
 
     def predict(self,X):
