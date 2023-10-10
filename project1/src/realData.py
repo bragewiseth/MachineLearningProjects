@@ -17,13 +17,16 @@ ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_1.tif'))
 # terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_2.tif'))
 terrain = np.array(terrain)
+print(terrain.shape)
 N = 1800
 n = 1000 
 terrain = terrain[:N,:N]
 x0sample = np.random.randint(0, N, n)
 x1sample = np.random.randint(0, N, n)
 y = terrain[x0sample,x1sample].ravel().reshape(-1,1)
+print(y.shape)
 X = np.concatenate((x0sample.reshape(-1,1), x1sample.reshape(-1,1)), axis=1)
+print(X.shape)
 
 
 # we introduce a final test set since we have more data, we can then find bias and variance
