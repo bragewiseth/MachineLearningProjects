@@ -19,7 +19,7 @@ terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_1.tif'
 terrain = np.array(terrain)
 print(terrain.shape)
 N = 1800
-n = 10000 
+n = 1000 
 terrain = terrain[:N,:N]
 x0sample = np.random.randint(0, N, n)
 x1sample = np.random.randint(0, N, n)
@@ -116,9 +116,9 @@ findParmas(estimated_mse_KFoldLasso, estimated_mse_KFold_R2Lasso, degrees, lambd
 mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
-    'font.size': '16',
-    'xtick.labelsize': '14',
-    'ytick.labelsize': '14',
+    'font.size': '20',
+    'xtick.labelsize': '18',
+    'ytick.labelsize': '18',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
@@ -142,11 +142,10 @@ ax1.set_xlabel("Lambda")
 ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
 ax1.set_yticks(np.arange(len(degrees)), labels=degrees)
 ax1.set_ylabel(r"values of $\beta$")
-im = ax1.imshow(estimated_mse_KFoldRidge + variance, cmap="plasma")
+im = ax1.imshow(estimated_mse_KFoldRidge, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
-# plt.savefig("../runsAndAdditions/tullll.png")
-plt.show()
+plt.savefig("../runsAndAdditions/heatmapRealData.png")
 
 
 fix1 , ax1 = plt.subplots(figsize=(10,10))
@@ -158,8 +157,7 @@ ax1.set_ylabel(r"values of $\beta$")
 im = ax1.imshow(scores, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
-# plt.savefig("../runsAndAdditions/tullll.png")
-plt.show()
+plt.savefig("../runsAndAdditions/heatmapScoresRealData.png")
 
 
 
@@ -172,8 +170,7 @@ ax1.set_ylabel(r"values of $\beta$")
 im = ax1.imshow(variance, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
-# plt.savefig("../runsAndAdditions/tullll.png")
-plt.show()
+plt.savefig("../runsAndAdditions/heatmapVariance.png")
 
 
 ols = OLS()
@@ -189,7 +186,6 @@ predict = ols.predict(X_lowres) + y_train_mean
 
 fig = plt.figure(figsize=(10,10))
 ax = fig.add_subplot(1,1,1,projection='3d')
-ax.set_title("ff", fontsize=16)
     # Plot the surface.
 predict[predict>3000]= np.nan
 predict[predict<-1000]= np.nan
@@ -197,16 +193,23 @@ surf = ax.plot_surface(x_mesh_lowres, y_mesh_lowres, predict.reshape(200,200), c
 
 
 # Customize the z axis.
-ax.set_zlim(0, 5000)
+ax.set_zlim(0, 4000)
 ax.set_xlabel('m')
 ax.set_ylabel('m')
-ax.set_zlabel('km')
-ax.zaxis.set_major_locator(LinearLocator(10))
-ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+ax.set_zlabel('m')
+# ax.zaxis.set_major_locator(LinearLocator(10))
+# ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
+ax.set_zticks([])
+ax.view_init(35, -35)
+
+surf = fig.colorbar(surf, shrink=0.5, aspect=5)
+    # ax.zaxis.set_major_locator(LinearLocator(5))
+    # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 fig.colorbar(surf, shrink=0.5, aspect=5)
 # Add a color bar which maps values to colors.
-plt.show()
+plt.savefig("../runsAndAdditions/realdataPredict3D.png")
+
 
 # Show the terrain
 
@@ -221,25 +224,31 @@ ax.set_title("ff", fontsize=16)
 surf = ax.plot_surface(x_mesh, y_mesh, terrain, cmap='plasma', linewidth=0, antialiased=False)
 
 # customize the z axis.
-ax.set_zlim(0, 5000)
+ax.set_zlim(0, 4000)
 ax.set_xlabel('m')
 ax.set_ylabel('m')
-ax.set_zlabel('km')
-ax.zaxis.set_major_locator(LinearLocator(10))
-ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+ax.set_zlabel('m')
+# ax.zaxis.set_major_locator(LinearLocator(10))
+# ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+ax.set_zticks([])
+ax.view_init(35, -35)
 
-# fig.colorbar(surf, shrink=0.5, aspect=5)
+surf = fig.colorbar(surf, shrink=0.5, aspect=5)
+    # ax.zaxis.set_major_locator(LinearLocator(5))
+    # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+fig.colorbar(surf, shrink=0.5, aspect=5)
+fig.colorbar(surf, shrink=0.5, aspect=5)
 # add a color bar which maps values to colors.
-plt.show()
+plt.savefig("../runsAndAdditions/realdata3D.png")
 
 
 
 plt.figure()
-plt.title('predicition')
 plt.imshow(predict.reshape(200,200), cmap='plasma')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.show()
+plt.savefig("../runsAndAdditions/realdataPredictMap.png")
+
 
 
 
@@ -248,4 +257,4 @@ plt.title('terrain over norway 1')
 plt.imshow(terrain, cmap='plasma')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.show()
+plt.savefig("../runsAndAdditions/realdataMap.png")
