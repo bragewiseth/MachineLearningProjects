@@ -15,8 +15,8 @@ mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
     'font.size': '20',
-    'xtick.labelsize': '18',
-    'ytick.labelsize': '18',
+    'xtick.labelsize': '20',
+    'ytick.labelsize': '20',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
@@ -38,6 +38,8 @@ plt.savefig("../runsAndAdditions/trueFunction.png")
 
 X,y = readData("../data/syntheticData.csv")
 fig = plt.figure(figsize=(8,8))
+fig.tight_layout()
+
 # fig.tight_layout()
 ax = fig.add_subplot(projection='3d')
 

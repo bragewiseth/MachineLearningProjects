@@ -181,8 +181,9 @@ X_lowres = poly.fit_transform(X_lowres)
 X_lowres = scaler.transform(X_lowres)
 predict = ols.predict(X_lowres) + y_train_mean
 
-fig = plt.figure(figsize=(10,10))
+fig = plt.figure(figsize=(8,8))
 ax = fig.add_subplot(1,1,1,projection='3d')
+fig.tight_layout()
     # Plot the surface.
 predict[predict>3000]= np.nan
 predict[predict<-1000]= np.nan
@@ -190,21 +191,21 @@ surf = ax.plot_surface(x_mesh_lowres, y_mesh_lowres, predict.reshape(200,200), c
 
 
 # Customize the z axis.
-ax.set_zlim(0, 4000)
-ax.set_xlabel('m')
-ax.set_ylabel('m')
+ax.set_zlim(0, 3000)
+ax.set_xlabel('(m)')
+ax.set_ylabel('(m)')
 ax.set_xticks(np.arange(0,1800,4))
 ax.set_yticks(np.arange(0,1800,4))
 # ax.zaxis.set_major_locator(LinearLocator(10))
 # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
 ax.set_zticks([])
-ax.view_init(35, -35)
+ax.view_init(35, -45)
 
     # ax.zaxis.set_major_locator(LinearLocator(5))
     # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 cbar = fig.colorbar(surf, shrink=0.5, aspect=5)
-cbar.set_label('m', rotation=270)
+cbar.set_label('(m)', rotation=270)
 # Add a color bar which maps values to colors.
 plt.savefig("../runsAndAdditions/realdataPredict3D.png")
 
@@ -215,43 +216,45 @@ plt.savefig("../runsAndAdditions/realdataPredict3D.png")
 
 
 
-fig = plt.figure(figsize=(10,10))
+fig = plt.figure(figsize=(8,8))
 ax = fig.add_subplot(1,1,1,projection='3d')
+fig.tight_layout()
     # plot the surface.
 surf = ax.plot_surface(x_mesh, y_mesh, terrain, cmap='plasma', linewidth=0, antialiased=False)
 
 # customize the z axis.
 ax.set_zlim(0, 3000)
-ax.set_xlabel('m')
-ax.set_ylabel('m')
-ax.set_zlabel('m')
+ax.set_xlabel('(m)')
+ax.set_ylabel('(m)')
 ax.set_xticks(np.linspace(0,1800,4))
 ax.set_yticks(np.linspace(0,1800,4))
 # ax.zaxis.set_major_locator(LinearLocator(10))
 # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 ax.set_zticks([])
-ax.view_init(35, -35)
+ax.view_init(35, -45)
 
     # ax.zaxis.set_major_locator(LinearLocator(5))
     # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 cbar = fig.colorbar(surf, shrink=0.5, aspect=5)
-cbar.set_label('m', rotation=270)
+cbar.set_label('(m)', rotation=270)
 # add a color bar which maps values to colors.
 plt.savefig("../runsAndAdditions/realdata3D.png")
 
 
 
-plt.figure()
+fig = plt.figure(figsize=(8,8))
+fig.tight_layout()
 plt.imshow(predict.reshape(200,200), cmap='plasma')
-plt.xlabel('x')
-plt.ylabel('y')
+plt.xlabel('(m)')
+plt.ylabel('(m)')
 plt.savefig("../runsAndAdditions/realdataPredictMap.png")
 
 
 
 
-plt.figure()
+fig = plt.figure(figsize=(8,8))
+fig.tight_layout()
 plt.imshow(terrain, cmap='plasma')
-plt.xlabel('x')
-plt.ylabel('y')
+plt.xlabel('(m)')
+plt.ylabel('(m)')
 plt.savefig("../runsAndAdditions/realdataMap.png")
