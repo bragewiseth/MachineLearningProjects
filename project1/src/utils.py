@@ -75,15 +75,15 @@ def plotFrankefunction(xx,yy, z, figsize=(10,10), subplot=(1,1,1),title=None ):
     fig = plt.figure(figsize=figsize)
     fig.tight_layout()
     ax = fig.add_subplot(subplot[0],subplot[1], subplot[2],projection='3d')
-    ax.set_title(title, fontsize=16)
+    # ax.set_title(title, fontsize=16)
         # Plot the surface.
-    surf = ax.plot_surface(xx, yy, z, cmap="plasma", linewidth=0, antialiased=False,alpha=0.8)
+    surf = ax.plot_surface(xx, yy, z, cmap=cm.coolwarm, linewidth=0, antialiased=False,alpha=0.8)
 
     ax.set_zlim(-0.10, 1.40)
     # remove z tick numbers but keep grid
     ax.set_zticks([])
-
-
+    ax.view_init(35, -35)
+    #
     # ax.zaxis.set_major_locator(LinearLocator(5))
     # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 

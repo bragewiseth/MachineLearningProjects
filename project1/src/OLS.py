@@ -87,34 +87,33 @@ print("confidence interval for beta when degree of polynomial = 5: ", np.diag(np
 mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
-    'font.size': '16',
-    'xtick.labelsize': '14',
-    'ytick.labelsize': '14',
+    'font.size': '20',
+    'xtick.labelsize': '18',
+    'ytick.labelsize': '18',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
 
 fix1 , ax1 = plt.subplots(figsize=(10,10))
-ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
 ax1.set_xlabel("Degree")
 ax1.set_ylabel(r"values of $\beta$")
 ax1.set(xticks=polydegree)
 ax1.plot(polydegree, betas)
 plt.savefig("../runsAndAdditions/betaOverOrderOLS.png")
 
-fig, ax = plt.subplots(1,2, figsize=(12,6))
-fig.suptitle("OLS")
+fig, ax = plt.subplots(1,2, figsize=(15,6))
+# fig.tight_layout()
 ax[0].set_xlabel("Degree")
 ax[1].set_xlabel("Degree")
 ax[1].set_ylabel("R2")
 ax[0].set_ylabel("MSE")
-ax[0].set_title("MSE as a function of complexity")
+# ax[0].set_title("MSE")
 ax[0].set(xticks=polydegree)
 ax[1].set(xticks=polydegree)
 ax[0].plot(polydegree, testError, label="test")
 ax[0].plot(polydegree, trainError, label="train")
 ax[0].legend()
-ax[1].set_title("R2 as a function of complexity")
+# ax[1].set_title("R2")
 ax[1].plot(polydegree, testR2, label="test")
 ax[1].plot(polydegree, trainR2, label="train")
 ax[1].legend()
@@ -129,4 +128,4 @@ xx,yy = np.meshgrid(x,y)
 poly = PolynomialFeatures(5,include_bias=False)
 z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
 plotFrankefunction(xx,yy,z.reshape(100,100), (8,8), (1,1,1) ,"Prediction using OLS")
-plt.show()
+plt.savefig("../runsAndAdditions/predictionOLS.png")
