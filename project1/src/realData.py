@@ -114,8 +114,8 @@ mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
     'font.size': '20',
-    'xtick.labelsize': '18',
-    'ytick.labelsize': '18',
+    'xtick.labelsize': '20',
+    'ytick.labelsize': '20',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
@@ -193,17 +193,18 @@ surf = ax.plot_surface(x_mesh_lowres, y_mesh_lowres, predict.reshape(200,200), c
 ax.set_zlim(0, 4000)
 ax.set_xlabel('m')
 ax.set_ylabel('m')
-ax.set_zlabel('m')
+ax.set_xticks(np.arange(0,1800,4))
+ax.set_yticks(np.arange(0,1800,4))
 # ax.zaxis.set_major_locator(LinearLocator(10))
 # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
 ax.set_zticks([])
 ax.view_init(35, -35)
 
-surf = fig.colorbar(surf, shrink=0.5, aspect=5)
     # ax.zaxis.set_major_locator(LinearLocator(5))
     # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
-fig.colorbar(surf, shrink=0.5, aspect=5)
+cbar = fig.colorbar(surf, shrink=0.5, aspect=5)
+cbar.set_label('m', rotation=270)
 # Add a color bar which maps values to colors.
 plt.savefig("../runsAndAdditions/realdataPredict3D.png")
 
@@ -216,25 +217,25 @@ plt.savefig("../runsAndAdditions/realdataPredict3D.png")
 
 fig = plt.figure(figsize=(10,10))
 ax = fig.add_subplot(1,1,1,projection='3d')
-ax.set_title("ff", fontsize=16)
     # plot the surface.
 surf = ax.plot_surface(x_mesh, y_mesh, terrain, cmap='plasma', linewidth=0, antialiased=False)
 
 # customize the z axis.
-ax.set_zlim(0, 4000)
+ax.set_zlim(0, 3000)
 ax.set_xlabel('m')
 ax.set_ylabel('m')
 ax.set_zlabel('m')
+ax.set_xticks(np.linspace(0,1800,4))
+ax.set_yticks(np.linspace(0,1800,4))
 # ax.zaxis.set_major_locator(LinearLocator(10))
 # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 ax.set_zticks([])
 ax.view_init(35, -35)
 
-surf = fig.colorbar(surf, shrink=0.5, aspect=5)
     # ax.zaxis.set_major_locator(LinearLocator(5))
     # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
-fig.colorbar(surf, shrink=0.5, aspect=5)
-fig.colorbar(surf, shrink=0.5, aspect=5)
+cbar = fig.colorbar(surf, shrink=0.5, aspect=5)
+cbar.set_label('m', rotation=270)
 # add a color bar which maps values to colors.
 plt.savefig("../runsAndAdditions/realdata3D.png")
 
@@ -250,7 +251,6 @@ plt.savefig("../runsAndAdditions/realdataPredictMap.png")
 
 
 plt.figure()
-plt.title('terrain over norway 1')
 plt.imshow(terrain, cmap='plasma')
 plt.xlabel('x')
 plt.ylabel('y')
