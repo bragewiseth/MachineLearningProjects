@@ -32,7 +32,7 @@ y_train_scaled = y_train - y_train_mean
 scaler = StandardScaler()
 
 for i, l in enumerate(lamdas):
-    model = Ridge( alpha=l , maxiter=10000)
+    model = Ridge( alpha=l )
     for degree in range(maxdegree):
         poly = PolynomialFeatures(degree+1, include_bias=False)
         X_train = poly.fit_transform(x_train)
@@ -80,9 +80,9 @@ print(
 mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
-    'font.size': '16',
-    'xtick.labelsize': '14',
-    'ytick.labelsize': '14',
+    'font.size': '20',
+    'xtick.labelsize': '20',
+    'ytick.labelsize': '20',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
@@ -160,5 +160,5 @@ xx,yy = np.meshgrid(x,y)
 poly = PolynomialFeatures(5,include_bias=False)
 z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
 plotFrankefunction(xx,yy,z.reshape(100,100), (8,8), (1,1,1) , "Prediction using ridge")
-plt.show()
+plt.savefig("../runsAndAdditions/predictionRidge.png")
 

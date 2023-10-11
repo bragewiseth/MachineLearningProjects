@@ -322,9 +322,21 @@ A negative R2 score indicates that the model is worse than just predicting the m
 By minimizing the MSE, we find the coefficients that minimizes the residual sum of squares. This is done by taking the derivative of the
 MSE with respect to the coefficients $\beta_j$ and setting it equal to zero. This gives us the optimal parameters
 $$
-\hat{\mathbf{\beta}}_{\mathrm{OLS}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}
+\hat{\boldsymbol{\beta}}_{\mathrm{OLS}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}
 $$
-
+\begin{center}
+   The derivation of this can be found in appendix \ref{app:OptimalBeta} 
+\end{center}
+We can then use these parameters to predict the response $\tilde{\mathbf{y}}$ for a new set of predictors $\mathbf{X}$.
+The predictions is as previously mentioned a linear combination of the predictors and the coefficients.
+$$
+\tilde{\mathbf{y}} = \mathbf{X}\boldsymbol{\beta}
+$$
+Wich is a compact way of writing
+$$
+\tilde{y}_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_{p-1} x_{i,p-1}
+$$
+where $p$ is the number of predictors.\\
 
 \subsection{Ridge \& Lasso Regression}
 \label{sec:ridge}
@@ -352,8 +364,8 @@ $$
 C(\mathbf{\beta}) = \frac{1}{n}\sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2 + \lambda\sum_{j=0}^{p-1}\vert\beta_j\vert
 =\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2 + \lambda\vert\vert\mathbf{\beta}\vert\vert_1
 $$
-
-
+We won't be utilizing our custom Lasso implementation and derivation; instead, 
+we will opt for the Lasso implementation provided by the Scikit-Learn library.
 
 
 \subsection{Scaling}
@@ -574,7 +586,7 @@ By doing so we can show that the mean squared error can be written as the follow
 \end{align*}
 
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \begin{minipage}[!t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/bias-variance1.png}
@@ -599,7 +611,7 @@ have low variance, and vice versa. As model designers, we have the flexibility t
 Depending on our priorities, whether we prioritize lower bias or lower variance, we can select an appropriate 
 model to strike the right balance for our specific application.
 
-\begin{figure}[h]
+\begin{figure}[!h]
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/bias-variance2.png}
     \end{center}
@@ -616,7 +628,8 @@ Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint 
 
 
 
-
+\section{Conclusion}
+\label{sec:conclusion}
 
 
 
@@ -659,97 +672,61 @@ Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint 
 
 \phantomsection%
 \addcontentsline{toc}{subsection}{Analytical Least Squares}
-\subsection*{Derivation of The Optimal Parameters $\beta$}
+\subsection*{Derivation of The Optimal Parameters $\boldsymbol{\beta}$}
 \label{app:OptimalBeta}
 
-OLS
-
-The expression for the standard Mean Squared Error (MSE) which we used to define our cost function and the equations for the ordinary least squares (OLS) method, was given by the
-optimization problem
+In Section~\ref{sec:ols} we ended up with our optimal parmeters $\boldsymbol{\beta}$ using the MSE as our cost function, in this section we will go into detail about our derivations.
+The parameters $\boldsymbol{\beta}$ are found by minimizing our cost function (the MSE), this is done by taking the derivative of the MSE with respect to the coefficients $\beta_j$ and setting it equal to zero.
 
 $$
 {\displaystyle \min_{\boldsymbol{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n}\sum_{i=0}^{n-1}\left(y_i-\tilde{y}_i\right)^2=\frac{1}{n}\vert\vert \boldsymbol{y}-\boldsymbol{X}\boldsymbol{\beta}\vert\vert_2^2
+{\mathbb{R}}^{p}}}\frac{1}{n}\sum_{i=0}^{n-1}\left(y_i-\tilde{y}_i\right)^2
 $$
 
-$$
-{\displaystyle \min_{\mathbf{\beta}\in {\mathbb{R}}^{p}}}\frac{1}{n}\left\{\left(\mathbf{y}-\mathbf{X}\mathbf{\beta}\right)^T\left(\mathbf{y}-\mathbf{X}\mathbf{\beta}\right)\right\}.
-$$
+
 
 can also be written as 
 
-$$
-{\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n}\sum_{i=0}^{n-1}\left(y_i-\tilde{y}_i\right)^2=\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2,
-$$
-
-
-$$
-{\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2
-$$
-
+\begin{align*}
+    &{\displaystyle \min_{\mathbf{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\boldsymbol{\beta}\vert\vert_2^2\\
+    & = \frac{2}{n}\mathbf{X}^T\left(\mathbf{X}\boldsymbol{\beta}-\mathbf{y}\right) = 0\\
+    & = \frac{2}{n}\left(\mathbf{X}^T\mathbf{X}\boldsymbol{\beta}-\mathbf{X}^T\mathbf{y}\right) = 0\\
+    \boldsymbol{\beta} & = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y} 
+\end{align*}
 
 $$
-\hat{\mathbf{\beta}}_{\mathrm{OLS}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y},
+\hat{\boldsymbol{\beta}}_{\mathrm{OLS}} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y},
 $$
-
-
-
-Ridge
-
-
+For the ridge case we have the following cost function
+$$
+{\displaystyle \min_{\boldsymbol{\beta}\in
+{\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\boldsymbol{\beta}\vert\vert_2^2+\lambda\vert\vert \boldsymbol{\beta}\vert\vert_2^2
+$$
 
 We know that 
 $$
 {\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n} \vert\vert\mathbf{y}- \mathbf{X}\mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \mathbf{X}^T\mathbf{X}\mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y}
+{\mathbb{R}}^{p}}}\frac{1}{n} \vert\vert\mathbf{y}- \mathbf{X}\boldsymbol{\beta}\vert\vert_2^2 = \frac{2}{n} \mathbf{X}^T\mathbf{X}\boldsymbol{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y}
 $$
 
-The minimization of ridge addition alone is
+We can also clearly see that
 $${\displaystyle \min_{\mathbf{\beta}\in
 {\mathbb{R}}^{p}}}\frac{1}{n} \lambda \vert\vert \mathbf{\beta}\vert\vert_2^2 = \frac{2}{n} \lambda \mathbf{\beta}
 $$
 
-adding these two we get
-$$
-    \frac{\partial \left[\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2\right]}
-    {\partial{\mathbf{\beta}}} = 0 
-    = \frac{2}{n}\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)
-    \mathbf{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y} \implies \beta = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y}
-$$
-
-
-$$
-{\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2
-$$
+Adding these two we get
+\begin{align*}
+   & \frac{\partial \left[\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\boldsymbol{\beta}\vert\vert_2^2+\lambda\vert\vert \boldsymbol{\beta}\vert\vert_2^2\right]}
+    {\partial{\mathbf{\beta}}} = 0\\
+                               &= \frac{2}{n}\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)
+                               \boldsymbol{\beta}-\frac{2}{n}\mathbf{X}^T\mathbf{y} \implies \boldsymbol{\beta} = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y}
+\end{align*}
 
 
 
 $$
-{\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n}\sum_{i=0}^{n-1}\left(y_i-\tilde{y}_i\right)^2=\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2,
-$$
-
-
-
-
-$$
-{\displaystyle \min_{\mathbf{\beta}\in
-{\mathbb{R}}^{p}}}\frac{1}{n}\vert\vert \mathbf{y}-\mathbf{X}\mathbf{\beta}\vert\vert_2^2+\lambda\vert\vert \mathbf{\beta}\vert\vert_2^2
-$$
-
-
-
-
-
-
-
-
-
-$$
-\hat{\mathbf{\beta}}_{\mathrm{Ridge}} = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y}
+\hat{\boldsymbol{\beta}}_{\mathrm{Ridge}} = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{y}
 $$
 
 
@@ -889,19 +866,30 @@ $$
 \mathbb{E}[\mathbf{\hat{\beta}}^{\mathrm{Ridge}}] = \mathbb{E}\left[ \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T\mathbf{y}\right]=\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T \mathbb{E}[ \mathbf{Y}]=\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta}
 $$
 
-
+$$
+&\mbox{Var}(\mathbf{\hat{\beta}}^{\mathrm{Ridge}})  = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})] [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})]^{T} \}
+$$
+$$
+\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1} := \mathbf{A} 
+$$
 \begin{align*}
-Var(\mathbf{\hat{\beta}}^{\mathrm{Ridge}}) & = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})] [\mathbf{\beta} - \mathbb{E}(\mathbf{\beta})]^{T} \}
-\\
-& = \mathbb{E} \left\{ \left[\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T\mathbf{y} - \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta}\right]
+& = \mathbb{E} \left\{ \left[\mathbf{A}\mathbf{X}^T\mathbf{y} - \mathbf{A}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta}\right]
  \, 
- \left[\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T\mathbf{y} - \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta}\right]^{T} \right\}
+\left[\mathbf{A}\mathbf{X}^T\mathbf{y} - \mathbf{A}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta}\right]^{T} \right\}
  \\
- & = \mathbb{E} \left\{ \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T \, \mathbf{y} \, \mathbf{y}^{T} \, \mathbf{X} \, \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1} - \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta} \, \mathbf{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1} \right\}
+& = \mathbb{E} \left\{ \mathbf{A}\mathbf{X}^T \, \mathbf{y} \, \mathbf{y}^{T} \, \mathbf{X} \, \mathbf{A} - \mathbf{A}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta} \, \mathbf{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \mathbf{A} \right\}
  \\
-& =  \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1} - \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta} \, \mathbf{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}
+& =  \mathbf{A}\mathbf{X}^T \, \mathbb{E} \{ \mathbf{y} \, \mathbf{y}^{T} \} \, \mathbf{X} \, \mathbf{A} - \mathbf{A}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta} \, \mathbf{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \mathbf{A}
 \\
-& = \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T \, \left(\mathbf{X} \, \mathbf{\beta} \, \mathbf{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \mathbf{I}\right) \, \mathbf{X} \, \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1} - \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta} \, \mathbf{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}
+& = \mathbf{A}\mathbf{X}^T \, \left(\mathbf{X} \, \mathbf{\beta} \, \mathbf{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \mathbf{I}\right) \, \mathbf{X} \, \mathbf{A} - \mathbf{A}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta} \, \mathbf{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \mathbf{A}
+\\
+& = \boldsymbol{A}\boldsymbol{X}^T \, \left(\mathbf{X} \, \boldsymbol{\beta} \, \boldsymbol{\beta}^{T} \,  \mathbf{X}^{T} + \sigma^2 \mathbf{I}\right) \, \mathbf{X} \, \boldsymbol{A} - \boldsymbol{A}\left(\mathbf{X}^T  \mathbf{X}\right)\boldsymbol{\beta} \, \boldsymbol{\beta}^{T} \left(\mathbf{X}^T  \mathbf{X}\right) \boldsymbol{A}
+\\
+& = \boldsymbol{A}\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{\beta}\boldsymbol{\beta}^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{A} + \sigma^2\boldsymbol{A}\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{A} - \boldsymbol{A}\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{\beta}\boldsymbol{\beta}^T\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{A}
+\\
+& = \sigma^2\boldsymbol{A}\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{A} 
+\\
+& = \: \sigma^2[  \mathbf{X}^{T} \mathbf{X} + \lambda \mathbf{I} ]^{-1}  \mathbf{X}^{T}\mathbf{X} \{ [  \mathbf{X}^{\top} \mathbf{X} + \lambda \mathbf{I} ]^{-1}\}^{T}
 \end{align*}
 
 
