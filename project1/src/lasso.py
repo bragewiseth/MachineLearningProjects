@@ -22,7 +22,7 @@ from utils import MSE, R2, readData, printGrid, plotFrankefunction
 
 maxdegree = 5
 X, y  = readData("../data/syntheticData.csv")
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9282)
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
 
 numfeatures = int(((maxdegree+1)**2  + (maxdegree-1)) / 2)
 numlamdas = 50
@@ -66,9 +66,9 @@ printGrid(trainError, testError, trainR2, testR2, polydegree, lamdas)
 mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
-    'font.size': '16',
-    'xtick.labelsize': '14',
-    'ytick.labelsize': '14',
+    'font.size': '20',
+    'xtick.labelsize': '20',
+    'ytick.labelsize': '20',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
@@ -79,7 +79,6 @@ ax1.set_xscale("log")
 ax1.set_ylabel(r"$\beta$",size=24)
 ax1.set_xlabel(r"$\lambda$", size=24)
 ax1.plot(lamdas, betas[4,:,:int(((polydegree[4]+1)**2  + (polydegree[4]-1)) / 2)])
-ax1.set_title(r"Lasso - Fitting of 5th order polynomial using range of $\lambda$")
 
 
 
@@ -94,7 +93,6 @@ ax.plot(lamdas, testR2[4], label="Test")
 ax.set_xlabel(r"$\lambda$",size=24)
 ax.set_ylabel(r"$R^2$",size=24)
 ax.legend()
-ax.set_title(r"Lasso - Fitting of 5th order polynomial using range of $\lambda$")
 
 plt.savefig("../runsAndAdditions/R2OverLambdaLasso5.png")
 
@@ -146,7 +144,7 @@ xx,yy = np.meshgrid(x,y)
 poly = PolynomialFeatures(5,include_bias=False)
 z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
 plotFrankefunction(xx,yy,z.reshape(100,100), (8,8), (1,1,1) , "Prediction using lasso")
-plt.show()
+plt.savefig("../runsAndAdditions/predictionLasso.png")
 
 
 

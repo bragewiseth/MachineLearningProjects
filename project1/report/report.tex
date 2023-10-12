@@ -39,9 +39,7 @@
 \newtcbox{\deloppg}[1][black]{on line, arc=2pt,colback=#1!10!white,colframe=white, before upper={\rule[-2pt]{0pt}{0pt}},boxrule=0pt, boxsep=0pt,left=.49\linewidth,right=.49\linewidth,top=4pt,bottom=3pt}
 
 
-\newcommand\blfootnote[1]{ \begingroup \renewcommand\thefootnote{}\footnote{#1} \addtocounter{footnote}{-1} \endgroup }
-% \definecolor{antwhite}{HTML}{323333}
-\newcommand{\code}[3][]{\codebox{\mintinline[#1]{#2}{#3}}}
+
 
 
 
@@ -65,7 +63,10 @@
 
 \newcommand{\dataset}{{\cal D}}
 \newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
-
+\newtcolorbox[blend into=tables]{mytable}[2][]{float=htb, halign=center,  title={#2}, every float=\centering, #1 }
+\newcommand\blfootnote[1]{ \begingroup \renewcommand\thefootnote{}\footnote{#1} \addtocounter{footnote}{-1} \endgroup }
+% \definecolor{antwhite}{HTML}{323333}
+\newcommand{\code}[3][]{\codebox{\mintinline[#1]{#2}{#3}}}
 % Heading arguments are {volume}{year}{pages}{submitted}{published}{author-full-names}
 
 % \jmlrheading{1}{2000}{1-48}{4/00}{10/00}{https://github.com/bragewiseth/MachineLearningProjects}
@@ -269,7 +270,12 @@ real topographic dataset from Norway see Figure~\ref{fig:realdata3D} and Figure~
 However, due to limited computational resources and the time it takes to run our program, we only sample 
 40000 - 50000 points from about 3 million points. For both datasets we split the data is into 
 training and testing sets, with the testing set comprising twenty percent. For some cases when running
-resampling techniques we also split the data into training, validation and testing sets. 
+resampling techniques we also split the data into training, validation and testing sets.
+
+As we hinted at in the introduction, we will try to fit a polynomial to both datasets. That means that our input data will be 
+the $x$ and $y$ values as well as higher order terms $x^2$, $y^2$, $xy$, $x^3$, $y^3$, $x^2y$, $xy^2$ and so on.
+We have chosen to not include the first term of the polynomial, which is just $1$. This is because we will be scaling our data,
+more on this in Section~\ref{sec:scaling}.\\
 
 
 
@@ -373,12 +379,9 @@ we will opt for the Lasso implementation provided by the Scikit-Learn library.
 \label{sec:scaling}
 
 
-\begin{table}[!h]
-\caption{unscaled sample design matrix fitting one-dimensional polynomial of degree 5}
-\label{tab:unscaled}
+\begin{mytable}[float=!h, label=tab:unscaled]{Unscaled design matrix fitting one-dimensional polynomial of degree 5}
 \tt
 \centering
-% \resizebox{0.6\textwidth}{!}{%
 \begin{tabular}{llllll}
     1. &     0.  &    0.  &    0.   &   0.   &   0.     \\
     1. &     0.25 &   0.0625 & 0.01562& 0.00391& 0.00098\\
@@ -386,14 +389,10 @@ we will opt for the Lasso implementation provided by the Scikit-Learn library.
     1.   &   0.75  &  0.5625 & 0.42188 &0.31641& 0.2373 \\
     1.  &    1.   &   1.  &    1.  &    1.    &  1.
 \end{tabular}%
-% }
-\end{table}
-\begin{table}[!h]
-\caption{scaled sample design matrix fitting one-dimensional polynomial of degree 5}
-\label{tab:scaled}
+\end{mytable}
+\begin{mytable}[float=!h,label=tab:scaled]{Scaled design matrix fitting one-dimensional polynomial of degree 5}
 \tt
 \centering
-% \resizebox{0.6\textwidth}{!}{%
 \begin{tabular}{llllll}
      0. &     -1.41421& -1.0171&  -0.83189& -0.728 &  -0.66226\\
      0.  &    -0.70711& -0.84758& -0.7903 & -0.71772& -0.65971\\
@@ -401,37 +400,34 @@ we will opt for the Lasso implementation provided by the Scikit-Learn library.
      0.  &     0.70711&  0.50855&  0.29116 & 0.10488& -0.0433 \\
      0.  &     1.41421&  1.69516 & 1.83016 & 1.90431&  1.94603
 \end{tabular}%
-% }\\
-\end{table}
-\begin{table}[!h]
-\caption{}
-\label{tab:scaling}
-\vspace{1mm}
+\end{mytable}
+\begin{mytable}[float=!h,label=tab:scaling]{MSE for scaled and unscaled data}
 \centering
-\resizebox{0.7\textwidth}{!}{%
 \begin{tabular}{ll}
 mse for ols on unscaled data:    &   \texttt{0.010349396022903145} \\
 mse for ols on scaled data:      &   \texttt{0.010349396024145656} \\
 mse for ridge on unscaled data:  &   \texttt{0.02106077418650843} \\
 mse for ridge on scaled data:    &   \texttt{0.01782525371566323}
 \end{tabular}%
-}
-\end{table}
+\end{mytable}
 Consider Table~\ref{tab:unscaled}, Table~\ref{tab:scaled} and Table~\ref{tab:scaling}. At first glance, 
 there isn't a big difference between the unscaled data and the scaled data. 
 This is because the original data was already close to having a mean close to zero and not being spread out too much. 
 So, you might think that scaling the data isn't necessary.
-However, when we introduce polynomial terms, we notice that some values in xunscaled become extremely small, for example, 
-0.15 turns into 0.00001. This means that the columns of xunscaled have vastly different orders of magnitude, and this calls 
+However, when we introduce polynomial terms, we notice that some values in xunscaled become extremely small. As an example, 
+if we take $x=0.15$ and want to find some term $x^6$ that becomes roughly $0.00001$. This means that the columns of xunscaled have vastly different orders of magnitude, and this calls 
 for scaling to bring them back to a similar scale.
-If we don't scale, the coefficients $(\boldsymbol{\beta})$ can range widely, from -50 to 48. But when we scale the data, this range narrows 
-down to -10 to 13. Now, this alone might not seem like a strong reason to scale the data, especially when we use plain 
+If we don't scale, the coefficients $(\boldsymbol{\beta})$ can range widely, from $\pm 50$ in this example. 
+But when we scale the data, this range narrows 
+down to $\pm 10$. Now, this alone might not seem like a strong reason to scale the data, especially when we use plain 
 linear regression (OLS), as it doesn't change the Mean Squared Error (MSE) much.\\
-However, things change when we use Ridge regression. In Ridge, the regularization cost depends on the magnitude of βi.
-With unscaled data, where βi varies a lot, some coefficients get penalized more than others. This results in a 
+However, things change when we use Ridge regression. In Ridge, the regularization cost depends on the magnitude of $\beta_i$.
+With unscaled data, where $\beta_i$ varies a lot, some coefficients get penalized more than others. This results in a 
 significantly higher MSE for unscaled data compared to scaled data in Ridge regression.
 So, to make it easier to tune the regularization parameter $(\lambda)$ and to ensure fair treatment of coefficients in Ridge regression, 
 it's a good idea to scale the data. This not only simplifies the regularization process but also leads to better predictive performance.
+
+Notice how the first column in Table~\ref{tab:scaled} becomes zero when we scale. This fact is what led us to exclude the first term of the polynomial.
 
 
 
@@ -444,6 +440,24 @@ it's a good idea to scale the data. This not only simplifies the regularization 
 
 \section{Results and Discussion}
 \label{sec:resultsdiscussion}
+
+
+For the relatively simple Franke's function, we must say that we are quite pleased with the results.
+We have managed to fit a polynomial of degree 5 to the data with an $R^2$ score of $0.879$ and a MSE of $0.00855$ 
+using OLS. Ridge yielded almost identical results  when using a small value of $\lambda = 10^{-6}$.
+Lasso was lagging a bit behind with the best $R^2$ score of $0.852$ and a MSE of $0.0105$, 
+also with a small value of $\lambda = 10^{-6}$.
+\begin{mytable}[float=!h,label=tab:toyscores, width=0.5\textwidth]{Best scores from synthetic data}
+\vspace{1mm}
+\centering
+\begin{tabular}{l|c|c|c}
+    & OLS & Ridge & Lasso \\
+    \hline
+    MSE  &   \texttt{0.010349} & yurr & yurr \\
+    $R^2$     &   \texttt{0.0103} & yurr & yurr \\
+    $\lambda$ &  N/A  & $10^{-6}$ & $10^{-6}$ 
+\end{tabular}%
+\end{mytable}
 
 \begin{figure}[!h]
     \begin{center}
@@ -577,32 +591,30 @@ By doing so we can show that the mean squared error can be written as the follow
 \end{minipage}
 \hspace{2mm}
 \begin{minipage}[!t]{.45\linewidth}
-To compute the expected value of $\mathbf{\tilde{y}}$, we employ the bootstrap method, which generates 
-multiple samples for $\mathbf{\tilde{y}}$ and then calculates the mean of this distribution.
-In statistical terms, "variance" characterizes the spread or dispersion of our observations. In our context, 
-each $\tilde{y}_i$ can be considered an individual prediction. Conceptually, bias resembles the mathematical 
-definition of variance. The bias term measures the difference between the actual values in $\mathbf{y}$ and the
-expected values in $\mathbf{\tilde{y}}$. If we approach thison an individual observation level, a high bias would result 
-in a broad range around $\mathbf{\tilde{y}}$ within which $y_i$ would fall.
+We need a distribution of $\mathbf{\tilde{y}}$ in order to make it possible to calculate the bias and variance of it.
+We employ the bootstrap method, which generates 
+multiple samples for $\mathbf{\tilde{y}}$ by using slightly different training data for each sample.
+In statistical terms, \emph{variance} characterizes the spread or dispersion of our observations.
+In simpler terms, a model with high variance would exhibit significant variation in the predicted values 
+$\mathbf{\tilde{y}}$ from one test set to another.
+If we consider Figure~\ref{fig:bias-variance2} the blue band depicts our variance, a wider band means more variance. 
+The bias term measures the difference between the actual values $\mathbf{y}$ and the
+expected values $\mathbf{\tilde{y}}$. This can be seen from the mathematical derivation above.
 \end{minipage}
 \end{figure}
-On the other hand, the variance term quantifies how much $\mathbf{\tilde{y}}$ deviates from its own mean. 
-In simpler terms, a model with high variance would exhibit significant variation in the predicted values 
-$\mathbf{\tilde{y}}$ from one test set to another, consequently leading to a substantial variance in scores.
+It could also easily be seen from Figure~\ref{fig:bias-variance2} where the black line is the expected value of $\mathbf{\tilde{y}}$ and 
+the red line is $\mathbf{y}$, notice how the closer the black line is to the red line the lower the bias is.
 These two terms, bias and variance, are somewhat opposing forces. A model with high bias is likely to 
 have low variance, and vice versa. As model designers, we have the flexibility to tune this trade-off. 
 Depending on our priorities, whether we prioritize lower bias or lower variance, we can select an appropriate 
 model to strike the right balance for our specific application.
-
+Figure~\ref{fig:bias-variance1} and Figure~\ref{fig:bias-variance2} visualizes the classic bias-variance trade-off.
 \begin{figure}[!h]
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/bias-variance2.png}
     \end{center}
     \caption{Bias \& Variance Showcase, Using 2D Slice Of Our Data}\label{fig:bias-variance2}
 \end{figure}
-
-
-Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
 
 
 
@@ -662,7 +674,7 @@ Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa
 
 \phantomsection%
 \addcontentsline{toc}{subsection}{Derivation of The Optimal Parameters~\ref{app:OptimalBeta}}
-\subsection*{Derivation of The Optimal Parameters $\boldsymbol{\beta}$}
+\subsection*{Finding The Optimal Parameters $\boldsymbol{\hat{\beta}}$}
 \makeatletter\def\@currentlabel{A.1}\makeatother
 \label{app:OptimalBeta}
 
@@ -768,7 +780,8 @@ $$
 A $z$-score of $\pm 1.96$ corresponds to a confidence interval of $95\%$
 
 \begin{tcolorbox}
-    Derivation of the expectation value and variance of $\boldsymbol{\hat{\beta}}$\\
+    \centering
+    \textsc{ Finding the expectation value and variance of $\boldsymbol{\hat{\beta}}$}
 \end{tcolorbox}
 
 $$

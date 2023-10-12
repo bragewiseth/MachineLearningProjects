@@ -88,20 +88,21 @@ mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
     'font.size': '20',
-    'xtick.labelsize': '18',
-    'ytick.labelsize': '18',
+    'xtick.labelsize': '20',
+    'ytick.labelsize': '20',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
 
-fix1 , ax1 = plt.subplots(figsize=(10,10))
+fix1 , ax1 = plt.subplots()
 ax1.set_xlabel("Degree")
+fix1.tight_layout()
 ax1.set_ylabel(r"values of $\beta$")
 ax1.set(xticks=polydegree)
 ax1.plot(polydegree, betas)
-plt.savefig("../runsAndAdditions/betaOverOrderOLS.png")
+plt.savefig("../runsAndAdditions/betaOverOrderOLS.png",bbox_inches='tight')
 
-fig, ax = plt.subplots(1,2, figsize=(15,6))
+fig, ax = plt.subplots(1,2, figsize=(13,5))
 # fig.tight_layout()
 ax[0].set_xlabel("Degree")
 ax[1].set_xlabel("Degree")
@@ -117,7 +118,7 @@ ax[0].legend()
 ax[1].plot(polydegree, testR2, label="test")
 ax[1].plot(polydegree, trainR2, label="train")
 ax[1].legend()
-plt.savefig("../runsAndAdditions/R2andMSEOLS.png")
+plt.savefig("../runsAndAdditions/R2andMSEOLS.png",bbox_inches='tight')
 
 
 

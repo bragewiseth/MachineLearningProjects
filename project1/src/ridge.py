@@ -14,7 +14,7 @@ from sklearn.linear_model import Ridge as SkRidge
 
 
 X, y  = readData("../data/syntheticData.csv")
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9282)
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
 
 
 maxdegree = 5
@@ -93,7 +93,6 @@ ax1.set_xscale("log")
 ax1.set_ylabel(r"$\beta$",size=24)
 ax1.set_xlabel(r"$\lambda$", size=24)
 ax1.plot(lamdas, betas[4,:,:int(((polydegree[4]+1)**2  + (polydegree[4]-1)) / 2)])
-ax1.set_title(r"Ridge - Fitting of 5th order polynomial using range of $\lambda$")
 
 
 
@@ -108,7 +107,6 @@ ax.plot(lamdas, testR2[4], label="Test")
 ax.set_xlabel(r"$\lambda$",size=24)
 ax.set_ylabel(r"$R^2$",size=24)
 ax.legend()
-ax.set_title(r"Ridge - Fitting of 5th order polynomial using range of $\lambda$")
 
 plt.savefig("../runsAndAdditions/R2OverLambdaRidge5.png")
 
