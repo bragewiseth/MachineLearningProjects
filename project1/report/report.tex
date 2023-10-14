@@ -308,7 +308,8 @@ $$
 \mbox{MSE}(\mathbf{y},\mathbf{\tilde{y}}) = \frac{1}{n}
 \sum_{i=0}^{n-1}(y_i-\tilde{y}_i)^2
 $$
-We wil also use the $R^2$ score to evaluate our models. The $R^2$ score is a statistical measure of how close the data are to the fitted regression line. The $R^2$ score is given by
+We wil also use the $R^2$ score to evaluate our models. The $R^2$ score is a statistical measure of how close the data are 
+to the fitted regression line. The $R^2$ score is given by
 $$
 R^2(\mathbf{y}, \tilde{\mathbf{y}}) = 1 - \frac{\sum_{i=0}^{n - 1} (y_i - \tilde{y}_i)^2}{\sum_{i=0}^{n - 1} (y_i - \bar{y})^2}
 $$
@@ -535,14 +536,14 @@ This is probably why we get worse results as we increase $\lambda$.
 \end{minipage}
 \end{figure}
 \begin{figure}[h]
-\begin{minipage}[t]{.48\linewidth}
+\begin{minipage}[!htb]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/predictionLasso.png}
         \caption{Prediction Lasso}\label{fig:predictionLasso}
 \end{center}
 \end{minipage}
 \hspace{4mm}
-\begin{minipage}[t]{.48\linewidth}
+\begin{minipage}[!htb]{.48\linewidth}
     Figure~\ref{fig:predictionOLS}, Figure~\ref{fig:predictionRidge} and Figure~\ref{fig:predictionLasso} shows the 
     predictions of our models. All three manage to mimic the true function quite well. Again we can see that OLS and Ridge
     looks almost identical. Lasso is lagging a bit behind, but still manages to capture the general shape of the true function.
@@ -550,7 +551,7 @@ This is probably why we get worse results as we increase $\lambda$.
 \end{figure}
 
 
-\begin{minipage}[!t]{.48\linewidth}
+\begin{minipage}[t]{.48\linewidth}
     If we compare our cross-validation to SKLearn's cross-validation we can see similar results,
     our method seems to lag behind a tiny bit. It is also worth noting that the parameter $\lambda$ has
     varying effects on the score
