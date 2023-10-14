@@ -568,22 +568,20 @@ and we use $100$ bootstrap iterations. We will only use bootstrap
 to showcase the bias-variance trade-off in Section~\ref{sec:biasvariance}. We will use cross validation to find the best
 parameters for our models.\\
 
-\begin{figure}[h]
-\begin{minipage}[h]{.48\linewidth}
-    As we introduce cross validation, we get a slightly different result as we did without.
-    We previously thought that overfitting was something we did't achieve with a polynomial of degree 5. However
-    our eyes have been opened. We can see that the MSE and $R^2$ score starts to diverge at around degree 5.
-\end{minipage}
-\hspace{4mm}
-\begin{minipage}[h]{.48\linewidth}
+As we introduce cross validation, we get a slightly different result as we did without.
+We previously thought that overfitting was something we did't achieve with a polynomial of degree 5. However
+our eyes have been opened. We can see that the MSE and $R^2$ score starts to diverge at around degree 5 see Figure~\ref{fig:R2andMSEOLSCrossval}.
+For ridge we can see that we maximize the $R^2$ score at around $\lambda = 10^{-5}$ for polynomial of degree 4 see Figure~\ref{fig:heatmapCrossval}.
+We max out our testing range for $\lambda=10^{-5}$ which is realy close to zero, leading us to suspect that simple OLS is the best model for this data.
+
+\begin{wrapfigure}{r}{0.4\textwidth}
     \begin{center}
-        \includegraphics[width=1.0\textwidth]{../runsAndAdditions/R2andMSEOLSCrossval.png}
+        \includegraphics[width=0.4\textwidth]{../runsAndAdditions/R2andMSEOLSCrossval.png}
         \caption{$R^2$ and MSE with increasing complexity}\label{fig:R2andMSEOLSCrossval}
     \end{center}
-\end{minipage}\\
-\end{figure}
+\end{wrapfigure}
 
-\begin{figure}
+\begin{figure}[!h]
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/heatmapCrossval.png}
     \end{center}
@@ -683,11 +681,11 @@ By doing so we can show that the mean squared error can be written as the follow
 \end{align*}
 
 
-\begin{wrapfigure}[!h]
+\begin{wrapfigure}{r}{0.4\textwidth}
     \begin{center}
-        \includegraphics[width=1.0\textwidth]{../runsAndAdditions/bias-variance1.png}
-        \caption{}\label{fig:bias-variance1}
+        \includegraphics[width=0.4\textwidth]{../runsAndAdditions/bias-variance1.png}
     \end{center}
+        \caption{}\label{fig:bias-variance1}
 \end{wrapfigure}
 We need a distribution of $\mathbf{\tilde{y}}$ in order to make it possible to calculate the bias and variance of it.
 We employ the bootstrap method, which generates 
