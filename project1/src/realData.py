@@ -155,7 +155,7 @@ ax1.set_ylabel(r"values of $\beta$")
 im = ax1.imshow(scores, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
-plt.savefig("../runsAndAdditions/heatmapScoresRealData.png",bbox_inches='tight')
+plt.savefig("../runsAndAdditions/heatmapFinalTestRealData.png",bbox_inches='tight')
 
 
 
@@ -195,8 +195,8 @@ surf = ax.plot_surface(x_mesh_lowres, y_mesh_lowres, predict.reshape(200,200), c
 ax.set_zlim(0, 3000)
 ax.set_xlabel('(m)')
 ax.set_ylabel('(m)')
-ax.set_xticks(np.arange(0,1800,4))
-ax.set_yticks(np.arange(0,1800,4))
+ax.set_xticks(np.linspace(0,1800,4))
+ax.set_yticks(np.linspace(0,1800,4))
 # ax.zaxis.set_major_locator(LinearLocator(10))
 # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 

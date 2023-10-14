@@ -313,7 +313,17 @@ $$
 R^2(\mathbf{y}, \tilde{\mathbf{y}}) = 1 - \frac{\sum_{i=0}^{n - 1} (y_i - \tilde{y}_i)^2}{\sum_{i=0}^{n - 1} (y_i - \bar{y})^2}
 $$
 The R2 score is a number between 0 and 1, where 1 indicates that the model fits the data perfectly. 
-A negative R2 score indicates that the model is worse than just predicting the mean of the data.
+A negative R2 score indicates that the model is worse than just predicting the mean of the data.\\
+The goal is to find the coefficients $\boldsymbol{\beta}$ that minimizes the MSE. We can write the predictions $\tilde{\mathbf{y}}$ as
+
+$$
+\tilde{\mathbf{y}} = \mathbf{X}\boldsymbol{\beta}
+$$
+Wich is a compact way of writing
+$$
+\tilde{y}_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_{p-1} x_{i,p-1}
+$$
+where $p$ is the number of predictors.\\
 
 
 
@@ -337,14 +347,6 @@ term of a polynomial is just $1$, however we have chosen not to include this. mo
 about scaling}\\ 
 We can then use these parameters to predict the response $\tilde{\mathbf{y}}$ for a new set of predictors $\mathbf{X}$.
 The predictions is as previously mentioned a linear combination of the predictors and the coefficients.
-$$
-\tilde{\mathbf{y}} = \mathbf{X}\boldsymbol{\beta}
-$$
-Wich is a compact way of writing
-$$
-\tilde{y}_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_{p-1} x_{i,p-1}
-$$
-where $p$ is the number of predictors.\\
 
 \subsection{Ridge \& Lasso Regression}
 \label{sec:ridge}
@@ -438,7 +440,7 @@ Notice how the first column in Table~\ref{tab:scaled} becomes zero when we scale
 
 
 
-
+\newpage
 \section{Results and Discussion}
 \label{sec:resultsdiscussion}
 
@@ -447,7 +449,8 @@ For the relatively simple Franke's function, we must say that we are quite pleas
 We have managed to fit a polynomial of degree 5 to the data with an $R^2$ score of $0.879$ and a MSE of $0.00855$ 
 using OLS. Ridge yielded almost identical results  when using a small value of $\lambda = 10^{-6}$.
 Lasso was lagging a bit behind with the best $R^2$ score of $0.852$ and a MSE of $0.0105$, 
-also with a small value of $\lambda = 10^{-6}$.
+also with a small value of $\lambda = 10^{-6}$. Table~\ref{tab:toyscores} shows the best scores we managed to get from our models. 
+Table~\ref{tab:sklearnvsOurs} verifies that our implementation of OLS is correct.\\
 \begin{mytable}[float=!h,label=tab:toyscores, width=0.5\textwidth]{Best scores from synthetic data}
 \centering
 \begin{tabular}{l|c|c|c}
@@ -455,7 +458,8 @@ also with a small value of $\lambda = 10^{-6}$.
     \hline
     MSE  &   \texttt{0.00855} & \texttt{0.00854} & \texttt{0.0105} \\
     $R^2$     &   \texttt{0.879} & \texttt{0.869} & \texttt{0.852} \\
-    $\lambda$ &  N/A  & $10^{-6}$ & $10^{-6}$ 
+    $\lambda$ &  N/A  & $10^{-6}$ & $10^{-6}$ \\
+    Degree & 5 & 5 & 5
 \end{tabular}%
 \end{mytable}
 
@@ -468,33 +472,32 @@ also with a small value of $\lambda = 10^{-6}$.
     our R2:&  0.8796310495803168
 \end{tabular}%
 \end{mytable}
-
 \begin{figure}[!h]
     \begin{center}
         \includegraphics[width=0.95\textwidth]{../runsAndAdditions/R2andMSEOLS.png}
     \end{center}
     \caption{$R^2$ and MSE with increasing complexity}\label{fig:R2andMSEOLS}
 \end{figure}
-
 From Figure~\ref{fig:R2andMSEOLS} we can see that the MSE and $R^2$ both improve as we increase the model complexity, we have yet to see any signs of overfitting which indicates that we can increase the complexity even further.\\
-\begin{figure}[!h]
-\begin{minipage}[!t]{.48\linewidth}
+\begin{figure}[h]
+\begin{minipage}[t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/betaOverOrderOLS.png}
         \caption{OLS}\label{fig:betaOverOrderOLS}
 \end{center}
 \end{minipage}
 \hspace{4mm}
-\begin{minipage}[!t]{.48\linewidth}
+\begin{minipage}[t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/BetaOverLambdaRidge5.png}
         \caption{Ridge}\label{fig:betaOverLambdaRidge5}
     \end{center}
 \end{minipage}
 \end{figure}
-We also found that the parameters $\boldsymbol{\beta}$ gets larger as we increase the complexity. On the other hand
-the parameter $\lambda$ shrinks the parameters $\boldsymbol{\beta}$ as it increases. This makes perfect sense if we
-consider the cost function for Ridge regression. 
+We also found that the parameters $\boldsymbol{\beta}$ gets larger as we increase the complexity see Figure~\ref{fig:betaOverOrderOLS}. On the other hand
+the parameter $\lambda$ shrinks the parameters $\boldsymbol{\beta}$ as it increases see Figure~\ref{fig:betaOverLambdaRidge5}. This makes perfect sense if we
+consider the cost function for Ridge regression (Large $\beta_j$'s are penalized more). The figure makes it clear why $\lambda |\beta|$ is called the shrinkage
+term.\\
 \begin{figure}[!h]
 \begin{minipage}[!t]{.48\linewidth}
     \begin{center}
@@ -517,14 +520,14 @@ decrease complexity . We don't need to decrease complexity as we show no signs o
 This is probably why we get worse results as we increase $\lambda$.
 
 \begin{figure}[h]
-\begin{minipage}[!t]{.48\linewidth}
+\begin{minipage}[t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/predictionOLS.png}
         \caption{Prediction OLS}\label{fig:predictionOLS}
 \end{center}
 \end{minipage}
 \hspace{4mm}
-\begin{minipage}[!t]{.48\linewidth}
+\begin{minipage}[t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/predictionRidge.png}
         \caption{Prediction Ridge}\label{fig:predictionRidge}
@@ -532,14 +535,14 @@ This is probably why we get worse results as we increase $\lambda$.
 \end{minipage}
 \end{figure}
 \begin{figure}[h]
-\begin{minipage}[!t]{.48\linewidth}
+\begin{minipage}[t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/predictionLasso.png}
         \caption{Prediction Lasso}\label{fig:predictionLasso}
 \end{center}
 \end{minipage}
 \hspace{4mm}
-\begin{minipage}[!t]{.48\linewidth}
+\begin{minipage}[t]{.48\linewidth}
     Figure~\ref{fig:predictionOLS}, Figure~\ref{fig:predictionRidge} and Figure~\ref{fig:predictionLasso} shows the 
     predictions of our models. All three manage to mimic the true function quite well. Again we can see that OLS and Ridge
     looks almost identical. Lasso is lagging a bit behind, but still manages to capture the general shape of the true function.
@@ -578,7 +581,26 @@ as we introduce resampling techniques we can see more clearly that this is not t
 \end{minipage}\\
 \end{figure}
 
+\begin{mytable}[float=!h,label=tab:toyscoresCrossval, width=0.7\textwidth]{Best scores from synthetic data using cross-validation}
+\centering
+\begin{tabular}{l|c|c|c}
+    & OLS & Ridge & Lasso \\
+    \hline
+    MSE  &   \texttt{0.01305594} & \texttt{0.01306} & \texttt{0.01447} \\
+    $R^2$     &   \texttt{0.8332} & \texttt{0.0.8331} & \texttt{0.8250} \\
+    $\lambda$ &  N/A  & $10^{-5}$ & $10^{-5}$ \\
+    Degree & 4 & 4 & 5
+\end{tabular}%
+\end{mytable}
 
+
+We apply everything we have learned from the synthetic data to the real data. We suspect that a higher degree polynomial will be needed for this.
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics[width=0.95\textwidth]{../runsAndAdditions/heatmapRealData.png}
+    \end{center}
+    \caption{$R^2$ and MSE with increasing complexity}\label{fig:R2andMSEOLSReal}
+\end{figure}
 
 
 
