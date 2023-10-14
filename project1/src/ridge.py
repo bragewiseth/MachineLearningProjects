@@ -87,28 +87,28 @@ mpl.rcParams.update({
     'pgf.rcfonts': True,
 })
 
-fig1 , ax1 = plt.subplots(figsize=(10,8))
+fig1 , ax1 = plt.subplots()
 ax1.xticks = lamdas
 ax1.set_xscale("log")
-ax1.set_ylabel(r"$\beta$",size=24)
-ax1.set_xlabel(r"$\lambda$", size=24)
+ax1.set_ylabel(r"$\beta$")
+ax1.set_xlabel(r"$\lambda$")
 ax1.plot(lamdas, betas[4,:,:int(((polydegree[4]+1)**2  + (polydegree[4]-1)) / 2)])
 
 
 
-plt.savefig("../runsAndAdditions/betaOverLambdaRidge5.png")
+plt.savefig("../runsAndAdditions/betaOverLambdaRidge5.png",bbox_inches='tight')
 
 
-fig, ax = plt.subplots(figsize=(10,7))
+fig, ax = plt.subplots()
 ax.set_xticks(lamdas)
 ax.set_xscale("log")
 ax.plot(lamdas, trainR2[4], label="Train")
 ax.plot(lamdas, testR2[4], label="Test")
-ax.set_xlabel(r"$\lambda$",size=24)
-ax.set_ylabel(r"$R^2$",size=24)
+ax.set_xlabel(r"$\lambda$")
+ax.set_ylabel(r"$R^2$")
 ax.legend()
 
-plt.savefig("../runsAndAdditions/R2OverLambdaRidge5.png")
+plt.savefig("../runsAndAdditions/R2OverLambdaRidge5.png",bbox_inches='tight')
 
 
 
@@ -158,5 +158,5 @@ xx,yy = np.meshgrid(x,y)
 poly = PolynomialFeatures(5,include_bias=False)
 z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
 plotFrankefunction(xx,yy,z.reshape(100,100), (8,8), (1,1,1) , "Prediction using ridge")
-plt.savefig("../runsAndAdditions/predictionRidge.png")
+plt.savefig("../runsAndAdditions/predictionRidge.png",bbox_inches='tight')
 

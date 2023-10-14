@@ -30,7 +30,7 @@ xx,yy = np.meshgrid(x,y)
 z = FrankeFunction(xx,yy)
 
 plotFrankefunction(xx,yy,z, (8,8), (1,1,1) ,"True function")
-plt.savefig("../runsAndAdditions/trueFunction.png")
+plt.savefig("../runsAndAdditions/trueFunction.png",bbox_inches='tight')
 
 
 
@@ -55,4 +55,4 @@ ax.view_init(35, -35)
     # ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
 fig.colorbar(surf, shrink=0.5, aspect=5)
-plt.savefig("../runsAndAdditions/synthDataSide.png")
+plt.savefig("../runsAndAdditions/synthDataSide.png",bbox_inches='tight')

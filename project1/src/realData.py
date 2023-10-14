@@ -24,9 +24,7 @@ terrain = terrain[:N,:N]
 x0sample = np.random.randint(0, N, n)
 x1sample = np.random.randint(0, N, n)
 y = terrain[x0sample,x1sample].ravel().reshape(-1,1)
-print(y.shape)
 X = np.concatenate((x0sample.reshape(-1,1), x1sample.reshape(-1,1)), axis=1)
-print(X.shape)
 
 
 # we introduce a final test set since we have more data, we can then find bias and variance
@@ -136,7 +134,7 @@ X_lowres = np.concatenate((x_mesh_lowres.ravel().reshape(-1,1), y_mesh_lowres.ra
 
 
 
-fix1 , ax1 = plt.subplots(figsize=(10,10))
+fix1 , ax1 = plt.subplots()
 ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
 ax1.set_xlabel("Lambda")
 ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
@@ -145,10 +143,10 @@ ax1.set_ylabel(r"values of $\beta$")
 im = ax1.imshow(estimated_mse_KFoldRidge, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
-plt.savefig("../runsAndAdditions/heatmapRealData.png")
+plt.savefig("../runsAndAdditions/heatmapRealData.png",bbox_inches='tight')
 
 
-fix1 , ax1 = plt.subplots(figsize=(10,10))
+fix1 , ax1 = plt.subplots()
 ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
 ax1.set_xlabel("Lambda")
 ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
@@ -157,7 +155,7 @@ ax1.set_ylabel(r"values of $\beta$")
 im = ax1.imshow(scores, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
-plt.savefig("../runsAndAdditions/heatmapScoresRealData.png")
+plt.savefig("../runsAndAdditions/heatmapScoresRealData.png",bbox_inches='tight')
 
 
 
@@ -170,7 +168,7 @@ ax1.set_ylabel(r"values of $\beta$")
 im = ax1.imshow(variance, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
-plt.savefig("../runsAndAdditions/heatmapVariance.png")
+plt.savefig("../runsAndAdditions/heatmapVariance.png",bbox_inches='tight')
 
 
 ols = OLS()
@@ -210,7 +208,7 @@ ax.view_init(35, -45)
 cbar = fig.colorbar(surf, shrink=0.5, aspect=5)
 cbar.set_label('(m)', rotation=270)
 # Add a color bar which maps values to colors.
-plt.savefig("../runsAndAdditions/realdataPredict3D.png")
+plt.savefig("../runsAndAdditions/realdataPredict3D.png",bbox_inches='tight')
 
 
 # Show the terrain
@@ -241,23 +239,23 @@ ax.view_init(35, -45)
 cbar = fig.colorbar(surf, shrink=0.5, aspect=5)
 cbar.set_label('(m)', rotation=270)
 # add a color bar which maps values to colors.
-plt.savefig("../runsAndAdditions/realdata3D.png")
+plt.savefig("../runsAndAdditions/realdata3D.png",bbox_inches='tight')
 
 
 
-fig = plt.figure(figsize=(8,8))
+fig = plt.figure()
 fig.tight_layout()
 plt.imshow(predict.reshape(200,200), cmap='plasma')
 plt.xlabel('(m)')
 plt.ylabel('(m)')
-plt.savefig("../runsAndAdditions/realdataPredictMap.png")
+plt.savefig("../runsAndAdditions/realdataPredictMap.png",bbox_inches='tight')
 
 
 
 
-fig = plt.figure(figsize=(8,8))
+fig = plt.figure()
 fig.tight_layout()
 plt.imshow(terrain, cmap='plasma')
 plt.xlabel('(m)')
 plt.ylabel('(m)')
-plt.savefig("../runsAndAdditions/realdataMap.png")
+plt.savefig("../runsAndAdditions/realdataMap.png",bbox_inches='tight')

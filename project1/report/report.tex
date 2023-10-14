@@ -132,7 +132,7 @@
 	
     
     
-    
+ 
     
 	
 \end{titlepage}
@@ -449,14 +449,23 @@ using OLS. Ridge yielded almost identical results  when using a small value of $
 Lasso was lagging a bit behind with the best $R^2$ score of $0.852$ and a MSE of $0.0105$, 
 also with a small value of $\lambda = 10^{-6}$.
 \begin{mytable}[float=!h,label=tab:toyscores, width=0.5\textwidth]{Best scores from synthetic data}
-\vspace{1mm}
 \centering
 \begin{tabular}{l|c|c|c}
     & OLS & Ridge & Lasso \\
     \hline
-    MSE  &   \texttt{0.010349} & yurr & yurr \\
-    $R^2$     &   \texttt{0.0103} & yurr & yurr \\
+    MSE  &   \texttt{0.00855} & \texttt{0.00854} & \texttt{0.0105} \\
+    $R^2$     &   \texttt{0.879} & \texttt{0.869} & \texttt{0.852} \\
     $\lambda$ &  N/A  & $10^{-6}$ & $10^{-6}$ 
+\end{tabular}%
+\end{mytable}
+
+\begin{mytable}[float=h,label=tab:sklearnvsOurs, width=.5\textwidth]{Ours Vs SKlearn OLS}
+\centering
+\begin{tabular}{l l}
+    SKlearn MSE: & 0.008551406119720212\\
+    our MSE: & 0.00855140611834528\\
+    SKlearn R2:&  0.8796310495615578\\
+    our R2:&  0.8796310495803168
 \end{tabular}%
 \end{mytable}
 
@@ -468,60 +477,80 @@ also with a small value of $\lambda = 10^{-6}$.
 \end{figure}
 
 From Figure~\ref{fig:R2andMSEOLS} we can see that the MSE and $R^2$ both improve as we increase the model complexity, we have yet to see any signs of overfitting which indicates that we can increase the complexity even further.\\
-
+\begin{figure}[!h]
 \begin{minipage}[!t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/betaOverOrderOLS.png}
+        \caption{OLS}\label{fig:betaOverOrderOLS}
 \end{center}
 \end{minipage}
 \hspace{4mm}
 \begin{minipage}[!t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/BetaOverLambdaRidge5.png}
+        \caption{Ridge}\label{fig:betaOverLambdaRidge5}
     \end{center}
 \end{minipage}
-
-
-
+\end{figure}
+We also found that the parameters $\boldsymbol{\beta}$ gets larger as we increase the complexity. On the other hand
+the parameter $\lambda$ shrinks the parameters $\boldsymbol{\beta}$ as it increases. This makes perfect sense if we
+consider the cost function for Ridge regression. 
+\begin{figure}[!h]
 \begin{minipage}[!t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/R2OverLambdaRidge5.png}
+        \caption{Ridge degree 5}\label{fig:R2OverLambdaRidge5}
 \end{center}
 \end{minipage}
 \hspace{4mm}
 \begin{minipage}[!t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/R2OverLambdaLasso5.png}
+        \caption{Lasso degree 5}\label{fig:R2OverLambdaLasso5}
     \end{center}
 \end{minipage}\\
+\end{figure}
+In Figure~\ref{fig:R2andMSEOLS} we noticed that our model had some headroom for increased complexity. In
+other words not overfitting. As we can see from Figure~\ref{fig:R2OverLambdaRidge5} and Figure~\ref{fig:R2OverLambdaLasso5}
+increasing $\lambda$ reduces the $R^2$ score. This is because we are penalizing the parameters $\boldsymbol{\beta}$ and thus
+decrease complexity . We don't need to decrease complexity as we show no signs of overfitting. 
+This is probably why we get worse results as we increase $\lambda$.
 
-
+\begin{figure}[h]
 \begin{minipage}[!t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/predictionOLS.png}
+        \caption{Prediction OLS}\label{fig:predictionOLS}
 \end{center}
 \end{minipage}
 \hspace{4mm}
 \begin{minipage}[!t]{.48\linewidth}
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/predictionRidge.png}
+        \caption{Prediction Ridge}\label{fig:predictionRidge}
     \end{center}
 \end{minipage}
-
+\end{figure}
+\begin{figure}[h]
 \begin{minipage}[!t]{.48\linewidth}
     \begin{center}
-        \includegraphics[width=1.0\textwidth]{../runsAndAdditions/betaOverLambdaLasso5.png}
+        \includegraphics[width=1.0\textwidth]{../runsAndAdditions/predictionLasso.png}
+        \caption{Prediction Lasso}\label{fig:predictionLasso}
 \end{center}
 \end{minipage}
 \hspace{4mm}
 \begin{minipage}[!t]{.48\linewidth}
-    \begin{center}
-        \includegraphics[width=1.0\textwidth]{../runsAndAdditions/predictionLasso.png}
-    \end{center}
-\end{minipage}\\
+    Figure~\ref{fig:predictionOLS}, Figure~\ref{fig:predictionRidge} and Figure~\ref{fig:predictionLasso} shows the 
+    predictions of our models. All three manage to mimic the true function quite well. Again we can see that OLS and Ridge
+    looks almost identical. Lasso is lagging a bit behind, but still manages to capture the general shape of the true function.
+\end{minipage}
+\end{figure}
+
 
 \begin{minipage}[!t]{.48\linewidth}
-
+    If we compare our cross-validation to SKLearn's cross-validation we can see similar results,
+    our method seems to lag behind a tiny bit. It is also worth noting that the parameter $\lambda$ has
+    varying effects on the score
 \end{minipage}
 \hspace{4mm}
 \begin{minipage}[!t]{.48\linewidth}
@@ -533,10 +562,21 @@ From Figure~\ref{fig:R2andMSEOLS} we can see that the MSE and $R^2$ both improve
     \begin{center}
         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/heatmapCrossval.png}
     \end{center}
-    \caption{}\label{fig:}
+    \caption{Heatmap Ridge}\label{fig:heatmapCrossval}
 \end{figure}
-
-
+\begin{figure}[h]
+\begin{minipage}[!t]{.48\linewidth}
+    We previously thought that the MSE and $R^2$ would improve as we increased the complexity of the model. However
+as we introduce resampling techniques we can see more clearly that this is not the case. 
+\end{minipage}
+\hspace{4mm}
+\begin{minipage}[!t]{.48\linewidth}
+    \begin{center}
+        \includegraphics[width=1.0\textwidth]{../runsAndAdditions/R2andMSEOLSCrossval.png}
+        \caption{$R^2$ and MSE with increasing complexity}\label{fig:R2andMSEOLSCrossval}
+    \end{center}
+\end{minipage}\\
+\end{figure}
 
 
 

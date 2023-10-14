@@ -71,25 +71,24 @@ print("Best MSE = {:25} \tfor polynomial of degree = {}".format(error[i],  i+1))
 mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
-    'font.size': '16',
-    'xtick.labelsize': '14',
-    'ytick.labelsize': '14',
+    'font.size': '20',
+    'xtick.labelsize': '20',
+    'ytick.labelsize': '20',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
 
 
 
-fig, ax = plt.subplots(figsize=(10, 10))
+fig, ax = plt.subplots()
 ax.set_xlabel('Model complexity')
 ax.set_ylabel('Error')
-ax.set_title('Bias-variance tradeoff')
 ax.plot(polydegree, error,'--', label='Error', color='black')
 ax.plot(polydegree, bias, label='bias', color='purple')
 ax.plot(polydegree, variance, label='Variance', color='teal')
 # ax.set_yscale('log')
 plt.legend()
-plt.savefig('../runsAndAdditions/bias-variance1.png')
+plt.savefig('../runsAndAdditions/bias-variance1.png',bbox_inches='tight')
 
 
 
@@ -136,24 +135,24 @@ for j , degree in enumerate(maxdegree):
         x, np.mean(yys[j], axis=1) - np.std(yys[j], axis=1), 
         np.mean(yys[j], axis=1) + np.std(yys[j], axis=1), 
         alpha=0.2, color='blue', 
-        label=r'$\pm 1$ std. dev. of $\mathbf{\tilde{y}}$'
+        label=r'$\pm 1$ std. dev.'
     )
 
-    ax[j].plot(x, np.mean(yys[j], axis=1), '--', color='navy', label=r'$\mathbb{E}[\mathbf{\tilde{y}}]$')
+    ax[j].plot(x, np.mean(yys[j], axis=1), color='black', label=r'$\mathbb{E}[\mathbf{\tilde{y}}]$')
     ax[j].plot(x, z, label=r'true function $\mathbf{f}$', color='red', linewidth=3)
-    ax[j].text(0.6, 0.02, r'Bias: ' + str( np.round(np.mean( (z - np.mean(yys[j], axis=1))**2 ), 6 )), size=20) 
-    ax[j].text(0.6, 0.05, r'Variance: ' + str(np.round( np.mean( np.var(yys[j], axis=1) ), 6 )), size=20)
+    if j == 0:
+        ax[j].text(0.6, 0.02, r'Bias: ' + str( np.round(np.mean( (z - np.mean(yys[j], axis=1))**2 ), 6 )), size=20) 
+        ax[j].text(0.6, 0.05, r'Variance: ' + str(np.round( np.mean( np.var(yys[j], axis=1) ), 6 )), size=20)
+    if j == 1:
+        ax[j].text(0.6, 0.62, r'Bias: ' + str( np.round(np.mean( (z - np.mean(yys[j], axis=1))**2 ), 6 )), size=20) 
+        ax[j].text(0.6, 0.65, r'Variance: ' + str(np.round( np.mean( np.var(yys[j], axis=1) ), 6 )), size=20)
     ax[j].set_ylim(0.0,0.7)
     ax[j].set_xlabel(r'$x$',size=30)
     ax[j].set_ylabel(r'$y$',size=30)
     ax[j].set_title(r'Polynomial of degree ' + str(degree))
     ax[j].legend()
 
-fig.suptitle(r'Bias-variance tradeoff for different model complexity', size=20)
-
-
-
-plt.savefig('../runsAndAdditions/bias-variance2.png')
+plt.savefig('../runsAndAdditions/bias-variance2.png',bbox_inches='tight')
 
 
 

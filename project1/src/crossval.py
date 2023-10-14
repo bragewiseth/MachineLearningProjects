@@ -128,9 +128,9 @@ for i, lmb in enumerate(lambdas):
 mpl.rcParams.update({
     'font.family': 'serif',
     'mathtext.fontset': 'cm',
-    'font.size': '16',
-    'xtick.labelsize': '14',
-    'ytick.labelsize': '14',
+    'font.size': '20',
+    'xtick.labelsize': '20',
+    'ytick.labelsize': '20',
     # 'text.usetex': True,
     'pgf.rcfonts': True,
 })
@@ -141,7 +141,6 @@ mpl.rcParams.update({
 
 
 fix1 , ax1 = plt.subplots(figsize=(10,5))
-ax1.set_title("Heatmap of scores")
 ax1.set_xlabel("Lambda")
 ax1.set_xticks(np.arange(0,len(lambdas),1),labels=lambdas.round(6), rotation=90)
 ax1.set_yticks(np.arange(0,maxdegree,1), labels=polydegree)
@@ -149,19 +148,26 @@ ax1.set_ylabel(r"Degree")
 im = ax1.imshow(estimatedFoldsR2Ridge[:,:,2], cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("R2", rotation=-90, va="bottom")
-plt.savefig("../runsAndAdditions/heatmapCrossval.png")
-# plt.show()
+plt.savefig("../runsAndAdditions/heatmapCrossval.png",bbox_inches='tight')
+
+
+fig, ax = plt.subplots()
+fig.tight_layout()
+ax.set_xlabel("Degree")
+# ax.set_ylabel("R2")
+ax.set_ylabel("MSE")
+ax.set(xticks=polydegree)
+ax.plot(polydegree, estimatedFoldsOLS[:,0,2], label="MSE")
+# ax.plot(polydegree, estimatedFoldsR2OLS, label="R2")
+ax.legend()
+plt.savefig("../runsAndAdditions/R2andMSEOLSCrossval.png",bbox_inches='tight')
 
 
 
 
 
-
-
-
-
-fix1 , ax1 = plt.subplots(figsize=(10,10))
-ax1.set_title("OLS MSE for various k")
+fix1 , ax1 = plt.subplots()
+ax1.set_title("OLS - MSE over k")
 ax1.set_xlabel("k",size=20)
 ax1.set_ylabel(r"MSE")
 ax1.plot(karray, bestk)
@@ -176,7 +182,7 @@ plt.savefig("../runsAndAdditions/MSEoverK.png")
 
 
 
-plt.figure(figsize=(10,10))
+plt.figure()
 
 plt.plot(np.log10(lambdas), estimated_mse_sklearn, label = 'sKlearn\'s cross_val_score')
 plt.plot(np.log10(lambdas), estimatedFoldsRidge[3,:,3], 'r--', label = 'Our KFold')
@@ -185,7 +191,7 @@ plt.ylabel('mse', size=20)
 plt.title('k = 7, Degree = 4')
 plt.legend()
 
-plt.savefig('../runsAndAdditions/crossvalOursVsSklearn.png')
+plt.savefig('../runsAndAdditions/crossvalOursVsSklearn.png',bbox_inches='tight')
 
 
 

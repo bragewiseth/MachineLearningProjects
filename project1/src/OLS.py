@@ -127,4 +127,4 @@ xx,yy = np.meshgrid(x,y)
 poly = PolynomialFeatures(5,include_bias=False)
 z = model.predict(scaler.transform(poly.fit_transform(np.concatenate((xx.ravel(), yy.ravel())).reshape(2,-1).T ))) + y_train_mean
 plotFrankefunction(xx,yy,z.reshape(100,100), (8,8), (1,1,1) ,"Prediction using OLS")
-plt.savefig("../runsAndAdditions/predictionOLS.png")
+plt.savefig("../runsAndAdditions/predictionOLS.png",bbox_inches='tight')
