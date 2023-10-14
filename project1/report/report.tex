@@ -568,18 +568,23 @@ and we use $100$ bootstrap iterations. We will only use bootstrap
 to showcase the bias-variance trade-off in Section~\ref{sec:biasvariance}. We will use cross validation to find the best
 parameters for our models.\\
 
-As we introduce cross validation, we get a slightly different result as we did without.
+
+\begin{figure}[h]
+    \begin{minipage}[!t]{.48\linewidth}
+    \begin{center}
+        \includegraphics[width=1.0\textwidth]{../runsAndAdditions/R2andMSEOLSCrossval.png}
+        \caption{$R^2$ and MSE with increasing complexity}\label{fig:R2andMSEOLSCrossval}
+    \end{center}
+\end{minipage}
+\hspace{4mm}
+\begin{minipage}[!t]{.48\linewidth}
+    As we introduce cross validation, we get a slightly different result as we did without.
 We previously thought that overfitting was something we did't achieve with a polynomial of degree 5. However
 our eyes have been opened. We can see that the MSE and $R^2$ score starts to diverge at around degree 5 see Figure~\ref{fig:R2andMSEOLSCrossval}.
 For ridge we can see that we maximize the $R^2$ score at around $\lambda = 10^{-5}$ for polynomial of degree 4 see Figure~\ref{fig:heatmapCrossval}.
 We max out our testing range for $\lambda=10^{-5}$ which is realy close to zero, leading us to suspect that simple OLS is the best model for this data.
-
-\begin{wrapfigure}{r}{0.4\textwidth}
-    \begin{center}
-        \includegraphics[width=0.4\textwidth]{../runsAndAdditions/R2andMSEOLSCrossval.png}
-        \caption{$R^2$ and MSE with increasing complexity}\label{fig:R2andMSEOLSCrossval}
-    \end{center}
-\end{wrapfigure}
+\end{minipage}
+\end{figure}
 
 \begin{figure}[!h]
     \begin{center}
@@ -614,11 +619,11 @@ We max out our testing range for $\lambda=10^{-5}$ which is realy close to zero,
 \end{tabular}%
 \end{mytable}
 
-
+In our final experiment we will use the real data. 
 We apply everything we have learned from the synthetic data to the real data. We suspect that a higher degree polynomial will be needed for this.
 \begin{figure}[!h]
     \begin{center}
-        \includegraphics[width=0.95\textwidth]{../runsAndAdditions/heatmapRealData.png}
+        \includegraphics[width=0.8\textwidth]{../runsAndAdditions/heatmapRealData.png}
     \end{center}
     \caption{$R^2$ and MSE with increasing complexity}\label{fig:R2andMSEOLSReal}
 \end{figure}
@@ -634,11 +639,10 @@ We apply everything we have learned from the synthetic data to the real data. We
     \begin{minipage}[t]{.48\linewidth}
         \begin{center}
             \includegraphics[width=1.0\textwidth]{../runsAndAdditions/realDataPredict3D.png}
+    \caption{Prediction of the real data}\label{fig:realDataPredictMap}
         \end{center}
     \end{minipage}
     \end{figure}
-    \caption{Prediction of the real data}\label{fig:realDataPredictMap}
-\end{figure}
 
 We use polynomials as high as degree 46, and we still don't see any signs of overfitting. 
 This is probably because the real data is much more complex than the synthetic data.
