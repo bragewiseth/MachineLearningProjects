@@ -11,7 +11,6 @@ from sklearn.linear_model import LinearRegression
 
 
 
-
 #maximum degree of the polynomial
 maxdegree = 5
 X, y  = readData("../data/syntheticData.csv")
@@ -60,7 +59,6 @@ for degree in range(maxdegree):
     #Fit the scikit-learn model for the last degree
     if (degree == maxdegree -1) :
         sklearnModel.fit(X_train, y_train_scaled )
-
 
 
 # compare ours with sklearnModel
