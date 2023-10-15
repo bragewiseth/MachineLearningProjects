@@ -155,7 +155,10 @@ A significant portion of our investigation is dedicated to understanding the del
 bias and variance. We explore how regularization methods like Ridge and Lasso impact bias-variance trade-offs, 
 offering insights into the stability and predictive power of these models. Furthermore, we provide empirical 
 evidence of the benefits of cross-validation and bootstrap techniques in mitigating overfitting and improving 
-model robustness. We found that \{ ..results.. \}. Additionally we verify and compare our findings with well 
+model robustness. We found that plain OLS worked best for more simple data, while ridge performed better for
+more complex data. We found that bootstrap and cross validation helped us get better predictions, and that
+scaling the data was crucial for regularization techniques.
+. Additionally we verify and compare our findings with well 
 established theory and libraris such as SKLearn.
 \end{abstract}
 \begin{keywords}
@@ -629,40 +632,49 @@ We apply everything we have learned from the synthetic data to the real data. We
 \end{figure}
 We use polynomials as high as degree 46, and we still don't see any signs of overfitting. 
 This is probably because the real data is much more complex than the synthetic data.
-Although we don't see any signs of overfitting, we do see from Figure~\ref{fig:varianceRealdata} that the variance of MSE across the folds increases
-as we increase the complexity. 
+% Although we don't see any signs of overfitting, we do see from Figure~\ref{fig:varianceRealdata} that the variance of MSE across the folds increases
+% as we increase the complexity. 
+% \begin{figure}[!h]
+%     \begin{center}
+%         \includegraphics[width=0.7\textwidth]{../runsAndAdditions/heatmapVariance.png}
+%     \end{center}
+%     \caption{Variance of MSE}\label{fig:varianceRealdata}
+% \end{figure}
 \begin{figure}[!h]
     \begin{center}
-        \includegraphics[width=0.7\textwidth]{../runsAndAdditions/heatmapVariance.png}
+        \includegraphics[width=0.6\textwidth]{../runsAndAdditions/OLSvsRidgeReal.png}
     \end{center}
-    \caption{Variance of MSE}\label{fig:varianceRealdata}
-\end{figure}
-One interesting observation is that for higher degrees, OLS seems to loose its edge over Ridge and Lasso.
-As the complexity increases, the variance of parameters $\boldsymbol{\beta}$ also increases as we have seen previously.
-Without some form of regularization to keep the parameters in check, the model will start to overfit.
-In this case it is essential to include regularization.
-\begin{figure}[!h]
-    \begin{center}
-        \includegraphics[width=0.7\textwidth]{../runsAndAdditions/OLSvsRidgeReal.png}
-    \end{center}
-    \caption{Variance of MSE}\label{fig:OLSvsRidgeReal}
+    \caption{Ols Vs Ridge}\label{fig:OLSvsRidgeReal}
 \end{figure}
 
 \begin{figure}[h]
     \begin{minipage}[t]{.48\linewidth}
         \begin{center}
             \includegraphics[width=1.0\textwidth]{../runsAndAdditions/realDataPredictMap.png}
+    \caption{Prediction of the real data top down}\label{fig:realDataPredictMap}
     \end{center}
     \end{minipage}
     \hspace{4mm}
     \begin{minipage}[t]{.48\linewidth}
         \begin{center}
             \includegraphics[width=1.0\textwidth]{../runsAndAdditions/realDataPredict3D.png}
-    \caption{Prediction of the real data}\label{fig:realDataPredictMap}
+    \caption{Prediction of the real data}\label{fig:realDataPredict3d}
         \end{center}
     \end{minipage}
     \end{figure}
-
+    Due to computational limitations lasso did not seem to converge. We did however manage to get a 
+    good fit with OLS and Ridge. 
+\begin{mytable}[float=!h,label=tab:realscores, width=0.7\textwidth]{Best scores from real data}
+\centering
+\begin{tabular}{l|c|c|c}
+    & OLS & Ridge & Lasso \\
+    \hline
+    MSE  &   \texttt{17453} & \texttt{18692} & N/A \\
+    $R^2$     &   \texttt{0.7329} & \texttt{0.7292} & N/A \\
+    $\lambda$ &  N/A  & $10^{-5}$ & N/A \\
+    Degree & 46 & 46 & N/A
+\end{tabular}%
+\end{mytable}
 
 
 \section{Bias \& Variance}
@@ -751,7 +763,8 @@ Nevertheless, the potential for overfitting exists, and the application of ridge
 
 In the context of bias and variance analysis, our findings revealed a fundamental opposition between bias and variance. 
 As model designers, we are tasked with making a choice regarding the relative significance of bias and variance based on the specific requirements of our objective.
-
+For our case, we found that the bias-variance trade-off was not a significant concern, and we were able to achieve a satisfactory balance between bias and variance without any explicit tuning of the regularization parameter $\lambda$.
+In fact we found that OLS was the best model both cases where tuning of $\lambda$ is not needed.
 
 
 
@@ -900,40 +913,29 @@ A $z$-score of $\pm 1.96$ corresponds to a confidence interval of $95\%$
     \centering
     \textsc{ Finding the expectation value and variance of $\boldsymbol{\hat{\beta}}$}
 \end{tcolorbox}
-
-$$
-\mathbb{E}(y_i)  =\sum_{j}x_{ij} \beta_j=\mathbf{X}_{i, \ast} \, \mathbf{\beta}
-$$
-
-$$
-{Var}(y_i)  = \sigma^2
-$$
-
-$$
-{Var}(\mathbf{\hat{\beta}}) = \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1}.
-$$
+We have assumed that $y$ follows some function $f$ with some noise $\epsilon$
 $$
 \mathbf{y} = f(\mathbf{x}) + \epsilon
 $$
-
 $$
 \mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
 $$
-
-The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\mathbf{X}\mathbf{\beta}$
-
+The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\boldsymbol{X}\boldsymbol{\beta}$.
+We note the expected value of a single element $y_i$ as
 $$
-\mathbb{E}[y_i] = \mathbf{X_{i,*}}\mathbf{\beta}
+\mathbb{E}[y_i]  =\sum_{j}x_{ij} \beta_j=\mathbf{X}_{i, \ast} \, \boldsymbol{\beta}
 $$
-
-The variance is defined as
+$$
+\mathbb{E}[y_i] = \boldsymbol{X_{i,*}}\boldsymbol{\beta}
+$$
+The variance of $y_i$ is defined as
 \begin{align*}
 Var(y_i) &= \mathbb{E}\big[(y_i - \mathbb{E}[y_i])^2\big] = \mathbb{E}\left[y_i^2 - 2y_i\mathbb{E}[y_i] + \mathbb{E}[y_i]^2\right] = \mathbb{E}[y_i^2] - \mathbb{E}[y_i]^2\\
 Var(y_i) &= \mathbb{E}\big[\big(\mathbf{X}_{i,*}\mathbf{\beta}\big)^2 + 2\epsilon \mathbf{X}_{i,*}\mathbf{\beta} + \epsilon^2 \big] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
 Var(y_i) &= (\mathbf{X}_{i,*}\mathbf{\beta})^2 + 2\mathbb{E}[\epsilon]\mathbf{X}_{i,*}\mathbf{\beta} + \mathbb{E}[\epsilon^2] - (\mathbf{X}_{i,*}\mathbf{\beta})^2\\
 Var(y_i) &= \mathbb{E}[\epsilon^2] = \sigma^2
 \end{align*}
-for the expected value of $\mathbf{\beta}$ we can insert the definition of $\mathbf{\beta}$ from earlier
+for the expected value of $\boldsymbol{\beta}$ we can insert the definition of $\boldsymbol{\beta}$ from eq.~\ref{eq:optimalbeta}
 
 
 $$
@@ -953,22 +955,7 @@ Var(\mathbf{\hat{\beta}}) & = \mathbb{E} \{ [\mathbf{\beta} - \mathbb{E}(\mathbf
 & = \mathbf{\beta} \, \mathbf{\beta}^{T}  + \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1} - \mathbf{\beta} \, \mathbf{\beta}^{T}
 \, \, \, = \, \, \, \sigma^2 \, (\mathbf{X}^{T} \mathbf{X})^{-1},
 \end{align*}
-
-
-
-ridge
-
-
-$$
-\mathbb{E} \big[ \hat{\mathbf{\beta}}^{\mathrm{Ridge}} \big]=(\mathbf{X}^{T} \mathbf{X} + \lambda \mathbf{I}_{pp})^{-1} (\mathbf{X}^{\top} \mathbf{X})\mathbf{\beta}.
-$$
-
-
-$$
-{Var}[\hat{\mathbf{\beta}}^{\mathrm{Ridge}}]=\sigma^2[  \mathbf{X}^{T} \mathbf{X} + \lambda \mathbf{I} ]^{-1}  \mathbf{X}^{T}\mathbf{X} \{ [  \mathbf{X}^{\top} \mathbf{X} + \lambda \mathbf{I} ]^{-1}\}^{T},
-$$
-
-
+For ridge we apply the same method
 $$
 \mathbb{E}[\mathbf{\hat{\beta}}^{\mathrm{Ridge}}] = \mathbb{E}\left[ \left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T\mathbf{y}\right]=\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T \mathbb{E}[ \mathbf{Y}]=\left(\mathbf{X}^T\mathbf{X}+\lambda\mathbf{I}_{pp}\right)^{-1}\left(\mathbf{X}^T  \mathbf{X}\right)\mathbf{\beta}
 $$

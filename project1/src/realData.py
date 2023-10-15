@@ -18,7 +18,7 @@ terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_1.tif'
 # terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_2.tif'))
 terrain = np.array(terrain)
 N = 1800
-n = 50000 
+n = 40000 
 terrain = terrain[:N,:N]
 x0sample = np.random.randint(0, N, n)
 x1sample = np.random.randint(0, N, n)
@@ -134,44 +134,42 @@ X_lowres = np.concatenate((x_mesh_lowres.ravel().reshape(-1,1), y_mesh_lowres.ra
 
 
 fix1 , ax1 = plt.subplots()
-ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
 ax1.set_xlabel("Lambda")
-ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
-ax1.set_yticks(np.arange(len(degrees)), labels=degrees)
-ax1.set_ylabel(r"values of $\beta$")
+ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas, rotation=90)
+ax1.set_yticks(np.arange(len(degrees)), labels=degrees, rotation=90)
+ax1.set_ylabel(r"Degree")
 im = ax1.imshow(estimated_mse_KFoldRidge, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
-cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
+cbar.ax.set_ylabel("MSE", rotation=-90, va="bottom")
 plt.savefig("../runsAndAdditions/heatmapRealData.png",bbox_inches='tight')
 
 
 fix1 , ax1 = plt.subplots()
-ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
 ax1.set_xlabel("Lambda")
-ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
-ax1.set_yticks(np.arange(len(degrees)), labels=degrees)
-ax1.set_ylabel(r"values of $\beta$")
+ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas, rotation=90)
+ax1.set_yticks(np.arange(len(degrees)), labels=degrees, rotation=90)
+ax1.set_ylabel(r"Degree")
 im = ax1.imshow(scores, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
-cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
+cbar.ax.set_ylabel("MSE", rotation=-90, va="bottom")
 plt.savefig("../runsAndAdditions/heatmapFinalTestRealData.png",bbox_inches='tight')
 
 
 
 fix1 , ax1 = plt.subplots()
-ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
 ax1.set_xlabel("Lambda")
-ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
-ax1.set_yticks(np.arange(len(degrees)), labels=degrees)
-ax1.set_ylabel(r"values of $\beta$")
+ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas, rotation=90)
+ax1.set_yticks(np.arange(len(degrees)), labels=degrees, rotation=90)
+ax1.set_ylabel(r"Degree")
 im = ax1.imshow(variance, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
-cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
+cbar.ax.set_ylabel("MSE Variance", rotation=-90, va="bottom")
 plt.savefig("../runsAndAdditions/heatmapVariance.png",bbox_inches='tight')
 
 
 fig, ax = plt.subplots()
 ax.set_xticks(degrees)
+ax.set_title(r"$\lambda = 10^{-5}$")
 ax.plot(degrees, estimated_mse_KFoldOLS[:,0], label="OLS")
 ax.plot(degrees, estimated_mse_KFoldRidge[:,0], label="Ridge")
 ax.set_xlabel(r"Degree")
