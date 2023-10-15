@@ -582,7 +582,7 @@ parameters for our models.\\
 We previously thought that overfitting was something we did't achieve with a polynomial of degree 5. However
 our eyes have been opened. We can see that the MSE and $R^2$ score starts to diverge at around degree 5 see Figure~\ref{fig:R2andMSEOLSCrossval}.
 For ridge we can see that we maximize the $R^2$ score at around $\lambda = 10^{-5}$ for polynomial of degree 4 see Figure~\ref{fig:heatmapCrossval}.
-We max out our testing range for $\lambda=10^{-5}$ which is realy close to zero, leading us to suspect that simple OLS is the best model for this data.
+
 \end{minipage}
 \end{figure}
 
@@ -618,16 +618,35 @@ We max out our testing range for $\lambda=10^{-5}$ which is realy close to zero,
     Degree & 4 & 4 & 5
 \end{tabular}%
 \end{mytable}
-
+We end up with the smallest $\lambda$ for our testing range both with and without cross validation. $\lambda=10^5$ is fairly close to zero, leading us to suspect that simple OLS is the best model for this data. The scores also reflects this.\\\\
 In our final experiment we will use the real data. 
 We apply everything we have learned from the synthetic data to the real data. We suspect that a higher degree polynomial will be needed for this.
 \begin{figure}[!h]
     \begin{center}
-        \includegraphics[width=0.8\textwidth]{../runsAndAdditions/heatmapRealData.png}
+        \includegraphics[width=0.7\textwidth]{../runsAndAdditions/heatmapRealData.png}
     \end{center}
-    \caption{$R^2$ and MSE with increasing complexity}\label{fig:R2andMSEOLSReal}
+    \caption{MSE with increasing complexity and $\lambda$}\label{fig:MSEOLSReal}
 \end{figure}
-
+We use polynomials as high as degree 46, and we still don't see any signs of overfitting. 
+This is probably because the real data is much more complex than the synthetic data.
+Although we don't see any signs of overfitting, we do see from Figure~\ref{fig:varianceRealdata} that the variance of MSE across the folds increases
+as we increase the complexity. 
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{../runsAndAdditions/heatmapVariance.png}
+    \end{center}
+    \caption{Variance of MSE}\label{fig:varianceRealdata}
+\end{figure}
+One interesting observation is that for higher degrees, OLS seems to loose its edge over Ridge and Lasso.
+As the complexity increases, the variance of parameters $\boldsymbol{\beta}$ also increases as we have seen previously.
+Without some form of regularization to keep the parameters in check, the model will start to overfit.
+In this case it is essential to include regularization.
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{../runsAndAdditions/OLSvsRidgeReal.png}
+    \end{center}
+    \caption{Variance of MSE}\label{fig:OLSvsRidgeReal}
+\end{figure}
 
 \begin{figure}[h]
     \begin{minipage}[t]{.48\linewidth}
@@ -644,8 +663,7 @@ We apply everything we have learned from the synthetic data to the real data. We
     \end{minipage}
     \end{figure}
 
-We use polynomials as high as degree 46, and we still don't see any signs of overfitting. 
-This is probably because the real data is much more complex than the synthetic data.
+
 
 \section{Bias \& Variance}
 \label{sec:biasvariance}

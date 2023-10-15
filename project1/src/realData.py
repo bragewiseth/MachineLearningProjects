@@ -17,9 +17,8 @@ ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_1.tif'))
 # terrain = imageio.imread(os.path.join(ROOT_DIR, 'data', 'SRTM_data_Norway_2.tif'))
 terrain = np.array(terrain)
-print(terrain.shape)
 N = 1800
-n = 1000 
+n = 50000 
 terrain = terrain[:N,:N]
 x0sample = np.random.randint(0, N, n)
 x1sample = np.random.randint(0, N, n)
@@ -36,7 +35,7 @@ degrees = [5,8,10,15, 20,30,46]
 numlamdas = len(lambdas)
 numdegrees = len(degrees)
 
-numfolds = 10
+numfolds = 7
 kfold = KFold(n_splits = numfolds)
 scores_KFold_R2OLS = np.zeros((numdegrees, numlamdas, numfolds))
 scores_KFoldOLS = np.zeros((numdegrees, numlamdas, numfolds))
@@ -67,10 +66,10 @@ for j , degree in enumerate(degrees):
             y_train_mean = np.mean(y_train_fold)
             y_train_scaled = y_train_fold - y_train_mean
             ridge.fit(X_train, y_train_scaled)
-            # ols.fit(X_train, y_train_scaled)
+            ols.fit(X_train, y_train_scaled)
             # lasso.fit(X_train, y_train_scaled)
-            # scores_KFoldOLS[j,i,k] = MSE(y_val_fold, ols.predict(X_val) + y_train_mean)
-            # scores_KFold_R2OLS[j,i,k] = R2(y_val_fold, ols.predict(X_val) + y_train_mean)
+            scores_KFoldOLS[j,i,k] = MSE(y_val_fold, ols.predict(X_val) + y_train_mean)
+            scores_KFold_R2OLS[j,i,k] = R2(y_val_fold, ols.predict(X_val) + y_train_mean)
             scores_KFoldRidge[j,i,k] = MSE(y_val_fold, ridge.predict(X_val) + y_train_mean)
             scores_KFold_R2Ridge[j,i,k] = R2(y_val_fold, ridge.predict(X_val) + y_train_mean)
             # scores_KFoldLasso[j,i,k] = MSE(y_val_fold, lasso.predict(X_val) + y_train_mean)
@@ -159,7 +158,7 @@ plt.savefig("../runsAndAdditions/heatmapFinalTestRealData.png",bbox_inches='tigh
 
 
 
-fix1 , ax1 = plt.subplots(figsize=(10,10))
+fix1 , ax1 = plt.subplots()
 ax1.set_title(r"OLS - $\mathbf{\beta}$ and model complexity")
 ax1.set_xlabel("Lambda")
 ax1.set_xticks(np.arange(len(lambdas)),labels=lambdas)
@@ -169,6 +168,19 @@ im = ax1.imshow(variance, cmap="plasma")
 cbar = ax1.figure.colorbar(im, ax=ax1) 
 cbar.ax.set_ylabel("label", rotation=-90, va="bottom")
 plt.savefig("../runsAndAdditions/heatmapVariance.png",bbox_inches='tight')
+
+
+fig, ax = plt.subplots()
+ax.set_xticks(degrees)
+ax.plot(degrees, estimated_mse_KFoldOLS[:,0], label="OLS")
+ax.plot(degrees, estimated_mse_KFoldRidge[:,0], label="Ridge")
+ax.set_xlabel(r"Degree")
+ax.set_ylabel(r"MSE")
+ax.legend()
+
+plt.savefig("../runsAndAdditions/OLSvsRidgeReal",bbox_inches='tight')
+
+
 
 
 ols = OLS()
