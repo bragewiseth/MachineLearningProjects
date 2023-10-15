@@ -158,8 +158,8 @@ evidence of the benefits of cross-validation and bootstrap techniques in mitigat
 model robustness. We found that plain OLS worked best for more simple data, while ridge performed better for
 more complex data. We found that bootstrap and cross validation helped us get better predictions, and that
 scaling the data was crucial for regularization techniques.
-. Additionally we verify and compare our findings with well 
-established theory and libraris such as SKLearn.
+Additionally we verify and compare our findings with well 
+established theory and libraries such as SKLearn.
 \end{abstract}
 \begin{keywords}
     Linear Regression, Scaling, Bias \& Variance 
@@ -196,7 +196,7 @@ To embark on this exploration, we will begin with a simpler case: "Franke's func
 data. This function 
 serves as a foundational starting point, allowing us to assess our model's performance in a controlled 
 environment before venturing into the complexity of real-world terrain data. Through this gradual progression, 
-we provide ourselves wih a framework that can be applied to more complex and varied real-world terrain datasets.\\
+we provide ourselves with a framework that can be applied to more complex and varied real-world terrain datasets.\\
 
 \textbf{Data}: We begin by introducing the dataset used for our analysis, highlighting data collection and preprocessing procedures. 
 Understanding the characteristics of the terrain data is fundamental to our modeling endeavor.\\
@@ -322,7 +322,7 @@ The goal is to find the coefficients $\boldsymbol{\beta}$ that minimizes the MSE
 $$
 \tilde{\mathbf{y}} = \mathbf{X}\boldsymbol{\beta}
 $$
-Wich is a compact way of writing
+Which is a compact way of writing
 $$
 \tilde{y}_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \dots + \beta_{p-1} x_{i,p-1}
 $$
@@ -808,7 +808,7 @@ In fact we found that OLS was the best model both cases where tuning of $\lambda
 \makeatletter\def\@currentlabel{A.1}\makeatother
 \label{app:OptimalBeta}
 
-In Section~\ref{sec:ols} we ended up with our optimal parmeters $\boldsymbol{\beta}$ using the MSE as our cost function, in this section we will go into detail about our derivations.
+In Section~\ref{sec:ols} we ended up with our optimal parameters $\boldsymbol{\beta}$ using the MSE as our cost function, in this section we will go into detail about our derivations.
 The parameters $\boldsymbol{\beta}$ are found by minimizing our cost function (the MSE), this is done by taking the derivative of the MSE with respect to the coefficients $\beta_j$ and setting it equal to zero.
 
 $$
@@ -920,7 +920,7 @@ $$
 $$
 \mathbb{E}[\mathbf{y}] = \mathbb{E}[f(\mathbf{x} )+ \epsilon] = \mathbb{E}[f(\mathbf{x})] + \mathbb{E}[\epsilon_i]
 $$
-The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approimated by $\boldsymbol{X}\boldsymbol{\beta}$.
+The expected value of $\epsilon_i$ is $0$, $f(x)$ is a non-stochastic variable and is approximated by $\boldsymbol{X}\boldsymbol{\beta}$.
 We note the expected value of a single element $y_i$ as
 $$
 \mathbb{E}[y_i]  =\sum_{j}x_{ij} \beta_j=\mathbf{X}_{i, \ast} \, \boldsymbol{\beta}
