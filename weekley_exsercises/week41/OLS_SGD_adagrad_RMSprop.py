@@ -20,7 +20,7 @@ H = (2.0/n)* X.T @ X
 EigValues, EigVectors = np.linalg.eig(H)
 
 delta  = 1e-8
-rho = 0.99
+rho = 0.99#roh = 0 for adagrad and roh = 0.99 for RMSprop
 for n_epochs in epochs:
 
     beta = np.random.randn(polydegree+1,1)
