@@ -7,6 +7,7 @@ from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import pandas as pd
 
+
 np.random.seed(2020)
 
 learning_rate = [0.0001, 0.001, 0.01, 0.1]
