@@ -60,7 +60,7 @@ for i in range(len(momentum)):
 beta_linreg = np.linalg.inv(X.T @ X) @ X.T @ y
 mse_predict = (1.0/n)*np.sum((y - X@beta_linreg)**2)
 print("MSE (linreg): ", mse_predict)
-
+print(it)
 panda = pd.DataFrame(data=mse)
 print(panda)
 print("\nmin mse:",np.min(mse))
