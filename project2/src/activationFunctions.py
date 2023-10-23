@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+import numpy as np
 
 def ELU(x, alpha=1):
     """
@@ -10,13 +12,13 @@ def ReLU(x):
     """
     Rectified Linear Unit
     """
-    return np.max(0, x)
+    return np.where(x > 0, x, 0)
 
 def leaky_ReLU(x, alpha=0.01):
     """
     Leaky Rectified Linear Unit
     """
-    return np.max(alpha*x, x)
+    return np.where(x > 0, x, alpha * x)
 
 def tanh(x):
     """
