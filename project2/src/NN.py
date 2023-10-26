@@ -2,7 +2,7 @@ import numpy as np
 from activationFunctions import *
 
 
-class MLP():
+class NN():
     """
     A multi-layer neural network with one hidden layer
     """
