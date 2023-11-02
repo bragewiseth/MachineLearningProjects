@@ -85,6 +85,7 @@ class NN():
                         X_train[random_index:random_index+batch_size],
                         t_train[random_index:random_index+batch_size],
                     )
+                    self.learn(w0g, b0g, w1g, b1g)
                 self.loss[e] = MSE(self.weights, X_val, t_val)
                 # self.accuracies[e]= accuracy(self.predict(X_val), t_val)
 
