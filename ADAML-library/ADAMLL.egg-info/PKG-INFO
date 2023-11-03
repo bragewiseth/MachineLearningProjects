@@ -24,6 +24,6 @@ License-File: LICENSE
 Requires-Dist: numpy
 Requires-Dist: matplotlib
 Requires-Dist: scikit-learn
-Requires-Dist: pandas
 Requires-Dist: seaborn
 Requires-Dist: jax[cuda12_pip]
+Requires-Dist: jaxlib

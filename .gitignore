@@ -13,3 +13,5 @@
 *.zip
 _minted-report
 .jukit
+pyrightconfig.json
+
