@@ -118,40 +118,6 @@ class NN():
 
 
 
-    def init_weights_and_biases(self, dim_in, dim_out):
-        self.w0 = onp.random.randn(dim_in, self.dim_hidden)
-        self.b0 = np.zeros(self.dim_hidden) + 0.01
-        self.w1 = onp.random.randn(self.dim_hidden, dim_out)
-        self.b1 = np.zeros(dim_out) + 0.01
-
-
-
-
-    def backpropagation(self, X, T ):
-        """
-        Backpropagation algorithm
-        ## Parameters
-            X, T : ndarray
-                input data and targets
-        ## Returns
-            :tuple
-            ( first layer weights gradient, first layer bias gradient, last layer weights gradient, last layer bias gradient )
-        """
-        a0, a1 = self.forward(X)
-        output_error = (a1 - T)
-        hidden_error =  output_error @ self.w1.T * self.activ_diff(a0)
-
-        w0_gradient = X.T @ hidden_error                # * 1/X.shape[0] # can be baked into the learning rate
-        b0_gradient = np.sum(hidden_error, axis=0)      # * 1/X.shape[0] # can be baked into the learning rate
-        w1_gradient = a0.T @ output_error               # * 1/X.shape[0] # can be baked into the learning rate
-        b1_gradient = np.sum(output_error, axis=0)      # * 1/X.shape[0] # can be baked into the learning rate
-
-        return w0_gradient, b0_gradient, w1_gradient, b1_gradient
-
-
-
-
-
 
 model = NN(dim_hidden=2, epochs=1)
 X = onp.random.randn(10, 3)

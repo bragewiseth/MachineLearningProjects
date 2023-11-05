@@ -27,3 +27,6 @@ Requires-Dist: scikit-learn
 Requires-Dist: seaborn
 Requires-Dist: jax[cuda12_pip]
 Requires-Dist: jaxlib
+
+If you are missing Jaxlib the package wont work.
+    to install Jaxlib, go to: https://github.com/google/jax#installation
