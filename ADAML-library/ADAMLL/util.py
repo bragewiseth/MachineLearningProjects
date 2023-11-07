@@ -45,4 +45,4 @@ def progress_bar(current, total, bar_length=20):
 
 
 def print_message(message):
-    print(f"\r{message: <100}", end='')
+    print(f"\r{message: <70}", end='')
