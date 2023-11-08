@@ -172,42 +172,46 @@
 
 \section{Introduction}
 
-Machine learning has emerged as a powerful tool in data analysis, providing the ability to uncover complex 
-patterns and relationships in diverse datasets. But, at its core, machine learning is all about finding 
-functions that capture the underlying structure of the data. The use of machine learning algorithms 
-to approximate functions is the essence of this paper.\\
+An overview
 
-Our motivation for this research lies in the exploration of machine learning techniques to approximate 
-the terrain on our planet, which can perhaps be described by such a function. Earth's terrain exhibits 
-peaks and troughs, hills and valleys, much like some polynomial functions. Fortunately, we can employ 
-standard linear regression techniques to approximate polynomials, but the terrain presents its own set 
-of challenges. Firstly, the terrain's true underlying function may not be a polynomial at all, and its complexity may 
-vary significantly from one location to another. Secondly, our landscape is teeming with small, intricate 
-details. Some regions are characterized by flat and smooth surfaces, while others are marked by rough and 
-uneven terrain. Focusing too much on these minute details can lead to model overfitting, making it crucial 
-to strike a careful balance between model complexity and generalization.
-In this context, regularization and resampling techniques, including Ridge and Lasso regression with bootstrap
-and cross validation, have proven indispensable. By introducing regularization and resampling, we aim to find 
-the sweet spot between bias and Variance. And getting the best predictions we can with our assumptions.\\
-To embark on this exploration, we will begin with a simpler case: "Franke's function." which mimics our real terrain
-data. This function 
-serves as a foundational starting point, allowing us to assess our model's performance in a controlled 
-environment before venturing into the complexity of real-world terrain data. Through this gradual progression, 
-we provide ourselves wih a framework that can be applied to more complex and varied real-world terrain datasets.\\
+\textbf{Gradient Decent}: 
 
-\textbf{Data}: We begin by introducing the dataset used for our analysis, highlighting data collection and preprocessing procedures. 
-Understanding the characteristics of the terrain data is fundamental to our modeling endeavor.\\
-\textbf{Methods and Scaling}: Next, we delve into the methodology, encompassing the implementation of polynomial regression 
-models and the application of regularization techniques such as Ridge and Lasso. Additionally, we will discuss the 
-importance of proper scaling for model stability and convergence.\\
-\textbf{Results}: In this section, we will present the outcomes of our experiments, showcasing the performance of different 
-models and regularization techniques. Through empirical evidence, we aim to provide insights into the effectiveness of our approach.\\
-\textbf{Bias-Variance Trade-off}: A significant portion of our study will revolve around the critical concept of bias and 
-variance. We'll explore how regularization methods influence this trade-off and delve into the fine balance between 
-model complexity and generalization.\\
-\textbf{Conclusion}: Finally, we will summarize the key findings and their implications for terrain modeling with machine learning. 
-Our conclusion will underscore the importance of regularization in achieving accurate representations of complex terrains and 
-provide a perspective on future research directions.
+\textbf{Data}: 
+
+\textbf{Results}:
+
+\textbf{Conclusion}:\\
+
+As we have seen previously, we can find lines or even polynimals that approximate the distribution of our data.
+By solving an nice analytical expression for the optimal parameters $\beta$. We can in principle approximate 
+any function with a polynomial, if we give ourselves infinite degrees of freedom. This is great but there are several
+limitations to this approach. First of all, we can not give ourselves infinite degrees of freedom, believe it or not.
+and what if we want to classify our data? We can't use a plain polynomial for that. 
+
+To tackle classification we can use \emph{logistic regression}, that is, first regression and then clamp the output to a binary value
+(for the bianry case). We can do this with an activation function like the sigmoid function
+\footnote{The sigmoid function does not output a binary value, but a value between 0 and 1. 
+    We can then set a threshold, for example 0.5, and say that if the output is above the threshold, 
+    we classify it as 1, and if it is below, we classify it as 0. We can interpret the output as the probability of the data point being 1.}
+or the heaviside function. However the first problem
+still remains, we want to approximate any function, but don't want to use an infinite taylor series. 
+We need a different approach.
+Instead of a single high degree polynimial, we can try to glue together a bunch of lower degree lines or polynomials. 
+For this we can use a \emph{neural network}.
+As it turns out, the framework for neural networks is very similar to the framework for logistic regression.
+Neural networks can be interpeted as several logistic regression models glued together, which is exactly what we wanted!
+Another huge benefit of this is that we can use the same code
+For both logistic and linear regression as well as neural networks.
+
+This sounds great, but by introducing activation functions we lose the nice analytical expression,
+so we can't use the same matrix inversion approach as before.\\
+So how do we learn?
+
+
+
+
+
+
 
 \begin{center}
     \scriptsize code for generating all figures and data can be found at 
@@ -217,16 +221,62 @@ provide a perspective on future research directions.
 
 
 
+\section{ Gradient Descent }
+\label{sec:GD}
 
+
+\subsection{ Backpropagation and Chain Rule }
+\label{sec:backpropagation}
+
+
+\begin{figure}[!h]
+    \begin{center}
+        Forward\\
+        \begin{tikzpicture}
+            \node (a) at (1,0) {$x$};
+            \node (b) at (6,0) {$a$};
+            \node (c) at (12,0) {c};
+            \node[draw] (box1) at (3,0) {$\cdot\; w_0 + b_0$}; 
+            \node[draw] (box2) at (10,0) {$\sigma(a)$};
+            \draw[-] (a) -- (box1);
+            \draw[->] (box1) -- (b); 
+            \draw[-] (b) -- (box2);
+            \draw[->] (box2) -- (c);
+        \end{tikzpicture}\\
+        Backwards\\
+        \begin{tikzpicture}
+            \node (a) at (1,0) {$x$};
+            \node (b) at (6,0) {$a$};
+            \node (c) at (12,0) {c};
+            \node[draw] (box1) at (3,0) {$\cdot\; w_0 + b_0$}; 
+            \node[draw] (box2) at (10,0) {$\sigma(a)$};
+            \draw[-] (a) -- (box1);
+            \draw[->] (box1) -- (b); 
+            \draw[-] (b) -- (box2);
+            \draw[->] (box2) -- (c);
+        \end{tikzpicture}
+    \end{center}
+    \caption{chain rule}\label{fig:chainrule}
+\end{figure}
+
+
+
+
+
+
+\subsection{ Neural Network }
+\label{sec:NN}
+
+\includegraphics[width=\linewidth]{nn.pdf}
+
+with one layer the network becomes a linear regression model. $y = x_0w_0 + x_1w_1 + x_2w_2 + ... + x_nw_n + b_0$ with a activation function at the end we can make it into a logistig regression model.
+This makes it very convenient to use the same code for both linear and logistic regression as well as for 
+larger neural networks with hidden layers, by simply swapping out the different parts.
 
 
 
 \section{Data}
 \label{sec:data}
-
-
-
-
 
 
 
@@ -279,99 +329,19 @@ provide a perspective on future research directions.
 
 
 
-
-
-
-
-
-
-
-
-
-
-\section{ Gradient Descent }
-\label{sec:GD}
-How do we learn? 
-
-
-\subsection{ Backpropagation and Chain Rule }
-\label{sec:backpropagation}
-
-
-\begin{figure}[!h]
-    \begin{center}
-        Forward\\
-        \begin{tikzpicture}
-            \node (a) at (1,0) {$x$};
-            \node (b) at (6,0) {$a$};
-            \node (c) at (12,0) {c};
-            \node[draw] (box1) at (3,0) {$\cdot\; w_0 + b_0$}; 
-            \node[draw] (box2) at (10,0) {$\sigma(a)$};
-            \draw[-] (a) -- (box1);
-            \draw[->] (box1) -- (b); 
-            \draw[-] (b) -- (box2);
-            \draw[->] (box2) -- (c);
-        \end{tikzpicture}\\
-        Backwards\\
-        \begin{tikzpicture}
-            \node (a) at (1,0) {$x$};
-            \node (b) at (6,0) {$a$};
-            \node (c) at (12,0) {c};
-            \node[draw] (box1) at (3,0) {$\cdot\; w_0 + b_0$}; 
-            \node[draw] (box2) at (10,0) {$\sigma(a)$};
-            \draw[-] (a) -- (box1);
-            \draw[->] (box1) -- (b); 
-            \draw[-] (b) -- (box2);
-            \draw[->] (box2) -- (c);
-        \end{tikzpicture}
-    \end{center}
-    \caption{chain rule}\label{fig:chainrule}
-\end{figure}
-
-
-
-
-
-
-\subsection{ Neural Network }
-\label{sec:NN}
-
-
-\includegraphics[width=\linewidth]{nn.pdf}
-
-with one layer the network becomes a linear regression model. $y = x_0w_0 + x_1w_1 + x_2w_2 + ... + x_nw_n + b_0$ with a activation function at the end we can make it into a logistig regression model.
-This makes it very convenient to use the same code for both linear and logistic regression as well as for 
-larger neural networks with hidden layers, by simply swapping out the different parts.
-
-
-
-
-
-
 \section{Results and Discussion}
 \label{sec:resultsdiscussion}
 
 
 
-\subsection{Confidence Interval}
-\label{sec:confidenceinterval}
+\subsection{ Universal Approximation Theorem }
+\label{sec:UAT}
 
 
 
 
-
-
-
-
-
-\section{Bias \& Variance}
-\label{sec:biasvariance}
-
-
-
-
-
-
+% \section{Bias \& Variance}
+% \label{sec:biasvariance}
 
 
 
@@ -417,10 +387,10 @@ larger neural networks with hidden layers, by simply swapping out the different 
 
 
 
-\phantomsection%
-\addcontentsline{toc}{subsection}{Analytical Least Squares}
-\subsection*{Derivation of The Optimal Parameters $\boldsymbol{\beta}$}
-\label{app:OptimalBeta}
+% \phantomsection%
+% \addcontentsline{toc}{subsection}{Analytical Least Squares}
+% \subsection*{Derivation of The Optimal Parameters $\boldsymbol{\beta}$}
+% \label{app:OptimalBeta}
 
 
 
@@ -428,19 +398,19 @@ larger neural networks with hidden layers, by simply swapping out the different 
 
 
 
-\phantomsection%
-\addcontentsline{toc}{subsection}{SVD}
-\subsection*{SVD}
-\label{app:svd}
+% \phantomsection%
+% \addcontentsline{toc}{subsection}{SVD}
+% \subsection*{SVD}
+% \label{app:svd}
 
 
 
 
 
-\phantomsection%
-\addcontentsline{toc}{subsection}{Confidence Interval}
-\subsection*{Math Behind the Confidence Interval, Section~\ref{sec:confidenceinterval}}
-\label{app:confidenceinterval}
+% \phantomsection%
+% \addcontentsline{toc}{subsection}{Confidence Interval}
+% \subsection*{Math Behind the Confidence Interval, Section~\ref{sec:confidenceinterval}}
+% \label{app:confidenceinterval}
 
 
 
