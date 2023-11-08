@@ -23,9 +23,9 @@ def init_SGD_state(params):
 def create_update_adagrad(eta=0.001,  epsilon=1e-8):
     def adagrad_update(params, grads, state ):
         v = state
-        v = v + grads ** 2
-        new_param = params - eta * grads / (np.sqrt(v) + epsilon)
-        return new_param, v
+        v = jax.tree_map(lambda v, g: v + g ** 2, v, grads)
+        new_params = jax.tree_map(lambda p, v,g : p - eta * g / (np.sqrt(v) + epsilon), params, v, grads)
+        return new_params, v
     return adagrad_update
 
 
@@ -67,8 +67,8 @@ def init_adam_state(params):
 def create_update_rmsprop(eta=0.001, gamma=0.9, epsilon=1e-8):
     def rmsprop_update(params, grads, state ):
         v = state
-        v = gamma * v + (1 - gamma) * (grads ** 2)
-        new_param = params - eta * grads / (np.sqrt(v) + epsilon)
+        v = jax.tree_map(lambda v,g : gamma * v + (1 - gamma) * (g ** 2), v, grads)
+        new_param = jax.tree_map(lambda p,v,g: p - eta * g / (np.sqrt(v) + epsilon), params, v, grads)
         return new_param, v
     return rmsprop_update
 

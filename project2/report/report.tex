@@ -182,11 +182,11 @@ An overview
 
 \textbf{Conclusion}:\\
 
-As we have seen previously, we can find lines or even polynimals that approximate the distribution of our data.
-By solving an nice analytical expression for the optimal parameters $\beta$. We can in principle approximate 
+In project 1\cite{MachineLearningProjects_2023}, we found that 
+we can fit lines or even polynimals that approximate the distribution of our data by solving an nice analytical expression for the optimal parameters $\beta$. We can in principle approximate 
 any function with a polynomial, if we give ourselves infinite degrees of freedom. This is great but there are several
 limitations to this approach. First of all, we can not give ourselves infinite degrees of freedom, believe it or not.
-and what if we want to classify our data? We can't use a plain polynomial for that. 
+Secondly, what if we don't want to find a polynimal but rather classify our data into some classes?\\
 
 To tackle classification we can use \emph{logistic regression}, that is, first regression and then clamp the output to a binary value
 (for the bianry case). We can do this with an activation function like the sigmoid function
@@ -196,7 +196,7 @@ To tackle classification we can use \emph{logistic regression}, that is, first r
 or the heaviside function. However the first problem
 still remains, we want to approximate any function, but don't want to use an infinite taylor series. 
 We need a different approach.
-Instead of a single high degree polynimial, we can try to glue together a bunch of lower degree lines or polynomials. 
+Instead of finding a single high degree polynimial, we can try to glue together a bunch of smaller line segments.
 For this we can use a \emph{neural network}.
 As it turns out, the framework for neural networks is very similar to the framework for logistic regression.
 Neural networks can be interpeted as several logistic regression models glued together, which is exactly what we wanted!
@@ -264,7 +264,7 @@ So how do we learn?
 
 
 
-\subsection{ Neural Network }
+\section{ Neural Network }
 \label{sec:NN}
 
 \includegraphics[width=\linewidth]{nn.pdf}
@@ -273,6 +273,18 @@ with one layer the network becomes a linear regression model. $y = x_0w_0 + x_1w
 This makes it very convenient to use the same code for both linear and logistic regression as well as for 
 larger neural networks with hidden layers, by simply swapping out the different parts.
 
+
+\section{ Universal Approximation Theorem }
+\label{sec:UAT}
+
+There is a famous theorem called the universal approximation theorem, which states that a neural network with one hidden
+layer can approximate any function. This is great, but it does not say anything about how many neurons we need in the
+hidden layer. It turns out that we need an infinite number of neurons to approximate any function. This is not very
+practical, so we need to find a way to approximate any function with a finite number of neurons.\\
+
+Geofry Hinton showed that a simple perceptron is incapable of learning the XOR function. 
+This is because the perceptron is a linear model, and the XOR function is not linearly separable. 
+However, as we hinted at earlier, we can approximate any function with a polynomial or a neural network.
 
 
 \section{Data}
@@ -334,8 +346,7 @@ larger neural networks with hidden layers, by simply swapping out the different 
 
 
 
-\subsection{ Universal Approximation Theorem }
-\label{sec:UAT}
+
 
 
 
@@ -387,10 +398,10 @@ larger neural networks with hidden layers, by simply swapping out the different 
 
 
 
-% \phantomsection%
-% \addcontentsline{toc}{subsection}{Analytical Least Squares}
-% \subsection*{Derivation of The Optimal Parameters $\boldsymbol{\beta}$}
-% \label{app:OptimalBeta}
+\phantomsection%
+\addcontentsline{toc}{subsection}{ Lines glued together }
+\subsection*{Lines glued together $\boldsymbol{\beta}$}
+\label{app:OptimalBeta}
 
 
 

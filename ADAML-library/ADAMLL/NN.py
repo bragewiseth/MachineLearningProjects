@@ -68,7 +68,8 @@ class NN():
 
 
     def fit(self, X, t, X_val, t_val, batch_size=None ):
-        N = X.shape[0]
+        N,n = X.shape
+        self.architecture[0][0] = n
         if batch_size is None:
             batch_size = N
         key = jax.random.PRNGKey(1234)
@@ -81,7 +82,7 @@ class NN():
         @jax.jit # one step of gradient descent jitted to make it zoom
         def step(params, opt_state, X, t):
             activations = self.forward(params, X)
-            grads = self.backwards(params, t, activations)
+            grads = self.backwards(params, t, activations, self.alpha)
             params, opt_state = update_params(params, grads, opt_state)
             return params, opt_state
 
@@ -96,7 +97,7 @@ class NN():
 
                 params, opt_state = step(params, opt_state, X_batch, t_batch)
 
-                current_loss = CE(forward_propagate(params, X_val)[-1], t_val)
+                current_loss = CE(self.forward(params, X_val)[-1], t_val)
 
                 # clip gradients
                 if not np.isfinite(current_loss).all():
@@ -114,8 +115,6 @@ class NN():
         return loss , params
 
 
-    def forward(self, params, X):
-        return self.forward(params, X)
 
 
 
@@ -127,7 +126,8 @@ class NN():
 
 
 
-def backprop_one_hidden_auto( X,t, params, activations , loss=MSE ):
+def backprop_one_hidden_auto( X,t, params, activations, alpha , loss=MSE ):
+    """cross entropy with sigmoid - sigmoid autoiff"""
     a0, a1 = activations
     dloss = jax.grad(loss)(a1, t)
     output_error = (a1 - t)
@@ -144,7 +144,8 @@ def backprop_one_hidden_auto( X,t, params, activations , loss=MSE ):
 
 
 
-def backprop_one_hidden( params, t, activations):
+def backprop_one_hidden( params, t, activations, alpha):
+    """Cross entropy with sigmoid - sigmoid"""
     X, a0, a1 = activations
     output_error = (a1 - t)
     hidden_error =  output_error @ params[1]['w'].T * a0 * (1 - a0) 
@@ -157,7 +158,7 @@ def backprop_one_hidden( params, t, activations):
     return [{'w': gw0, 'b': gb0}, {'w': gw1, 'b': gb1}]
 
 
-def single_layer_gradients(_, t, activations ):
+def single_layer_gradients(_, t, activations, alpha ):
     X, y = activations
     wgrad = (2/X.shape[0]) * np.dot(X.T , (y - t))
     bgrad = 2/X.shape[0] * np.sum(y - t)
@@ -203,25 +204,17 @@ def build_backwards(architecture, loss=MSE):
 
 
 
-def forward_propagate(network, inputs):
-    activations = [inputs] # List to hold all activations, layer by layer
-    for layer in network:
-        net_input = np.dot(activations[-1], layer['w']) + layer['b']
-        activations.append(sigmoid(net_input))
-    return activations
-
-
-
 
 def build_forward(architecture):
     acitvation_functions = architecture[1]
 
+    @jax.jit
     def last_layer_activation(network, inputs):
         activations = [inputs]
         for i in range(len(network)): 
             activations.append(acitvation_functions[i](np.dot(activations[-1], network[i]['w']) + network[i]['b']))
         return activations  
-
+    @jax.jit
     def last_layer_no_activation(network, inputs):
         activations = [inputs]
         for i in range(len(network) - 1):
