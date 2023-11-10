@@ -2,5 +2,5 @@ numpy
 matplotlib
 scikit-learn
 seaborn
-jax[cuda12_pip]
+jax
 jaxlib

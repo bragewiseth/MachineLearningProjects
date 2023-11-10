@@ -29,6 +29,40 @@ def CE(y, t):
     return -np.mean(t * np.log(y) + (1 - t) * np.log(1 - y))
 
 
+@jax.jit
+def accuracy(y, t):
+    """
+    Calculates the accuracy of a classification model
+    """
+    return np.mean(np.argmax(y, axis=1) == np.argmax(t, axis=1))
+
+
+
+
+def one_hot_encode(y, n_classes):
+    """
+    One hot encode a vector
+    """
+    return np.eye(n_classes)[y]
+
+
+
+
+def confusion_matrix(y, t):
+    """
+    Calculates the confusion matrix
+    """
+    y = np.argmax(y, axis=1)
+    t = np.argmax(t, axis=1)
+
+    n_classes = np.max(t) + 1
+
+    matrix = np.zeros((n_classes, n_classes))
+
+    for i in range(len(y)):
+        matrix[t[i]][y[i]] += 1
+
+    return matrix
 
 
 

@@ -1,7 +1,7 @@
 import jax.numpy as np
 import jax
 from .util import  MSE, CE, print_message
-from .activations import sigmoid, softmax, relu, tanh, leaky_relu, elu, swish, mish, gelu, softplus, softsign
+from .activations import sigmoid, eye,  softmax, relu, tanh, leaky_relu, elu, swish, mish, gelu, softplus, softsign
 from . import optimizers
 
 
@@ -11,7 +11,8 @@ from . import optimizers
 
 # INITIALIZATION
 
-def init_network_params(layer_sizes, key):
+def init_network_params(architecture, key):
+    layer_sizes = [l[0] for l in architecture]
     keys = jax.random.split(key, len(layer_sizes) - 1)
     return [{'w': jax.random.normal(k, (in_size, out_size)) * np.sqrt(2 / in_size),
              'b': np.zeros(out_size)}
@@ -23,7 +24,7 @@ def init_network_params(layer_sizes, key):
 
 class NN():
 
-    def __init__(self ,architecture=[ [2,2, 1], [sigmoid, sigmoid] ],
+    def __init__(self ,architecture=[ [2, sigmoid], [1, eye]  ],
                 eta=0.1, epochs=100, tol=0.001, optimizer='sgd', alpha=0,
                  gamma=0, epsilon=0.0001,  beta1=0.9, beta2=0.999, backwards=None, loss=MSE):
         self.eta = eta
@@ -35,11 +36,12 @@ class NN():
         self.epsilon = epsilon
         self.beta1 = beta1
         self.beta2 = beta2
-        self.architecture = architecture
+        self.architecture = [ [], architecture[0] ] # the empty list is for the input layer
         if backwards == None:
             self.backwards = build_backwards(architecture, loss)
         else:
             self.backwards = backwards
+
         self.forward = build_forward(architecture)
 
 
@@ -68,8 +70,19 @@ class NN():
 
 
     def fit(self, X, t, X_val, t_val, batch_size=None ):
+        """
+        X: training data
+        t: training labels
+        X_val: validation data
+        t_val: validation labels
+        batch_size: size of the batches
+
+        returns: loss, params
+
+        fits the network to the data
+        """
         N,n = X.shape
-        self.architecture[0][0] = n
+        self.architecturea[0][0] = n
         if batch_size is None:
             batch_size = N
         key = jax.random.PRNGKey(1234)
@@ -121,28 +134,16 @@ class NN():
 
 
 
+
+
+
+
+
 # BACKWARD PROPAGATION
 
 
 
-
-def backprop_one_hidden_auto( X,t, params, activations, alpha , loss=MSE ):
-    """cross entropy with sigmoid - sigmoid autoiff"""
-    a0, a1 = activations
-    dloss = jax.grad(loss)(a1, t)
-    output_error = (a1 - t)
-    hidden_error =  output_error @ params.w1.T * jax.grad(sigmoid) (a0)
-
-    gw0 = X.T @ hidden_error
-    gb0 = np.sum(hidden_error, axis=0)
-    gw1 = a0.T @ output_error * dloss
-    gb1 = np.sum(output_error, axis=0)
-
-    return [{'w': gw0, 'b': gb0}, {'w': gw1, 'b': gb1}]
-
-
-
-
+# MANUAL 
 
 def backprop_one_hidden( params, t, activations, alpha):
     """Cross entropy with sigmoid - sigmoid"""
@@ -166,10 +167,33 @@ def single_layer_gradients(_, t, activations, alpha ):
 
 
 
+
+
+
+# AUTO DIFF
+
+
+
+def backprop_one_hidden_auto( X,t, params, activations, alpha , loss=MSE ):
+    """cross entropy with sigmoid - sigmoid autoiff"""
+    a0, a1 = activations
+    dloss = jax.grad(loss)(a1, t)
+    output_error = (a1 - t)
+    hidden_error =  output_error @ params.w1.T * jax.grad(sigmoid) (a0)
+
+    gw0 = X.T @ hidden_error
+    gb0 = np.sum(hidden_error, axis=0)
+    gw1 = a0.T @ output_error * dloss
+    gb1 = np.sum(output_error, axis=0)
+
+    return [{'w': gw0, 'b': gb0}, {'w': gw1, 'b': gb1}]
+
+
+
 def build_backwards(architecture, loss=MSE):
     acitvation_functions = architecture[1]
 
-    def last_layer_activation(params, t, activations):
+    def backwards(params, t, activations):
         X, a0, a1 = activations
         dloss = jax.grad(loss)(a1, t)
         output_error = (a1 - t)
@@ -182,48 +206,25 @@ def build_backwards(architecture, loss=MSE):
 
         return [{'w': gw0, 'b': gb0}, {'w': gw1, 'b': gb1}]  
 
-    def last_layer_no_activation(params, t, activations):
-        X, a0, a1 = activations
-        output_error = (a1 - t)
-        hidden_error =  output_error @ params[-1]['w'].T * a0 * (1 - a0) 
+    return backwards
 
-        gw0 = X.T @ hidden_error
-        gb0 = np.sum(hidden_error, axis=0)
-        gw1 = a0.T @ output_error
-        gb1 = np.sum(output_error, axis=0)
-        gw0, gb0, gw1, gb1 = jax.tree_map(lambda p: p / X.shape[0], (gw0, gb0, gw1, gb1))
-        return [{'w': gw0, 'b': gb0}, {'w': gw1, 'b': gb1}]
 
-    if len(architecture[0]) -  len(acitvation_functions ) > 1:
-        return last_layer_activation
-    else:
-        return last_layer_no_activation
 
 
 # FORWARD PROPAGATION
 
 
-
-
 def build_forward(architecture):
-    acitvation_functions = architecture[1]
+    architecture = architecture[1:]
+    acitvation_functions = [l[1] for l in architecture[1]]
 
     @jax.jit
-    def last_layer_activation(network, inputs):
+    def forward(network, inputs):
         activations = [inputs]
         for i in range(len(network)): 
             activations.append(acitvation_functions[i](np.dot(activations[-1], network[i]['w']) + network[i]['b']))
         return activations  
-    @jax.jit
-    def last_layer_no_activation(network, inputs):
-        activations = [inputs]
-        for i in range(len(network) - 1):
-            activations.append(acitvation_functions[i](np.dot(activations[-1], network[i]['w']) + network[i]['b']))
 
-        activations.append(np.dot(activations[-1], network[-1]['w']) + network[-1]['b'])
-        return activations
+    return forward
 
-    if len(architecture[0]) -  len(acitvation_functions ) > 1:
-        return last_layer_no_activation
-    else:
-        return last_layer_activation
+
