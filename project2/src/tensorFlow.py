@@ -1,3 +1,5 @@
+#Copied from the fys-stk4155 repository: https://compphysics.github.io/MachineLearning/doc/LectureNotes/_build/html/week42.html#the-breast-cancer-data-now-with-keras
+
 import tensorflow as tf
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Sequential      #This allows appending layers to existing models

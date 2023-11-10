@@ -35,6 +35,6 @@ dependencies = [
     "matplotlib",
     "scikit-learn",
     "seaborn",
-    "jax[cuda12_pip]",
-    "jaxlib"
+    "jax",
+    "jaxlib",
 ]
