@@ -23,7 +23,7 @@ def init_network_params(layer_sizes, key):
 
 class NN():
 
-    def __init__(self ,architecture=[ [2, 2, 1], [sigmoid] ],
+    def __init__(self ,architecture=[ [2,2, 1], [sigmoid, sigmoid] ],
                 eta=0.1, epochs=100, tol=0.001, optimizer='sgd', alpha=0,
                  gamma=0, epsilon=0.0001,  beta1=0.9, beta2=0.999, backwards=None, loss=MSE):
         self.eta = eta
