@@ -188,11 +188,13 @@ any function with a polynomial, if we give ourselves infinite degrees of freedom
 limitations to this approach. First of all, we can not give ourselves infinite degrees of freedom, believe it or not.
 Secondly, what if we don't want to find a polynimal but rather classify our data into some classes?\\
 
+\noindent
 To tackle classification we can use \emph{logistic regression}, that is, first regression and then clamp the output to a binary value
 (for the bianry case). We can do this with an activation function like the sigmoid function
 \footnote{The sigmoid function does not output a binary value, but a value between 0 and 1. 
     We can then set a threshold, for example 0.5, and say that if the output is above the threshold, 
-    we classify it as 1, and if it is below, we classify it as 0. We can interpret the output as the probability of the data point being 1.}
+    we classify it as 1, and if it is below, we classify it as 0. We can interpret the output as the 
+probability of the data point being 1.}
 or the heaviside function. However the first problem
 still remains, we want to approximate any function, but don't want to use an infinite taylor series. 
 We need a different approach.
@@ -202,7 +204,6 @@ As it turns out, the framework for neural networks is very similar to the framew
 Neural networks can be interpeted as several logistic regression models glued together, which is exactly what we wanted!
 Another huge benefit of this is that we can use the same code
 For both logistic and linear regression as well as neural networks.
-
 This sounds great, but by introducing activation functions we lose the nice analytical expression,
 so we can't use the same matrix inversion approach as before.\\
 So how do we learn?
@@ -221,13 +222,22 @@ So how do we learn?
 
 
 
-\section{ Gradient Descent }
+\section{Gradient Descent}
 \label{sec:GD}
 
+Gradient descent is an iterative optimization algorithm for finding the minimum of a function.
+The idea is to take steps in the direction of the negative gradient of the function. It is
+verry similar to the Newton-Raphson method for finding roots of a polynimal,
+but instead of using the second derivative, we use the first derivative.
 
-\subsection{ Backpropagation and Chain Rule }
+
+\subsection{Backpropagation and Chain Rule}
 \label{sec:backpropagation}
 
+Calculating derivatives is the bread and butter of machine learning. For the simpelest models, like linear regression,
+the derivatives are relatively easy and straight forward to calculate. We simply take the derivative of the cost function
+with respect to our parameters. However, for more complex models, like neural networks, the derivatives are not so easy to calculate.
+When the loss function is a composition of several functions, we need to invoke the chain rule. 
 
 \begin{figure}[!h]
     \begin{center}
@@ -264,7 +274,7 @@ So how do we learn?
 
 
 
-\section{ Neural Network }
+\section{Neural Networks}
 \label{sec:NN}
 
 \includegraphics[width=\linewidth]{nn.pdf}
@@ -273,18 +283,6 @@ with one layer the network becomes a linear regression model. $y = x_0w_0 + x_1w
 This makes it very convenient to use the same code for both linear and logistic regression as well as for 
 larger neural networks with hidden layers, by simply swapping out the different parts.
 
-
-\section{ Universal Approximation Theorem }
-\label{sec:UAT}
-
-There is a famous theorem called the universal approximation theorem, which states that a neural network with one hidden
-layer can approximate any function. This is great, but it does not say anything about how many neurons we need in the
-hidden layer. It turns out that we need an infinite number of neurons to approximate any function. This is not very
-practical, so we need to find a way to approximate any function with a finite number of neurons.\\
-
-Geofry Hinton showed that a simple perceptron is incapable of learning the XOR function. 
-This is because the perceptron is a linear model, and the XOR function is not linearly separable. 
-However, as we hinted at earlier, we can approximate any function with a polynomial or a neural network.
 
 
 \section{Data}
@@ -396,6 +394,18 @@ However, as we hinted at earlier, we can approximate any function with a polynom
 \label{app:appendix}
 
 
+\section{ Universal Approximation Theorem }
+\label{sec:UAT}
+
+There is a famous theorem called the universal approximation theorem, which states that a neural network with one hidden
+layer can approximate any function. This is great, but it does not say anything about how many neurons we need in the
+hidden layer. It turns out that we need an infinite number of neurons to approximate any function. This is not very
+practical, so we need to find a way to approximate any function with a finite number of neurons.\\
+
+Geofry Hinton showed that a simple perceptron is incapable of learning the XOR function. 
+This is because the perceptron is a linear model, and the XOR function is not linearly separable. 
+However, as we hinted at earlier, we can approximate any function with a polynomial or a neural network.
+
 
 
 \phantomsection%
@@ -408,7 +418,7 @@ However, as we hinted at earlier, we can approximate any function with a polynom
 
 \phantomsection%
 \addcontentsline{toc}{subsection}{ learn xor with perceptron }
-\subsection*{Lines glued together $\boldsymbol{\beta}$}
+\subsection*{learn xor with perceptron}
 \label{app:OptimalBeta}
 
 

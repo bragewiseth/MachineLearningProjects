@@ -136,7 +136,30 @@ class Model():
 
 
         print_message(f"Training stopped after {e} epochs")
+        self.params = params
         return loss , params
+    
+
+
+
+    def predict(self, X):
+        """
+        X: data to predict on
+
+        returns: predictions
+        """
+        return self.forward(self.params, X)[0][-1]
+
+   
+
+    def score(self, X, t):
+        """
+        X: data to predict on
+        t: labels
+
+        returns: accuracy
+        """
+        return np.mean(np.argmax(self.predict(X), axis=1) == np.argmax(t, axis=1))
 
 
 
