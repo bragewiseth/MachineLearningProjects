@@ -150,6 +150,17 @@ class Model():
         """
         return self.forward(self.params, X)[0][-1]
 
+
+
+
+    def classify(self, X):
+        """
+        X: data to predict on
+
+        returns: binary predictions
+        """
+        return np.round(self.predict(X))
+
    
 
     def score(self, X, t):
@@ -159,7 +170,7 @@ class Model():
 
         returns: accuracy
         """
-        return np.mean(np.argmax(self.predict(X), axis=1) == np.argmax(t, axis=1))
+        return np.mean(self.classify(X) == t) 
 
 
 
