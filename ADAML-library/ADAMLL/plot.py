@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 
 
-def plot3Dmesh(xx, yy, z, nrows=1, ncols=1, index=1, fig=None , title=None  ):
+def plot3Dmesh(xx, yy, z, nrows=1, ncols=1, index=1, fig=None , title=None, x_label=None, y_label=None, z_label=None):
     """
     Plots the 3D surface
     """    
