@@ -12,13 +12,13 @@ X_train, X_test, y_train, y_test = train_test_split(cancer.data,cancer.target,ra
 plt.show()
 
 etas = [0.1, 0.01, 0.001, 0.0001]
-NNObjects = []
+accuracy = []
 for eta in etas:
     #The NN has a single output node, the number of input nodes matches the number of features in the data
     #the NN becomes a logistic regression model
-    NNObjects.append(ada.NN.NN(architecture=[[1, ada.activations.sigmoid]], eta=eta, epochs=100, optimizer='sgd', loss=ada.util.accuracy))
-
-accuracy = [object.fit(X_train,y_train, X_test, y_test)[0] for object in NNObjects]
+    network = ada.NN.Model(architecture=[[1, ada.activations.sigmoid]], eta=eta, epochs=100, optimizer='sgd', loss=ada.CE)
+    params = network.fit(X_train,y_train, X_test, y_test)[0]
+    accuracy.append(ada.util.accuracy(network.forward(network, X_test)[0], y_test))
 
 plt.plot(etas, accuracy)
 plt.xlabel('Learning rate')
