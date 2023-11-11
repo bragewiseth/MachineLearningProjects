@@ -34,9 +34,9 @@ class Model():
 
     def __init__(self ,architecture=[ [2, sigmoid], [1, eye]  ],
                 eta=0.1, epochs=100, tol=0.001, optimizer='sgd', alpha=0,
-                 gamma=0, epsilon=0.0001,  beta1=0.9, beta2=0.999, backwards=None, loss=MSE):
+                 gamma=0, epsilon=0.0001,  beta1=0.9, beta2=0.999, backwards=None, loss=MSE, metric=MSE ):
 
-        
+        self.metric = metric
         self.eta = eta
         self.epochs = epochs
         self.tol = tol
@@ -81,7 +81,7 @@ class Model():
 
 
 
-    def fit(self, X, t, X_val, t_val, batch_size=None ):
+    def fit(self, X, t, X_val=None, t_val=None, batch_size=None ):
         """
         X: training data
         t: training labels
@@ -93,10 +93,16 @@ class Model():
 
         fits the network to the data
         """
+
         N,n = X.shape
+
+        if X_val is None:
+            X_val = X
+            t_val = t
         self.architecture[0] = [n]
         if batch_size is None:
             batch_size = N
+
         key = jax.random.PRNGKey(1234)
         params = init_network_params(self.architecture, key)
         update_params, opt_state = self.init_optimizer(params) 
@@ -108,6 +114,7 @@ class Model():
         def step(params, opt_state, X, t):
             activations, grads = self.forward(params, X)
             grads = self.backwards(params, t, activations, grads )
+            # grads = clip_gradients_by_norm(grads, 1) # gradient clipping
             params, opt_state = update_params(params, grads, opt_state)
             return params, opt_state
 
@@ -121,11 +128,7 @@ class Model():
                 t_batch = t[random_index:random_index+batch_size]
 
                 params, opt_state = step(params, opt_state, X_batch, t_batch)
-                current_loss = CE(self.forward(params, X_val)[0][-1], t_val)
-
-                # clip gradients
-                if not np.isfinite(current_loss).all():
-                    params = jax.tree_map(lambda p: np.clip(p, -100, 100), params)
+                current_loss = self.metric(self.forward(params, X_val)[0][-1], t_val)
 
                 loss = loss.at[e].set(current_loss)
 
@@ -163,14 +166,7 @@ class Model():
 
    
 
-    def score(self, X, t):
-        """
-        X: data to predict on
-        t: labels
 
-        returns: accuracy
-        """
-        return np.mean(self.classify(X) == t) 
 
 
 
@@ -239,17 +235,21 @@ def build_backwards( alpha, loss=CE):
         param_gradients = [{'b': gb, 'w': gw}]
         for i in range(len(params) - 1, 0 , -1): 
             g = grads[i-1]
-            propagate_error = output_error @ params[i]['w'].T * g
+            output_error = output_error @ params[i]['w'].T * g
             a0 = activations[i-1]
-            gw = a0.T @ propagate_error + 2 * alpha * params[i-1]['w']
-            gb = np.sum(propagate_error, axis=0)
+            gw = a0.T @ output_error + 2 * alpha * params[i-1]['w']
+            gb = np.sum(output_error, axis=0)
             param_gradients.insert(0,{'b': gb, 'w': gw})
         return param_gradients
     return backwards
 
 
 
-
+def clip_gradients_by_norm(gradients, max_norm):
+    total_norm = np.sqrt(sum(np.sum(np.square(g)) for g in jax.tree_leaves(gradients)))
+    clip_coeff = max_norm / (total_norm + 1e-6)
+    clipped_gradients = jax.tree_map(lambda g: np.where(clip_coeff < 1, clip_coeff * g, g), gradients)
+    return clipped_gradients
 
 
 ############################################################################################################

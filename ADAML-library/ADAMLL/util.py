@@ -34,7 +34,8 @@ def accuracy(y, t):
     """
     Calculates the accuracy of a classification model
     """
-    return np.mean(np.argmax(y, axis=1) == np.argmax(t, axis=1))
+    return np.mean(y == t) 
+
 
 
 
