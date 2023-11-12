@@ -5,19 +5,23 @@ comp:
 	bibtex report
 
 figures:
-	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error tikzfigures/nn.tex
-	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error tikzfigures/bernoli.tex
+	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=tikzfigures tikzfigures/nn.tex 
+	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=tikzfigures tikzfigures/universal.tex 
+	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=tikzfigures tikzfigures/forward.tex
+	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=tikzfigures tikzfigures/backwards.tex
+	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=tikzfigures tikzfigures/nnActivation.tex
+
 
 clean:
-	-rm -f *.aux
-	-rm -f *.log
-	-rm -f *.toc
-	-rm -f *.bbl
-	-rm -f *.blg
-	-rm -f *.out
-	-rm -f *.fls
-	-rm -f *.fdb_latexmk
-	-rm -f *.synctex.gz
-	-rm -f *.xdv
-	-rm -r -f _minted-report
+	find . -name "*.aux" -type f -delete
+	find . -name "*.log" -type f -delete
+	find . -name "*.toc" -type f -delete	
+	find . -name "*.bbl" -type f -delete
+	find . -name "*.blg" -type f -delete
+	find . -name "*.out" -type f -delete
+	find . -name "*.fls" -type f -delete
+	find . -name "*.fdb_latexmk" -type f -delete
+	find . -name "*.synctex.gz" -type f -delete
+	find . -name "*.xdv" -type f -delete
+	-rm -rr -f _minted-report
 
