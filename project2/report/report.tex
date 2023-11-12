@@ -146,20 +146,24 @@
 
 
 \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
-    \lettrine{I}{}n this paper, we delve into the realm of machine learning model optimization
-    and evaluation. Our study encompasses various regression techniques, including 
-    Ordinary Least Squares (OLS), Ridge, and Lasso regression, to analyze their effectiveness in handling
-    simple and more complex datasets. Additionally, we employ bootstrap resampling and cross-validation
-    methodologies to rigorously assess model performance and enhance generalization. A significant portion
-    of our investigation is dedicated to understanding the delicate balance between bias and variance. 
-    We explore how regularization methods like Ridge and Lasso impact bias-variance trade-offs, 
-    offering insights into the stability and predictive power of these models. Furthermore, we provide
-    empirical evidence of the benefits of cross-validation and bootstrap techniques in mitigating 
-    overfitting and improving model robustness. We found that \{ ..results.. \}. Additionally we verify
-    and compare our findings with well established theory and libraris such as SKLearn.
+    \lettrine{I}{}n this paper, we investigate the viability of using neural networks to solve both
+    regression and classification problems. Specifically, we compare the performance of neural networks
+    with that of traditional linear and logistic regression models. There are many real world applications
+    and problems that require function approximation and classification. For example, in the field of
+    cancer research, it is often necessary to classify a tumor as either benign or malignant. Often, 
+    this is done by extracting a set of features from the tumor and differentiating between the two
+    classes based on these features. However, there may be a large degree of overlap between the two and the
+    amount of features may be large. These two factors may make it difficult foe a human to classify the tumor.
+    By using a neural network, we achieved a classification accuracy of 96\% on the Wisconsin breast cancer
+    dataset. With logistic regression, we achieved an accuracy of 94\%.
+    In addition to classification, we also investigated the use of neural networks for regression problems.
+    We found that neural networks are able to approximate the Franke function with a mean squared error of
+    0.0001. This is comparable to the results we achieved with linear regression. However, we found that
+    neural networks are much more sensitive to the choice of learning rate and number of epochs. We also
+    found that neural networks are much more computationally expensive than linear regression.\\
 \end{abstract}
 \begin{keywords}
-    Linear Regression, Scaling, Bias \& Variance 
+    Regression, Classification, Neural Networks
 \end{keywords}
 
 
@@ -172,15 +176,16 @@
 
 \section{Introduction}
 
-An overview
 
 \textbf{Gradient Decent}: 
-
+    In this section we will discuss the gradient decent algorithm and how it can be used to
+    optimize the parameters of a model.\\
 \textbf{Data}: 
-
+    In this section we will discuss the data we will be using in this project.\\
 \textbf{Results}:
-
+    In this section we will discuss the results we achieved with our models.\\
 \textbf{Conclusion}:\\
+    In this section we will discuss the results we achieved with our models.\\
 
 In project 1\cite{MachineLearningProjects_2023}, we found that 
 we can fit lines or even polynimals that approximate the distribution of our data by solving an nice analytical expression for the optimal parameters $\beta$. We can in principle approximate 
@@ -207,18 +212,6 @@ For both logistic and linear regression as well as neural networks.
 This sounds great, but by introducing activation functions we lose the nice analytical expression,
 so we can't use the same matrix inversion approach as before.\\
 So how do we learn?
-
-
-
-
-
-
-
-\begin{center}
-    \scriptsize code for generating all figures and data can be found at 
-    \href{https://github.com/bragewiseth/MachineLearningProjects/tree/main/project1/src}{\tt \textsc{/MachineLearningProjects/project1/src} }
-\end{center}
-
 
 
 
@@ -282,10 +275,22 @@ larger neural networks with hidden layers, by simply swapping out the different 
 \section{Data}
 \label{sec:data}
 
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{../runsAndFigures/feature_histogram.png}
+    \end{center}
+    \caption{Feature histogram}\label{fig:feature_histogram}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=\textwidth]{../runsAndFigures/feature_correlation.png}
+    \end{center}
+    \caption{Feature correlation}\label{fig:}
+\end{figure}
 
 
-
-
+Wisconsin breast cancer dataset \& Boring regression data
 
 % The data we will be using consists of 100 points generated using the Franke function. The Franke function is a weighted sum of four exponentials given by
 % \begin{align*}
@@ -337,7 +342,12 @@ larger neural networks with hidden layers, by simply swapping out the different 
 \label{sec:resultsdiscussion}
 
 
+\subsection{Classification}
+\label{sec:classification}
 
+
+\subsection{Regression}
+\label{sec:regression}
 
 
 
@@ -388,33 +398,48 @@ larger neural networks with hidden layers, by simply swapping out the different 
 \label{app:appendix}
 
 
-\section{ Universal Approximation Theorem }
+\section{Universal Approximation}
 \label{sec:UAT}
 
-There is a famous theorem called the universal approximation theorem, which states that a neural network with one hidden
-layer can approximate any function. This is great, but it does not say anything about how many neurons we need in the
-hidden layer. It turns out that we need an infinite number of neurons to approximate any function. This is not very
-practical, so we need to find a way to approximate any function with a finite number of neurons.\\
-
-Geofry Hinton showed that a simple perceptron is incapable of learning the XOR function. 
-This is because the perceptron is a linear model, and the XOR function is not linearly separable. 
-However, as we hinted at earlier, we can approximate any function with a polynomial or a neural network.
-
-
+Where is the limit of what we can learn with a neural network? Can we approximate any function?
+There are several ways to approximate a function. For periodic functions it may be wise to use a Fourier series,
+another option is to use a Taylor series. If these mehtods don't float your boat, we can in fact use a neural network
+instead. A neural network with only one hidden layer can approximate any continuous function
+given enough neurons in the hidden layer. The more neurons, the higher the resolution of the Approximation
+\cite{HornikEtAl89}. 
 
 \phantomsection%
-\addcontentsline{toc}{subsection}{ Lines glued together }
-\subsection*{Lines glued together $\boldsymbol{\beta}$}
-\label{app:OptimalBeta}
+\addcontentsline{toc}{subsection}{XOR VS Perceptron}
+\subsection*{XOR VS Perceptron}
+\label{app:xor}
+
+A perceptron is a simple model of a neuron. It takes in a set of inputs, multiplies them by a set of weights 
+and sums them up to produce an output. The output is then passed through the heaviside
+\footnote{We use sigmoid instead of the heaviside, but the outcome of the classification is the same.}
+step function to produce
+a binary output. The perceptron can be used to solve simple classification problems. However, it is not able to
+solve the XOR problem. XOR is not linearly separable, meaning that it is not possible to draw a straight line
+that separates the two classes. This is a problem for the perceptron, as it can only draw straight lines.
+
+
+One way to solve this problem is to add some polynomial features to the data. 
+This will allow us to draw a curved line that separates the two classes. However, this is not a scalable solution.
+
+NNs can also learn xor, without the need for a polynomial feature. This is important because it is not 
+always obvious what feature engineering is required to solve a problem. Neural networks can learn the relevant 
+features from the data. Manually adding polynomial features is not a scalable solution for high-dimensional data,
+whereas neural networks can learn arbitrarily complex functions. Adding polynomial featurer is also prone to 
+bias problems.
+\phantomsection%
+\addcontentsline{toc}{subsection}{Combining Neurons}
+\subsection*{Combining Neurons}
+\label{app:neuronscombined}
 
 
 
 \includegraphics[width=\textwidth]{tikzfigures/universal.pdf}
-
-\phantomsection%
-\addcontentsline{toc}{subsection}{ learn xor with perceptron }
-\subsection*{learn xor with perceptron}
-\label{app:OptimalBeta}
+We can chose whatever activation function we want as long as it is non-linear. Relu strugles to learn this 
+sin function, but sigmoid works fine.
 
 
 % \phantomsection%
