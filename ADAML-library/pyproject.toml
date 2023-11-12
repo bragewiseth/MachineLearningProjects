@@ -31,10 +31,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy",
     "matplotlib",
-    "scikit-learn",
-    "seaborn",
     "jax",
     "jaxlib",
 ]
