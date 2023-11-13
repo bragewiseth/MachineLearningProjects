@@ -154,8 +154,8 @@
     this is done by extracting a set of features from the tumor and differentiating between the two
     classes based on these features. However, there may be a large degree of overlap between the two and the
     amount of features may be large. These two factors may make it difficult foe a human to classify the tumor.
-    By using a neural network, we achieved a classification accuracy of 96\% on the Wisconsin breast cancer
-    dataset. With logistic regression, we achieved an accuracy of 94\%.
+    By using a neural network, we achieved a classification accuracy of 98\% on the Wisconsin breast cancer
+    dataset. With logistic regression, we achieved an accuracy of 98\%.
     In addition to classification, we also investigated the use of neural networks for regression problems.
     We found that neural networks are able to approximate the Franke function with a mean squared error of
     0.0001. This is comparable to the results we achieved with linear regression. However, we found that
@@ -177,15 +177,7 @@
 \section{Introduction}
 
 
-\textbf{Gradient Decent}: 
-    In this section we will discuss the gradient decent algorithm and how it can be used to
-    optimize the parameters of a model.\\
-\textbf{Data}: 
-    In this section we will discuss the data we will be using in this project.\\
-\textbf{Results}:
-    In this section we will discuss the results we achieved with our models.\\
-\textbf{Conclusion}:\\
-    In this section we will discuss the results we achieved with our models.\\
+
 
 In project 1\cite{MachineLearningProjects_2023}, we found that 
 we can fit lines or even polynimals that approximate the distribution of our data by solving an nice analytical expression for the optimal parameters $\beta$. We can in principle approximate 
@@ -214,6 +206,16 @@ so we can't use the same matrix inversion approach as before.\\
 So how do we learn?
 
 
+\noindent
+\textbf{Gradient Decent}:\\ 
+    In this section we will discuss the gradient decent algorithm and how it can be used to
+    optimize the parameters of a model.\\
+\textbf{Data}: \\
+    In this section we will discuss the data we will be using in this project.\\
+\textbf{Results}:\\
+    In this section we will discuss the results we achieved with our models.\\
+\textbf{Conclusion}:\\
+    In this section we will discuss the results we achieved with our models.\\
 
 \section{Gradient Descent}
 \label{sec:GD}
@@ -229,15 +231,22 @@ but instead of using the second derivative, we use the first derivative.
 
 Calculating derivatives is the bread and butter of machine learning. For the simpelest models, like linear regression,
 the derivatives are relatively easy and straight forward to calculate. We simply take the derivative of the cost function
-with respect to our parameters. However, for more complex models, like neural networks, the derivatives are not so easy to calculate.
+with respect to our parameters. However, for more complex models, like neural networks, the derivatives 
+are not so easy to calculate.
 When the loss function is a composition of several functions, we need to invoke the chain rule. 
 
 \begin{figure}[!h]
     \begin{center}
         Forward\\
-        \includegraphics[width=0.6\textwidth]{tikzfigures/forward.pdf}\\
+        \includegraphics[width=\textwidth]{tikzfigures/forward.pdf}\\
+    \end{center}
+    If we want to calculate the derivative of the loss function with respect to $w_0$,
+    we must go trough all the functions in the chain and calculate the derivative of 
+    each function with respect to the next function.
+    \begin{center}
         Backwards\\
-        \includegraphics[width=0.6\textwidth]{tikzfigures/backwards.pdf}
+        \hspace{1cm}
+        \includegraphics[width=\textwidth]{tikzfigures/backwards.pdf}
     \end{center}
     \caption{chain rule}\label{fig:chainrule}
 \end{figure}
@@ -255,18 +264,21 @@ When the loss function is a composition of several functions, we need to invoke 
     \begin{center}
         \includegraphics[width=0.4\textwidth]{tikzfigures/nn.pdf}
     \end{center}
-    \caption{}\label{fig:nn}
+    \caption{A model of a neural network with one hidden layer consisting of four nodes}\label{fig:nn}
     \cite{neutelings_tikzcode}
 \end{figure}
 \begin{figure}
     \begin{center}
-        \includegraphics[width=0.8\textwidth]{tikzfigures/nnActivation.pdf}
+        \includegraphics[width=\textwidth]{tikzfigures/nnActivation.pdf}
     \end{center}
     \caption{}\label{fig:}
     \cite{neutelings_tikzcode}
 \end{figure}
 
-with one layer the network becomes a linear regression model. $y = x_0w_0 + x_1w_1 + x_2w_2 + ... + x_nw_n + b_0$ with a activation function at the end we can make it into a logistig regression model.
+With backpropagation we have a way to calculate the derivatives of the loss function with 
+respect to the parameters. This allows us to train our neural network. 
+with one layer the network becomes a linear regression model. $y = x_0w_0 + x_1w_1 + x_2w_2 + ... + x_nw_n + b_0$ 
+with a activation function at the end we can make it into a logistig regression model.
 This makes it very convenient to use the same code for both linear and logistic regression as well as for 
 larger neural networks with hidden layers, by simply swapping out the different parts.
 
@@ -274,6 +286,22 @@ larger neural networks with hidden layers, by simply swapping out the different 
 
 \section{Data}
 \label{sec:data}
+
+For regression we will be using some simple arbitrary function. As to not strain our limited computational resources,
+we will only be using one dimension. 
+
+for classification we will be using the Wisconsin breast cancer dataset \cite{wdbc}. This dataset contains 569 data points
+with 30 features each. The features are computed from a digitized image of a fine needle aspirate (FNA) of a breast mass.
+They describe characteristics of the cell nuclei present in the image. The features are computed for each cell nucleus:
+radius, texture, perimeter, area, smoothness, compactness, concavity, concave points, symmetry, fractal dimension.
+The mean, standard error and "worst" or largest (mean of the three largest values) of these features were computed for each image,
+resulting in 30 features. For example, field 3 is Mean Radius, field 13 is Radius SE, field 23 is Worst Radius.
+All feature values are recoded with four significant digits. Missing attribute values: none.
+Class distribution: 357 benign, 212 malignant
+
+the goal is to classify the tumors as either benign or malignant based on the features.
+a positive result means that the tumor is malignant, and a negative result means that the tumor is benign.
+in other words, we want to find the cases of cancer and classify them as positive
 
 \begin{figure}
     \begin{center}
@@ -286,11 +314,12 @@ larger neural networks with hidden layers, by simply swapping out the different 
     \begin{center}
         \includegraphics[width=\textwidth]{../runsAndFigures/feature_correlation.png}
     \end{center}
-    \caption{Feature correlation}\label{fig:}
+    \caption{Feature correlation. Gives us an idea of the redundancy of the features.
+        Only every other features is annotated but you can infer the missing lables 
+    from Figure~\ref{fig:feature_histogram}}\label{fig:feature_correlation}
 \end{figure}
 
 
-Wisconsin breast cancer dataset \& Boring regression data
 
 % The data we will be using consists of 100 points generated using the Franke function. The Franke function is a weighted sum of four exponentials given by
 % \begin{align*}
@@ -336,7 +365,7 @@ Wisconsin breast cancer dataset \& Boring regression data
 % In addition, we will incorporate genuine topographic data from a specific area of Norway. However, to reduce computational requirements when running the program, we've reduced the size of this real topographic dataset from 6.5 million points to 10,000 points.
 
 
-
+\newpage
 
 \section{Results and Discussion}
 \label{sec:resultsdiscussion}
@@ -346,11 +375,55 @@ Wisconsin breast cancer dataset \& Boring regression data
 \label{sec:classification}
 
 
+\subsubsection{Hyperparameters}
+\label{sec:hyperparameters}
+
+
+\begin{figure}[!h]
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=\textwidth]{../runsAndFigures/chge.png}
+        \caption{Accuracy vs Epochs}\label{fig:}
+    \end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=\textwidth]{../runsAndFigures/chle.png}
+        \caption{Accuracy vs Learning Rate}\label{fig:}
+    \end{center}
+\end{minipage}
+\end{figure}
+
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{../runsAndFigures/optimizer_accuracy.png}
+    \end{center}
+    \caption{}\label{fig:}
+\end{figure}
+
+
+
+
+
+\subsubsection{Confusion Matrix}
+\label{sec:confusionmatrix}
+
+
+\subsubsection{Comparisons}
+\label{sec:comparisons}
+
 \subsection{Regression}
 \label{sec:regression}
 
 
+\subsubsection{Hyperparameters}
+\label{sec:hyperparameters2}
 
+
+
+\subsubsection{Comparisons}
+\label{sec:comparisons2}
 
 
 % \section{Bias \& Variance}
@@ -362,6 +435,7 @@ Wisconsin breast cancer dataset \& Boring regression data
 \label{sec:conclusion}
 
 
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
 
 
 
@@ -389,8 +463,8 @@ Wisconsin breast cancer dataset \& Boring regression data
 % APPENDIX
 
 %
-%
 \newpage
+
 \appendix
 \phantomsection%
 \addcontentsline{toc}{section}{Appendix}
@@ -421,23 +495,82 @@ a binary output. The perceptron can be used to solve simple classification probl
 solve the XOR problem. XOR is not linearly separable, meaning that it is not possible to draw a straight line
 that separates the two classes. This is a problem for the perceptron, as it can only draw straight lines.
 
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{../runsAndFigures/xor.png}
+    \end{center}
+    \caption{XOR-variant, it is impossible to separate the two classes with a straight line}\label{fig:xor_data}
+\end{figure}
+
 
 One way to solve this problem is to add some polynomial features to the data. 
 This will allow us to draw a curved line that separates the two classes. However, this is not a scalable solution.
 
+\begin{figure}[h]
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=\textwidth]{../runsAndFigures/xor_plain.png}
+        \caption{}\label{fig:}
+    \end{center}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=\textwidth]{../runsAndFigures/xor_poly.png}
+        \caption{}\label{fig:}
+    \end{center}
+\end{minipage}
+\end{figure}
+
+
+
+
 NNs can also learn xor, without the need for a polynomial feature. This is important because it is not 
-always obvious what feature engineering is required to solve a problem. Neural networks can learn the relevant 
-features from the data. Manually adding polynomial features is not a scalable solution for high-dimensional data,
-whereas neural networks can learn arbitrarily complex functions. Adding polynomial featurer is also prone to 
+always obvious what feature engineering is required to solve a problem. Neural networks can learn the 
+relevant 
+features from the data. Manually adding polynomial features is not a scalable solution for 
+high-dimensional data,
+whereas neural networks can learn arbitrarily complex functions. Adding polynomial featurer 
+is also prone to 
 bias problems.
+
+
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{../runsAndFigures/xor_nn.png}
+    \end{center}
+    \caption{}\label{fig:}
+\end{figure}
+
+
+
 \phantomsection%
 \addcontentsline{toc}{subsection}{Combining Neurons}
 \subsection*{Combining Neurons}
 \label{app:neuronscombined}
 
+We want to approximate this sin function with a neural network. How might that look like?
+We can use a single neuron to approximate a line $a w + b$, putting it trough a sigmoid function
+we get some non-linearity. Every node in the first hidden layer (and consequents layers) is then 
+a line put trough a sigmoid function. The final output of a single hidden layer network is just
+a linear combination of these curves. We can add more nodes to get more curves, but we are still
 
 
-\includegraphics[width=\textwidth]{tikzfigures/universal.pdf}
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.4\textwidth]{../runsAndFigures/sin.png}
+    \end{center}
+    \caption{A $\text{sin}$ function that we want to approximate}\label{fig:sin}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.95\textwidth]{tikzfigures/universal.pdf}
+    \end{center}
+    \caption{Four indivudual logistic regression outputs scaled and added together to produce 
+    a sin approximation}\label{fig:}
+\end{figure}
+
+
 We can chose whatever activation function we want as long as it is non-linear. Relu strugles to learn this 
 sin function, but sigmoid works fine.
 
