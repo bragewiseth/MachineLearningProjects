@@ -225,6 +225,10 @@ The idea is to take steps in the direction of the negative gradient of the funct
 verry similar to the Newton-Raphson method for finding roots of a polynimal,
 but instead of using the second derivative, we use the first derivative.
 
+optimizers
+
+stocastic
+
 
 \subsection{Backpropagation and Chain Rule}
 \label{sec:backpropagation}
@@ -251,8 +255,7 @@ When the loss function is a composition of several functions, we need to invoke 
     \caption{chain rule}\label{fig:chainrule}
 \end{figure}
 
-
-
+\su
 
 
 
@@ -281,6 +284,16 @@ with one layer the network becomes a linear regression model. $y = x_0w_0 + x_1w
 with a activation function at the end we can make it into a logistig regression model.
 This makes it very convenient to use the same code for both linear and logistic regression as well as for 
 larger neural networks with hidden layers, by simply swapping out the different parts.
+
+
+activation functions
+
+
+\section{Classification}
+
+binary cross entopy loss
+
+
 
 
 
