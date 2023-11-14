@@ -81,3 +81,45 @@ def progress_bar(current, total, bar_length=20):
 
 def print_message(message):
     print(f"\r{message: <70}", end='')
+
+
+
+
+def generate_perlin_noise(n, m, seed=None, scale=0.025):
+    if seed is None:
+        key = jax.random.PRNGKey(1)
+    else:
+        key = jax.random.PRNGKey(seed)
+
+    def fade(t):
+        return t * t * t * (t * (t * 6 - 15) + 10)
+
+    def lerp(t, a, b):
+        return a + t * (b - a)
+
+    def gradient(h, x, y):
+        gradients = np.array([[1, 1], [-1, 1], [1, -1], [-1, -1]])
+        i = h % 4
+        return gradients[i].dot(np.array([x, y]))
+
+    def perlin(x, y):
+        X = int(x) & 255
+        Y = int(y) & 255
+        x -= int(x)
+        y -= int(y)
+        u = fade(x)
+        v = fade(y)
+        A = p[X] + Y
+        B = p[X + 1] + Y
+        return lerp(v, lerp(u, gradient(p[A], x, y), gradient(p[B], x - 1, y)), lerp(u, gradient(p[A + 1], x, y - 1), gradient(p[B + 1], x - 1, y - 1)))
+
+    p = jax.random.permutation(key, np.arange(256, dtype=np.uint32),independent=True) 
+    p = np.hstack([p, p]) 
+
+    perlin_noise = np.zeros((n, m))
+
+    for i in range(n):
+        for j in range(m):
+            perlin_noise = perlin_noise.at[i,j].set((perlin(i * scale, j * scale)))
+
+    return perlin_noise
