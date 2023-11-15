@@ -62,17 +62,13 @@ plt.show()
 
 for func in activations:
     print("activation function {}".format(func))
-    #The NN has a single output node, the number of input nodes matches the number of features in the data
-    #the NN becomes a logistic regression model
+    #creating the network using the best architecture from the test above
     network = ada.NN.Model(architecture=[[1, func] for i in range(4)], eta=eta, epochs=300, optimizer='sgd', loss=ada.CE)
     
     #fitting the data and finding the accuracy
     l,_ = network.fit(X_train,y_train, X_test, y_test)
     accuracy.append(ada.accuracy(network.classify(X_test), y_test))
     print(l)
-    print(accuracy)
-
-#plt.plot([str(activation) for activation in activations], accuracy)
 
 plt.bar(["sigmoid", "tanh", "relu"], accuracy)
 plt.show()
