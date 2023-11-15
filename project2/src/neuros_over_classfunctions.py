@@ -8,6 +8,7 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import  train_test_split 
 from sklearn.preprocessing import StandardScaler
 import seaborn as sns
+import numpy as onp
 print("jax backend {}".format(xla_bridge.get_backend().platform))
 
 key = jax.random.PRNGKey(2024)
@@ -30,35 +31,34 @@ print("y_test shape {}".format(y_test.shape))
 
 
 
+#The NN has a single output node, the number of input nodes matches the number of features in the data
+
+
 
 activations = [ada.activations.sigmoid, ada.activations.tanh, ada.activations.relu]
-n_neurons = [1,3]
-n_hidden_layers = [1,2]
-eta = 0.001
+n_neurons = [1,3,8, 21]
+n_hidden_layers = [1,2,3,4]
+eta = 0.01
 loss = []
+accuracy = []
 
 
-import pandas as pd
-heatmap= []
+heatmap = onp.zeros((len(n_neurons), len(n_hidden_layers)))
 
-for i in n_hidden_layers:
-    accuracy = []
-    for j in n_neurons:
-        #The NN has a single output node, the number of input nodes matches the number of features in the data
-        #the NN becomes a logistic regression model
-        network = ada.NN.Model(architecture=[[j, ada.activations.sigmoid] for k in range(i)], eta=eta, epochs=300, optimizer='sgd', loss=ada.CE)
+
+for i in range(len(n_hidden_layers)):
+    for j in range(len(n_neurons)):
+        architecture = [[n_neurons[j], ada.activations.sigmoid] for k in range(n_hidden_layers[i])]
+        architecture.append([1, ada.activations.sigmoid])
+        network = ada.NN.Model(architecture=architecture, eta=eta, epochs=300, optimizer='sgd', loss=ada.CE)
         #fitting the data and finding the accuracy
         l,_ = network.fit(X_train,y_train, X_test, y_test)
-        accuracy.append(ada.accuracy(network.classify(X_test), y_test))
-        loss.append(l)
-    heatmap.append(accuracy)
+        heatmap[j,i] = ada.accuracy(network.classify(X_test), y_test)
 
-df = pd.DataFrame(heatmap, index=n_neurons, columns=n_hidden_layers)
-print("Heatmap")
-print(df)
-sns.heatmap(df)
+fig = sns.heatmap(heatmap, annot=True, xticklabels=n_neurons, yticklabels=n_hidden_layers)
+plt.xlabel("neurons")
+plt.ylabel("hidden_layers")
 plt.show()
-accuracy = []
 
 
 for func in activations:
