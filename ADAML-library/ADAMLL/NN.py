@@ -93,12 +93,7 @@ class Model():
 
         fits the network to the data
         """
-
         N,n = X.shape
-
-        if X_val is None:
-            X_val = X
-            t_val = t
         self.architecture[0] = [n]
         if batch_size is None:
             batch_size = N
@@ -109,7 +104,6 @@ class Model():
         batches = int(N/batch_size)
         loss = np.zeros(self.epochs)
 
-
         @jax.jit # one step of gradient descent jitted to make it zoom
         def step(params, opt_state, X, t):
             activations, grads = self.forward(params, X)
@@ -118,24 +112,37 @@ class Model():
             params, opt_state = update_params(params, grads, opt_state)
             return params, opt_state
 
+        if X_val is None:
 
-        for e in range(self.epochs):
-            for _ in range(batches):
+            for e in range(self.epochs):
+                for _ in range(batches):
 
-                key, subkey = jax.random.split(key)
-                random_index = batch_size * jax.random.randint(subkey, minval=0, maxval=batches, shape=())
-                X_batch = X[random_index:random_index+batch_size]
-                t_batch = t[random_index:random_index+batch_size]
+                    key, subkey = jax.random.split(key)
+                    random_index = batch_size * jax.random.randint(subkey, minval=0, maxval=batches, shape=())
+                    X_batch = X[random_index:random_index+batch_size]
+                    t_batch = t[random_index:random_index+batch_size]
 
-                params, opt_state = step(params, opt_state, X_batch, t_batch)
-                current_loss = self.metric(self.forward(params, X_val)[0][-1], t_val)
+                    params, opt_state= step(params, opt_state, X_batch, t_batch)
 
-                loss = loss.at[e].set(current_loss)
 
-                # Early stopping condition
-                if e > 10 and np.abs(loss[e-10] - loss[e]) < self.tol:
-                    loss = loss.at[e+1:].set(loss[e]) 
-                    break
+        else:
+            for e in range(self.epochs):
+                for _ in range(batches):
+
+                    key, subkey = jax.random.split(key)
+                    random_index = batch_size * jax.random.randint(subkey, minval=0, maxval=batches, shape=())
+                    X_batch = X[random_index:random_index+batch_size]
+                    t_batch = t[random_index:random_index+batch_size]
+
+                    params, opt_state= step(params, opt_state, X_batch, t_batch)
+                    current_loss = self.metric(self.forward(params, X_val)[0][-1], t_val)
+
+                    loss = loss.at[e].set(current_loss)
+
+                    # Early stopping condition
+                    if e > 10 and np.abs(loss[e-10] - loss[e]) < self.tol:
+                        loss = loss.at[e+1:].set(loss[e]) 
+                        break
 
 
         print_message(f"Training stopped after {e} epochs")
