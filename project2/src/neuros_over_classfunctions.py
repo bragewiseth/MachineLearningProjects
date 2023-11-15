@@ -36,10 +36,9 @@ print("y_test shape {}".format(y_test.shape))
 
 
 activations = [ada.activations.sigmoid, ada.activations.tanh, ada.activations.relu]
-n_neurons = [1,3,8, 21]
-n_hidden_layers = [1,2,3,4]
+n_neurons = [1,3,8,21,55]
+n_hidden_layers = [1,2,3,4,5]
 eta = 0.01
-loss = []
 accuracy = []
 
 
@@ -62,17 +61,18 @@ plt.show()
 
 
 for func in activations:
+    print("activation function {}".format(func))
     #The NN has a single output node, the number of input nodes matches the number of features in the data
     #the NN becomes a logistic regression model
-    network = ada.NN.Model(architecture=[[1, func]], eta=eta, epochs=300, optimizer='sgd', loss=ada.CE)
+    network = ada.NN.Model(architecture=[[1, func] for i in range(4)], eta=eta, epochs=300, optimizer='sgd', loss=ada.CE)
     
     #fitting the data and finding the accuracy
     l,_ = network.fit(X_train,y_train, X_test, y_test)
     accuracy.append(ada.accuracy(network.classify(X_test), y_test))
-    loss.append(l)
+    print(l)
+    print(accuracy)
 
 #plt.plot([str(activation) for activation in activations], accuracy)
 
-plt.figure()
-plt.plot(loss[0], label='eta=0.1')
+plt.bar(["sigmoid", "tanh", "relu"], accuracy)
 plt.show()
