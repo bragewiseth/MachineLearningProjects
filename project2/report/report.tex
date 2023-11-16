@@ -27,14 +27,14 @@
 \usepackage{lettrine}
 % \usepackage{fontawesome}
 \usemintedstyle{perldoc}
-\usepackage{hyperref}
 \hypersetup{colorlinks=false, pdfborder={0 0 0},  }
 \usepackage{fancyhdr}
 \usepackage{wrapfig}
 \usepackage{adjustbox}
 \usepackage{tikz}
-\usepackage{listofitems} % for \readlist to create arrays
-
+% \usepackage{listofitems} % for \readlist to create arrays
+\usepackage{caption}
+\usepackage[toc,page,header]{appendix}
 
 
 \newtcbox{\codebox}[1][black]{on line, arc=2pt,colback=#1!10!white,colframe=white, before upper={\rule[-3pt]{0pt}{10pt}},boxrule=1pt, boxsep=0pt,left=2pt,right=2pt,top=1pt,bottom=.5pt}
@@ -93,6 +93,7 @@
 
 % \date{\today}
 
+\usepackage{hyperref}
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -146,17 +147,20 @@
 
 
 \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
-    \lettrine{I}{}n this paper, we investigate the viability of using neural networks to solve both
-    regression and classification problems. Specifically, we compare the performance of neural networks
-    with that of traditional linear and logistic regression models. There are many real world applications
-    and problems that require function approximation and classification. For example, in the field of
-    cancer research, it is often necessary to classify a tumor as either benign or malignant. Often, 
-    this is done by extracting a set of features from the tumor and differentiating between the two
-    classes based on these features. However, there may be a large degree of overlap between the two and the
-    amount of features may be large. These two factors may make it difficult foe a human to classify the tumor.
+    \lettrine{I}{}n this paper, we investigate the viability of using neural networks to solve
+    classification problems. Specifically, we compare the performance of neural networks
+    with that of traditional logistic regression models. There are many real world applications
+    and problems that require us to correctly differntiae between some classes. For example, in the field of
+    cancer research, it is often necessary to classify a tumor as either benign or malignant. this
+    can be done by extracting a set of features from the tumor and differentiating between the two
+    classes based on how different classes posess slight variations across the features. 
+    However, some features may be more or less equal for both classes, and the
+    amount of features may be large. These two factors may make it difficult for a human to classify the tumor.
     By using a neural network, we achieved a classification accuracy of 98\% on the Wisconsin breast cancer
-    dataset. With logistic regression, we achieved an accuracy of 98\%.
-    In addition to classification, we also investigated the use of neural networks for regression problems.
+    dataset. With logistic regression, we achieved an accuracy of 98\%. Comparing that with SKLearns model
+    we achieved an accuracy of 96\%.
+    In addition to classification, we also investigated the use of neural networks for regression problems
+    see Appendix~\hyperref[app:appendixA]{A}.
     We found that neural networks are able to approximate the Franke function with a mean squared error of
     0.0001. This is comparable to the results we achieved with linear regression. However, we found that
     neural networks are much more sensitive to the choice of learning rate and number of epochs. We also
@@ -173,9 +177,8 @@
 
 
 
-
-\section{Introduction}
-
+\addcontentsline{toc}{section}{Introduction}
+\section*{Introduction}
 
 
 
@@ -208,14 +211,14 @@ So how do we learn?
 
 \noindent
 \textbf{Gradient Decent}:\\ 
-    In this section we will discuss the gradient decent algorithm and how it can be used to
-    optimize the parameters of a model.\\
+In this section we will discuss the gradient decent algorithm and how it can be used to
+optimize the parameters of a model.\\
 \textbf{Data}: \\
-    In this section we will discuss the data we will be using in this project.\\
+In this section we will discuss the data we will be using in this project.\\
 \textbf{Results}:\\
-    In this section we will discuss the results we achieved with our models.\\
+In this section we will discuss the results we achieved with our models.\\
 \textbf{Conclusion}:\\
-    In this section we will discuss the results we achieved with our models.\\
+In this section we will discuss the results we achieved with our models.\\
 
 \section{Gradient Descent}
 \label{sec:GD}
@@ -255,7 +258,6 @@ When the loss function is a composition of several functions, we need to invoke 
     \caption{chain rule}\label{fig:chainrule}
 \end{figure}
 
-\su
 
 
 
@@ -274,9 +276,10 @@ When the loss function is a composition of several functions, we need to invoke 
     \begin{center}
         \includegraphics[width=\textwidth]{tikzfigures/nnActivation.pdf}
     \end{center}
-    \caption{}\label{fig:}
+    \caption{}\label{fig:nn_math}
     \cite{neutelings_tikzcode}
 \end{figure}
+
 
 With backpropagation we have a way to calculate the derivatives of the loss function with 
 respect to the parameters. This allows us to train our neural network. 
@@ -293,7 +296,7 @@ activation functions
 
 \section{Data}
 \label{sec:data}
-for classification we will be using the Wisconsin breast cancer dataset \cite{wdbc}. This dataset contains 569 data points
+for classification we will be using the Wisconsin breast cancer dataset [cite here]. This dataset contains 569 data points
 with 30 features each. The features are computed from a digitized image of a fine needle aspirate (FNA) of a breast mass.
 They describe characteristics of the cell nuclei present in the image. The features are computed for each cell nucleus:
 radius, texture, perimeter, area, smoothness, compactness, concavity, concave points, symmetry, fractal dimension.
@@ -326,114 +329,85 @@ in other words, we want to find the cases of cancer and classify them as positiv
 \end{figure}
 
 
-For regression we will be using perlin noise to generate our dataset 
-
-\begin{figure}
-    \begin{center}
-        \includegraphics[width=0.5\textwidth]{../runsAndFigures/perlinNoise.png}
-    \end{center}
-    \caption{Feature correlation. Gives us an idea of the redundancy of the features.
-        Only every other features is annotated but you can infer the missing lables 
-    from Figure~\ref{fig:feature_histogram}}\label{fig:feature_correlation}
-\end{figure}
-
-% \begin{figure}[!h]
-% \begin{minipage}[!t]{.48\linewidth}
-%     \begin{center}
-%         \includegraphics[width=1.1\textwidth]{../runsAndAdditions/trueFunction.png}
-%         \caption{True Function}\label{fig:truefunction}
-% \end{center}
-% \end{minipage}
-% \hspace{2mm}
-% \begin{minipage}[!t]{.48\linewidth}
-%     \begin{center}
-%         \includegraphics[width=1.1\textwidth]{../runsAndAdditions/synthDataSide.png}
-%         \caption{Our Synthetic Data}\label{fig:synthdataside}
-%     \end{center}
-% \end{minipage}
-% \end{figure}
-% \begin{figure}[!h]
-% \begin{minipage}[!t]{.48\linewidth}
-%     \begin{center}
-%         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/realdata3D.png}
-%         \caption{True Function}\label{fig:realdata3D}
-% \end{center}
-% \end{minipage}
-% \hspace{2mm}
-% \begin{minipage}[!t]{.48\linewidth}
-%     \begin{center}
-%         \includegraphics[width=1.0\textwidth]{../runsAndAdditions/realdataMap.png}
-%         \caption{Our Synthetic Data}\label{fig:realdataMap}
-%     \end{center}
-% \end{minipage}
-% \end{figure}
-% The noise is sampled from a normal distribution with mean 0 and standard deviation $\sigma = 0.1$.
-% The data is generated by sampling x and y from a uniform distribution on the interval \[0, 1\].
-% This synthetic data is divided into training and testing sets, with the testing set comprising twenty percent and the training set comprising eighty percent of the total data.
-% In addition, we will incorporate genuine topographic data from a specific area of Norway. However, to reduce computational requirements when running the program, we've reduced the size of this real topographic dataset from 6.5 million points to 10,000 points.
 
 
-\newpage
-
-\section{Results and Discussion}
+\section{Results and Analysis}
 \label{sec:resultsdiscussion}
 
+For classification we use the cross entropy loss function. 
 We tune the hyperparameters in a grid searches with a maximum
 of two dimensions. As we find the optimal hyperparameters, we use the same optimal hyperparameters for the next grid search.
 
-\subsection{Classification}
-\label{sec:classification}
+some of the hyperparameters are more dependent on each other than others. For example, the learning rate and the number of epochs
+the batch size and the learning rate. We can therefore not tune these hyperparameters independently. We must first find the optimal
 
-For classification we use the cross entropy loss function. 
+due to our limited time and computational resources we have not been able to do a full grid search for all hyperparameters. 
 
-\subsubsection{Hyperparameters}
+\subsection{Hyperparameters}
 \label{sec:hyperparameters}
+epochs found to be 200 
+
+when training for batch size we had to decrease the optimal learning rate due to unstable results for smaller batches
+
+\begin{figure}[!ht]
+    \begin{minipage}[t]{0.5\textwidth - 1mm}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_lr_gamma.png}
+        \end{center}
+        \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_lr_gamma}
+    \end{minipage}
+    \hspace{2mm}
+    \begin{minipage}[t]{0.5\textwidth - 1mm}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_alpha.png}
+        \end{center}
+        \caption{Introduction regualarization does not seem to yield any benefits, in fact
+        having too much regualarization shunts performance}\label{fig:accuracy_aplha}
+    \end{minipage}
+\end{figure}
 
 
 \begin{figure}[!ht]
-    \begin{minipage}[t]{0.49\textwidth}
-    \begin{center}
-        \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_lr_gamma.png}
-    \end{center}
-    \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_lr_gamma}
-\end{minipage}
-\hspace{2mm}
-\begin{minipage}[t]{0.49\textwidth}
-    \begin{center}
-        \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_alpha.png}
-    \end{center}
-            \caption{Introduction regualarization does not seem to yield any benefits, in fact
-    having too much regualarization shunts performance}\label{fig:accuracy_aplha}
-\end{minipage}
+    \begin{minipage}[t]{0.5\textwidth - 1mm}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_optimizer.png}
+        \end{center}
+        \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
+    \end{minipage}
+    \hspace{2mm}
+    \begin{minipage}[t]{0.5\textwidth - 1mm}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_batch.png}
+        \end{center}
+        \caption{Introduction regualarization does not seem to yield any benefits, in fact
+        having too much regualarization shunts performance}\label{fig:accuracy_aplha}
+    \end{minipage}
 \end{figure}
 
 
-\begin{figure}[h]
-    \begin{center}
-        \includegraphics[width=0.5\textwidth]{../runsAndFigures/optimizer_accuracy.png}
-    \end{center}
-    \caption{}\label{fig:}
+\begin{figure}[!ht]
+    \begin{minipage}[t]{0.5\textwidth - 1mm}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_activ.png}
+        \end{center}
+        \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
+    \end{minipage}
+    \hspace{2mm}
+    \begin{minipage}[t]{0.5\textwidth - 1mm}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_layers_nodes.png}
+        \end{center}
+        \caption{Introduction regualarization does not seem to yield any benefits, in fact
+        having too much regualarization shunts performance}\label{fig:accuracy_aplha}
+    \end{minipage}
 \end{figure}
 
 
 
-
-
-
-\subsubsection{Final Evaluation and Comparisons}
+\subsection{Final Evaluation and Comparisons}
 \label{sec:comparisons}
 
-\subsection{Regression}
-\label{sec:regression}
 
-
-\subsubsection{Hyperparameters}
-\label{sec:hyperparameters2}
-
-
-
-\subsubsection{Final Evaluation and Comparisons}
-\label{sec:comparisons2}
 
 
 \section{Conclusion}
@@ -464,16 +438,124 @@ Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labor
 % \acks{}
 
 
-
-% APPENDIX
-
-%
-\newpage
+\clearpage % Start a new page before the appendix
+% \pagenumbering{arabic} % Switch to Arabic page numbering (1, 2, 3, ...)
+% \setcounter{page}{1} % Set the page number to 1
+% \renewcommand{\thepage}{A-\arabic{page}} % Redefine the page numbering format
 
 \appendix
-\phantomsection%
-\addcontentsline{toc}{section}{Appendix}
-\section*{Appendix}
+\renewcommand{\theHchapter}{appendix\Alph{chapter}}
+\renewcommand{\theHsection}{appendix\thesection}
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Appendix}
+
+
+\chapter*{Appendix A}
+\label{app:appendixA}
+
+
+\section{Regression with Neural Networks}
+\label{sec:regression}
+
+
+\section*{Data}
+
+For regression we will be using perlin noise to generate our dataset 
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{../runsAndFigures/perlinNoise.png}
+    \end{center}
+    \caption{}\label{fig:perlin}
+\end{figure}
+
+Solving a regression problem with linear regression and neural networks using gradient optimization.
+
+
+
+\section*{Results and Analysis}
+\label{sec:resultsdiscussion2}
+
+
+
+
+\subsection*{Hyperparameters}
+\label{sec:hyperparameters2}
+
+
+\begin{figure}[!ht]
+    \begin{minipage}[t]{0.49\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/MSE_lr_gamma.png}
+        \end{center}
+        \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:MSE_lr_gamma}
+    \end{minipage}
+    \hspace{1mm}
+    \begin{minipage}[t]{0.49\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/MSE_alpha.png}
+        \end{center}
+        \caption{Introduction regualarization does not seem to yield any benefits, in fact
+        having too much regualarization shunts performance}\label{fig:MSE_aplha}
+    \end{minipage}
+\end{figure}
+
+
+\begin{figure}[!ht]
+    \begin{minipage}[t]{0.49\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/MSE_optimizer.png}
+        \end{center}
+        \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:MSE_optimizer}
+    \end{minipage}
+    \hspace{1mm}
+    \begin{minipage}[t]{0.49\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/MSE_batch.png}
+        \end{center}
+        \caption{Introduction regualarization does not seem to yield any benefits, in fact
+        having too much regualarization shunts performance}\label{fig:MSE_batch}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[!ht]
+    \begin{minipage}[t]{0.5\textwidth - 1mm}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/MSE_activs.png}
+        \end{center}
+        \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
+    \end{minipage}
+    \hspace{2mm}
+    \begin{minipage}[t]{0.5\textwidth - 1mm}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/MSE_layers_nodes.png}
+        \end{center}
+        \caption{Introduction regualarization does not seem to yield any benefits, in fact
+        having too much regualarization shunts performance}\label{fig:accuracy_aplha}
+    \end{minipage}
+\end{figure}
+\subsection*{Final Evaluation and Comparisons}
+\label{sec:comparisons2}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter*{Appendix B}
 \label{app:appendix}
 
 
@@ -487,8 +569,6 @@ instead. A neural network with only one hidden layer can approximate any continu
 given enough neurons in the hidden layer. The more neurons, the higher the resolution of the Approximation
 \cite{HornikEtAl89}. 
 
-\phantomsection%
-\addcontentsline{toc}{subsection}{XOR VS Perceptron}
 \subsection*{XOR VS Perceptron}
 \label{app:xor}
 
@@ -512,18 +592,19 @@ One way to solve this problem is to add some polynomial features to the data.
 This will allow us to draw a curved line that separates the two classes. However, this is not a scalable solution.
 
 \begin{figure}[h]
-\begin{minipage}{0.5\textwidth}
-    \begin{center}
-        \includegraphics[width=\textwidth]{../runsAndFigures/xor_plain.png}
-        \caption{}\label{fig:xor_plain}
-    \end{center}
-\end{minipage}
-\begin{minipage}{0.5\textwidth}
-    \begin{center}
-        \includegraphics[width=\textwidth]{../runsAndFigures/xor_poly.png}
-        \caption{}\label{fig:xor_poly}
-    \end{center}
-\end{minipage}
+    \begin{minipage}{0.49\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/xor_plain.png}
+            \caption{}\label{fig:xor_plain}
+        \end{center}
+    \end{minipage}
+    \hspace{1mm}
+    \begin{minipage}{0.49\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{../runsAndFigures/xor_poly.png}
+            \caption{}\label{fig:xor_poly}
+        \end{center}
+    \end{minipage}
 \end{figure}
 
 
@@ -548,8 +629,6 @@ bias problems.
 
 
 
-\phantomsection%
-\addcontentsline{toc}{subsection}{Combining Neurons}
 \subsection*{Combining Neurons}
 \label{app:neuronscombined}
 
@@ -588,7 +667,6 @@ sin function, but sigmoid works fine.
 
 
 
-
 % \phantomsection%
 % \addcontentsline{toc}{subsection}{Confidence Interval}
 % \subsection*{Math Behind the Confidence Interval, Section~\ref{sec:confidenceinterval}}
@@ -601,7 +679,7 @@ sin function, but sigmoid works fine.
 \bibliography{report}
 % \bibliographystyle{apalike}
 \bibliographystyle{plain}
-\phantomsection%
+% \phantomsection%
 \addcontentsline{toc}{section}{Bibliography}
 \end{document}
 
