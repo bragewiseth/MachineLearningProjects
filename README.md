@@ -22,7 +22,6 @@ in addition to the package itself you need to install the following packages in 
 this repo:
 
 - `matplotlib`
-- `numpy`
 - `pandas`
 - `scikit-learn`
 - `seaborn`

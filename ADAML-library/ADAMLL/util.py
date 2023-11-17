@@ -1,4 +1,5 @@
 import jax.numpy as np
+import numpy as onp
 import jax
 
 
@@ -50,20 +51,14 @@ def one_hot_encode(y, n_classes):
 
 
 def confusion_matrix(y, t):
-    """
-    Calculates the confusion matrix
-    """
-    y = np.argmax(y, axis=1)
-    t = np.argmax(t, axis=1)
+    """ binary confusion matrix """
+    tp = np.sum(np.logical_and(y == 1, t == 1))
+    tn = np.sum(np.logical_and(y == 0, t == 0))
+    fp = np.sum(np.logical_and(y == 1, t == 0))
+    fn = np.sum(np.logical_and(y == 0, t == 1))
+    return np.array([[tp, fp], [fn, tn]])
 
-    n_classes = np.max(t) + 1
 
-    matrix = np.zeros((n_classes, n_classes))
-
-    for i in range(len(y)):
-        matrix[t[i]][y[i]] += 1
-
-    return matrix
 
 
 

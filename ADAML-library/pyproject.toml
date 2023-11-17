@@ -34,4 +34,5 @@ dependencies = [
     "matplotlib",
     "jax",
     "jaxlib",
+    "numpy",
 ]
