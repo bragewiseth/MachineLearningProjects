@@ -153,8 +153,8 @@
     these methods in tumor classification. Our results show that neural networks achieved a classification 
     accuracy of 95\%, compared to logistic regression's 96\%. Both are similar to the 97\% achieved using SKLearn's models.
     Additionally, we examined the application of neural networks to regression problems, 
-    finding that they can approximate 2-dimensional perlin nose, with a mean squared error of 0.02, 
-    compared to linear regression's 0.04. This shows that both neural networks and logistic regression
+    finding that they can approximate 2-dimensional perlin nose, with a mean squared error of 0.012, 
+    compared to linear regression's 0.028. This shows that both neural networks and logistic regression
     are powerful tools for classification tasks, but that neural networks seems to be more viable for complex 
     regression tasks. Offering a more flexible framework for approximating functions
 \end{abstract}
@@ -622,56 +622,38 @@
 \section{Regression with Neural Networks}
 \label{sec:regression}
 
-    In our previous project\cite{MachineLearningProjects_2023}, we explored the fitting of linear models and 
-    polynomials to data, deriving optimal parameters \(\beta\) through an analytical approach. 
-    This method demonstrated that, theoretically, polynomials can approximate any function, given a sufficiently 
-    high degree of freedom. However, this approach has practical limitations. 
-    Providing a model with infinite degrees of freedom is not feasible due to computational constraints 
-    and the risk of overfitting. How can we approximate complex functions without resorting to high-degree 
-    polynomials? A promising solution is to construct models that are not based on a single high-degree polynomial 
-    but are instead composed of simpler, interconnected components. This is where neural networks come into play.
-    Neural networks offer a flexible architecture that can approximate a wide range of functions. By 'gluing together' 
-    multiple simple functions, such as linear segments in the case of basic neural networks, they can model complex 
-    relationships in the data. Unlike polynomials, neural networks are not limited to a specific functional form and 
-    can be adapted for both regression and classification tasks. Their layered structure, where each layer can learn 
-    different aspects of the data, allows them to capture both simple and intricate patterns.
-    Thus, neural networks provide a powerful and versatile alternative to polynomial regression, capable of handling 
-    diverse data modeling challenges, as we will explore in this section.
-
-
+    In our previous project\cite{MachineLearningProjects_2023}, we investigated linear models and polynomials 
+    for data fitting, deriving optimal parameters (\(\beta\)) analytically. While this method theoretically allows 
+    polynomials to approximate any function providing the model with a high degree of freedom, 
+    it faces practical limitations such as 
+    computational constraints and overfitting risks. An alternative approach is using neural networks, which offer a 
+    flexible architecture to approximate a wide range of functions. Unlike polynomials, neural networks are composed 
+    of simpler, interconnected components, allowing them to model complex relationships within the data for both 
+    regression and classification tasks.
 
 
 \section*{Data}
-
-    For this study, we generated our dataset using Perlin noise. Perlin noise is a gradient noise function, 
-    often used in computer graphics, that produces a more natural-appearing randomness compared to standard 
-    random functions. It is particularly useful for simulating textures and other complex, naturally varying patterns.
+    Our dataset for this study was generated using Perlin noise, a gradient noise function commonly used in 
+    computer graphics to produce natural-looking randomness. This approach allows us to create a challenging 
+    dataset for regression analysis, enabling us to evaluate the adaptability of our models to complex data patterns.
 
     \begin{figure}[h]
         \begin{center}
-            \includegraphics[width=0.5\textwidth]{../runsAndFigures/perlinNoise.png}
+            \includegraphics[width=0.4\textwidth]{../runsAndFigures/perlinNoise.png}
         \end{center}
         \caption{Sample visualization of Perlin noise. This noise function generates a variety of gradients, 
         creating a natural, smooth variation in data.}\label{fig:perlin}
     \end{figure}
 
-    In our experiment, Perlin noise serves as a basis for creating a diverse and challenging dataset for 
-    regression analysis. The goal is to compare the effectiveness of linear regression and neural networks in
-    modeling and predicting outcomes from this data. By employing gradient optimization techniques, we aim to
-    understand how well each model can learn and adapt to the complexities introduced by Perlin noise-generated
-    data patterns.
+
 
 \newpage
 \section*{Results and Analysis}
 \label{sec:resultsdiscussion2}
 
-
-    For regression, we used the same approach as we did for classification. The difference is that we used
-    the mean squared error (MSE) as our loss function instead of the cross-entropy loss function. The final 
-    activation function was the identity function, as we wanted to predict a continuous value.
-
-
-
+    For regression, our approach mirrors that used for classification, with a key difference in the loss function. 
+    We employed the mean squared error (MSE) as our loss function and used the identity function as the final 
+    activation function, aiming to predict continuous values rather than probabilities.
 
 \subsection*{Hyperparameters}
 \label{sec:hyperparameters2}
@@ -698,9 +680,11 @@
     \end{figure}
 
     \noindent
-    Learning rate and momentum seem to have the same correlation as in the classification task.
-    Regularization makes a great impact on the model's performance. 
-    
+    We observed that learning rate and momentum share a similar correlation to that in classification tasks. 
+    Regularization significantly impacted the model's performance, where excessive regularization 
+    hampered performance.\\
+
+
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
@@ -724,8 +708,14 @@
     \end{figure}
 
     \noindent
-    The Relu activation function seems to be the best choice for the hidden layers.
-    The batch size also played a role, a clear trend shows that a smaller batch size is better.
+    The optimizer we used had varying impact, with RMSprop underperforming compared to others. 
+    A smaller batch size generally led to better performance.\\
+    
+    \noindent
+    For the hidden layers, the ReLU activation function proved most effective. Our experiments 
+    found that a network with 5 layers, each containing 5 nodes, yielded the best results. It's crucial to 
+    use the identity function (or no activation function) in the final layer for regression tasks to predict 
+    continuous values accurately.
 
 
     \begin{figure}[!ht]
@@ -751,27 +741,33 @@
     \end{figure}
 
     \noindent
-    \\
-    In order for our model to correctly classify the data, it is essential that the last layer's activation function
-    is a sigmoid function. This is because the sigmoid function outputs a value between 0 and 1, which can be
-    interpreted as the probability of the data point belonging to class 1. The choice of activation function for the
-    hidden layers did not significantly impact the model's performance.
-    We used one hidden layer with 2 nodes when testing actovation functions.
 
-    \begin{figure}
+
+    \begin{figure}[!ht]
         \begin{center}
             \includegraphics[width=0.5\textwidth]{../runsAndFigures/MSE_degree.png}
         \end{center}
-        \caption{}\label{fig:}
+        \caption
+        {
+            MSE in relation to the polynomial degree.
+        }\label{fig:}
     \end{figure}
 
 
+    \newpage
+    \noindent
+    We also explored the impact of the degree of the polynomial on the model's performance.
+    For the values tested, the model's performance improved with increasing polynomial degree.
 
+\newpage
+\newpage
 \subsection*{Final Evaluation and Comparisons}
 \label{sec:comparisons2}
 
 
-
+    Our final evaluation involved comparing the regression performance of neural networks with that of logistic 
+    regression on Perlin noise-generated data. The visualizations provide insights into each model's ability to 
+    capture the underlying patterns in the data.
 
 
 
@@ -782,7 +778,7 @@
             \end{center}
             \caption
             {
-                a
+                Logistic regression model predictions.
             }\label{fig:perlinNoise_logistic_pred}
         \end{minipage}
         \hspace{2mm}
@@ -792,10 +788,20 @@
             \end{center}
             \caption
             {
-                a
+                Neural network model predictions.
             }\label{fig:perlinNoise_NN_pred}
         \end{minipage}
     \end{figure}
+
+
+    \noindent
+    We managed to achieve a MSE of 0.0012 with our neural network model and 0.0028 with logistic regression.
+    from figure~\ref{fig:perlinNoise_logistic_pred} and figure~\ref{fig:perlinNoise_NN_pred} we can clearly see that
+    the neural network is better at capturing the underlying pattern in the data. The logistic regression model
+    is not able to capture the complexity of the data. It should be noted that if we allow the logistic regression
+    model to have a higher degree of freedom, it will probably be able to compete with the neural network. However,
+    this well not be a scalable solution, with a polynomial of degree 15 we have over 130 features.
+
 
 
 
@@ -820,6 +826,15 @@
     instead. A neural network with only one hidden layer can approximate any continuous function
     given enough neurons in the hidden layer. The more neurons, the higher the resolution of the Approximation
     \cite{HornikEtAl89}. 
+
+
+A fundamental question in neural network theory is the extent of their learning capabilities. Specifically, 
+can neural networks approximate any function? There are traditional methods for function approximation, such 
+as Fourier series for periodic functions or Taylor series for local approximations. However, neural networks 
+offer a more flexible approach. According to the Universal Approximation Theorem, a neural network with even a 
+single hidden layer can approximate any continuous function, provided it has enough neurons \cite{HornikEtAl89}. 
+This capacity for universal approximation underlines the power and versatility of neural networks in modeling complex relationships.
+
 
 \subsection*{XOR VS Perceptron}
 \label{app:xor}
@@ -849,7 +864,9 @@
     is also prone to 
     bias problems.
 
+The perceptron, a simple neural network model, demonstrates both the strengths and limitations of neural networks. It calculates an output by weighting inputs, summing them, and then applying a step function, often a Heaviside function\footnote{In our case, we use the sigmoid function instead of the Heaviside function for classification. The principles, however, remain similar.}. While effective for simple linearly separable problems, the perceptron struggles with the XOR problem, a classic example of non-linear separability.
 
+To illustrate, a perceptron cannot draw a straight line to separate the classes in an XOR problem. A potential workaround is to add polynomial features to the data, allowing the model to fit a non-linear boundary. However, this solution isn't scalable for high-dimensional data. Neural networks, in contrast, can learn to solve the XOR problem without manual feature engineering, as they can inherently learn complex functions.
 
 
     \begin{figure}[h]
@@ -908,6 +925,60 @@
 
 
 
+
+
+
+
+
+
+\chapter*{Appendix B}
+\label{app:appendixB}
+
+\section{Universal Approximation}
+\label{sec:UAT}
+
+
+
+\subsection*{XOR vs. Perceptron}
+\label{app:xor}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \begin{center}
+        \includegraphics[width=0.4\textwidth]{../runsAndFigures/xor.png}
+    \end{center}
+    \caption{The XOR dataset.}\label{fig:xor_data}
+\end{wrapfigure}
+
+
+
+\begin{figure}[h]
+    % [Include the figures and captions for perceptron vs. polynomial features]
+\end{figure}
+
+\begin{figure}[!h]
+    % [Include the figure and caption for neural network solving XOR]
+\end{figure}
+
+\subsection*{Combining Neurons}
+\label{app:neuronscombined}
+
+To approximate a function like $\text{sin}(x)$, we can utilize the combined outputs of neurons in a neural network. Each neuron in a hidden layer essentially represents a transformed line, and when these are combined, they can approximate complex patterns.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.4\textwidth]{../runsAndFigures/sin.png}
+    \end{center}
+    \caption{The $\text{sin}$ function to be approximated.}\label{fig:sin}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.95\textwidth]{tikzfigures/universal.pdf}
+    \end{center}
+    \caption{Combining outputs of individual neurons to approximate a $\text{sin}$ function.}\label{fig:universal}
+\end{figure}
+
+In this context, the choice of activation function is crucial. While ReLU might struggle with functions like $\text{sin}(x)$ due to its linear nature, sigmoid or similar non-linear functions can successfully approximate such patterns. This exemplifies how neural networks use simple components to build complex models, capturing a wide range of functional relationships.
 
 
 
