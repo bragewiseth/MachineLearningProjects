@@ -166,61 +166,54 @@
 
 
 
-
-
-
 \addcontentsline{toc}{section}{Introduction}
 \section*{Introduction}
 
-    There are many real world applications and problems that require us to correctly differentiate 
-    between some classes. For example, in the field of
-    cancer research, it is often necessary to classify a tumor as either benign or malignant. this
-    can be done by extracting a set of features from the tumor and differentiating between the two
-    classes based on how different classes posess slight variations across the features. 
-    However, some features may be more or less equal for both classes, and the
-    amount of features may be large. These two factors may make it difficult for a human to classify the tumor.
-    To tackle this, we can use \emph{logistic regression}, that is, first regression and then clamp the 
-    output to a binary value (for the bianry case). We can do this with an activation function like the sigmoid function
-    \footnote
+    Real-world applications often require accurate classification between different classes. 
+    A notable example is in cancer research, where it's crucial to classify tumors as either benign or malignant. 
+    This classification typically involves analyzing a set of features extracted from the tumor. However, these 
+    features may not always clearly distinguish between classes, particularly when they are similar for both or 
+    when there is a large number of features. This complexity can pose a challenge for human analysis.
+    To address this, \emph{logistic regression} is often employed. This method involves using regression to produce
+    a continuous output, which is then transformed into a binary value through an activation function, such 
+    as the sigmoid function\footnote
     {
-        The sigmoid function does not output a binary value, but a value between 0 and 1. 
-        We can then set a threshold, for example 0.5, and say that if the output is above the threshold, 
-        we classify it as 1, and if it is below, we classify it as 0. We can interpret the output as the 
-        probability of the data point being 1.
+        The sigmoid function outputs a value between 0 and 1. By setting a threshold, such as 0.5, values 
+        above this threshold can be classified as 1, and those below as 0. This output can be interpreted 
+        as the probability of the data point belonging to class 1.
     }
-    or the heaviside function. This binary value is then the classification of the data point.
-    However, in some cases it may be impossible for logistic regression to make a good classification.
-    For example, if the data is not linearly separable, linear regression will not be able to draw a
-    straight line that separates the two classes. And thus the output of the activation function will
-    not be able to classify the data correctly. We explore this problem in more detail in 
-    \hyperref[app:appendixB]{Appendix B}. As for now, a solution is using a \emph{neural network} instead.
-    Neural networks are able to approximate any continuous function, given enough neurons in the hidden layer.
-    This makes them a powerful tool for classification problems. They can also be used for regression problems,
-    which we will explore in \hyperref[app:appendixA]{Appendix A}.\\
+    or the Heaviside function. The resulting binary value represents the data point's classification.
+    However, logistic regression has its limitations, particularly when dealing with data that is not linearly 
+    separable. In such cases, logistic regression cannot effectively draw a boundary to separate the classes, 
+    leading to classification errors. This issue is examined in more detail in \hyperref[app:appendixB]{Appendix B}.
+    As an alternative, \emph{neural networks} offer a more versatile solution. Capable of approximating any 
+    continuous function with a sufficient number of neurons in the hidden layers, neural networks provide a robust 
+    tool for both classification and regression problems. Their ability to learn complex, non-linear relationships 
+    makes them particularly powerful for tasks where traditional logistic regression falls short. The application 
+    of neural networks in regression is explored in \hyperref[app:appendixA]{Appendix A}.
     
     \noindent
-    In project 1\cite{MachineLearningProjects_2023}, we used an analytical expression to find the optimal parameters
-    for linear regression. However, by using activation functions we lose our lineariy, and thus we can no longer
-    use the same analytical expression to find the optimal parameters. Instead, we must use an iterative approach
-    to find the optimal parameters. If our cost function is continuous and differentiable, we can use gradient descent
-    to find the minimum of the cost function. All the models we will be using in this project are gradient descent based.\\
-
+    In our initial project\cite{MachineLearningProjects_2023}, we utilized an analytical approach to derive optimal 
+    parameters for linear regression. However, the introduction of activation functions in more complex models, 
+    such as neural networks, breaks this linearity. Consequently, the same analytical methods cannot be applied to 
+    determine optimal parameters. Instead, we shift towards an iterative approach. For cost functions that are continuous 
+    and differentiable, gradient descent becomes a viable method to locate the function's minimum. The models explored 
+    in this project predominantly rely on gradient descent.
 
     \noindent
-    The report is structured as follows: 
-    In \hyperref[sec:logistic]{Section 2} we will introduce the logistic regression model.
-    In \hyperref[sec:GD]{Section 3} we will introduce gradient descent and backpropagation. 
-    In \hyperref[sec:NN]{Section 4} we will introduce neural networks. 
-    In \hyperref[sec:data]{Section 5} we will introduce the data we will be using.
-    In \hyperref[sec:resultsdiscussion]{Section 6} we will present our results and discuss them. 
-    In \hyperref[sec:conclusion]{Section 7} we will conclude the report. 
-    In \hyperref[app:appendixA]{Appendix A} we will explore regression with neural networks.
-    In \hyperref[app:appendixB]{Appendix B} we will explore the universal approximation theorem. 
-
-
-
-
-
+    The structure of this report is as follows: 
+    \begin{itemize}
+        \item In \hyperref[sec:logistic]{Section 2}, we introduce the logistic regression model.
+        \item In \hyperref[sec:GD]{Section 3}, we discuss gradient descent and backpropagation, key techniques in 
+            the optimization of machine learning models.
+        \item In \hyperref[sec:NN]{Section 4}, we delve into the fundamentals of neural networks.
+        \item \hyperref[sec:data]{Section 5} covers the data used in our experiments and analyses.
+        \item \hyperref[sec:resultsdiscussion]{Section 6} presents our results and provides a discussion on their 
+            implications.
+        \item \hyperref[sec:conclusion]{Section 7} concludes the report, summarizing key findings and insights.
+        \item \hyperref[app:appendixA]{Appendix A} explores regression using neural networks.
+        \item \hyperref[app:appendixB]{Appendix B} investigates the universal approximation theorem and its applications.
+    \end{itemize}
 
 
 \section{Gradient Descent}
@@ -254,9 +247,7 @@
             parameters for each training example one by one. It can be faster 
             and can also help to escape local 
             minima, but the path to convergence can be more erratic.
-            \label{sec:he}
             
-            % section he (end)
         
         \item \textbf{Mini-batch Gradient Descent:} This is a compromise between batch and stochastic gradient descent. 
             It updates the parameters based on a small, randomly selected subset of the training data. 
@@ -379,43 +370,43 @@
     of machine learning.
 
 
+
 \section{Data}
 \label{sec:data}
 
-    for classification we will be using the Wisconsin breast cancer dataset [cite here]. This dataset contains 
-    569 data points with 30 features each. The features are computed from a digitized image of a fine needle aspirate
-    (FNA) of a breast mass. They describe characteristics of the cell nuclei present in the image. The features are 
-    computed for each cell nucleus: radius, texture, perimeter, area, smoothness, compactness, concavity, 
-    concave points, symmetry, fractal dimension. The mean, standard error and "worst" or largest 
-    (mean of the three largest values) of these features were computed for each image, resulting in 30 features. 
-    For example, field 3 is Mean Radius, field 13 is Radius SE, field 23 is Worst Radius.
-    All feature values are recoded with four significant digits. Missing attribute values: none.
-    Class distribution: 357 benign, 212 malignant
+    For our classification task, we will utilize the widely recognized Wisconsin Breast Cancer 
+    Dataset\cite{misc_breast_cancer17}. This dataset comprises 569 data points, 
+    each with 30 distinctive features. 
+    These features are derived from digitized images of a fine needle aspirate (FNA) of breast masses, focusing on 
+    various characteristics of the cell nuclei depicted in the images.
+    The dataset quantifies several attributes for each cell nucleus, including radius, texture, perimeter, area, 
+    smoothness, compactness, concavity, concave points, symmetry, and fractal dimension. For each attribute, three 
+    types of measurements are provided: the mean, standard error, and the "worst" or largest (which represents the 
+    mean of the three largest values). This results in a total of 30 features for each data point. For instance, 
+    field 1 represents the Mean Radius, field 11 is Radius SE, and field 21 corresponds to the Worst Radius.
+    All feature values in this dataset are recorded with four significant digits, and there are no missing attribute 
+    values. The class distribution within the dataset is as follows: 357 benign cases and 212 malignant cases.
+    The primary objective is to classify these tumors as either benign or malignant based on the features provided. 
+    In this context, a positive result indicates a benign tumor, while a negative result signifies a malignant tumor. 
+    Essentially, our goal is to accurately identify cases of cancer and classify them as negative.
 
-    malignant = cancer.data[cancer.target==0]
-    benign = cancer.data[cancer.target==1]
 
-    the goal is to classify the tumors as either benign or malignant based on the features.
-    a positive result means that the tumor is malignant, and a negative result means that the tumor is benign.
-    in other words, we want to find the cases of cancer and classify them as positive
     \begin{figure}[h]
         \begin{center}
-            \includegraphics[width=0.9\textwidth]{../runsAndFigures/feature_correlation.png}
+            \includegraphics[width=0.8\textwidth]{../runsAndFigures/feature_correlation.png}
         \end{center}
-        \caption{Feature correlation. Gives us an idea of the redundancy of the features.
-            Only every other features is annotated but you can infer the missing lables 
-        from Figure~\ref{fig:feature_histogram}}\label{fig:feature_correlation}
+        \caption{Feature correlation matrix. This provides insight into the redundancy among features. 
+        Only every other feature is annotated, but the missing labels can be inferred from 
+            Figure~\ref{fig:feature_histogram}.}\label{fig:feature_correlation}
     \end{figure}
 
     \begin{figure}
         \begin{center}
-            \includegraphics[width=\textwidth]{../runsAndFigures/feature_histogram.png}
+            \includegraphics[width=0.95\textwidth]{../runsAndFigures/feature_histogram.png}
         \end{center}
-        \caption{Feature histogram. Red ($0$) class is malignent, green ($1$) is benign}\label{fig:feature_histogram}
+        \caption{Feature histogram. The red class ($0$) represents malignant cases, while the green class 
+        ($1$) indicates benign cases.}\label{fig:feature_histogram}
     \end{figure}
-
-
-
 
 
 \clearpage
@@ -423,18 +414,27 @@
 \section{Results and Analysis}
 \label{sec:resultsdiscussion}
 
-    For classification we use the cross entropy loss function. 
-    we use automatic differentiation to calculate the gradient of the loss function with respect to the parameters.
-    some of the hyperparameters are more dependent on each other than others. For example, the learning 
-    rate and the number of epochs
-    the batch size and the learning rate. Optimally we can therefore not tune these hyperparameters independently.
-    Due to our limited time and computational resources we have not been able to do a full grid search.
-    At most we have been able to do a grid search of two dimensions.
-    These indivudial searches are used as an indication of where the optimal hyperparameters lies.
+    In our experiments, we employed the cross-entropy loss function, The gradient of the loss function 
+    with respect to the model's parameters was computed using automatic differentiation. 
+    We used the SKLearn\cite{scikit-learn}
+    library to perform cross-validation for a more robust evaluation of our models.
+    We used k-fold cross-validation with $k=6$ folds. The results presented in this section are based on
+    the average of the results from the 6 folds. The bar plots show also show the standard deviation of the
+    results from the 6 folds.
+    During our hyperparameter tuning phase, we observed interdependencies between certain hyperparameters. Notably, 
+    the learning rate and the number of epochs showed a significant correlation, as did the batch size and the learning 
+    rate. Such dependencies imply that these hyperparameters cannot be optimized independently for the most effective 
+    training process. Ideally, a comprehensive grid search across multiple dimensions of hyperparameters would be 
+    conducted. However, due to constraints in time and computational resources, our experiments were limited.
+    We were able to conduct grid searches, but these were restricted to two dimensions at most. While this limitation 
+    prevented a thorough exploration of the hyperparameter space, the results from these partial grid searches provided 
+    valuable insights. They served as indicators, pointing us towards regions in the hyperparameter space where optimal 
+    settings might exist.
+    The analysis of these results suggests that while we have identified promising hyperparameter settings, a more 
+    exhaustive search might yield further improvements. 
 
 \subsection{Hyperparameters}
 \label{sec:hyperparameters}
-
 
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -443,7 +443,7 @@
             \end{center}
             \caption
             {
-
+                Accuracy versus learning rate and momentum.
             }\label{fig:accuracy_lr_gamma}
         \end{minipage}
         \hspace{2mm}
@@ -453,25 +453,23 @@
             \end{center}
             \caption
             {
-
+                Accuracy versus regualarization.
             }\label{fig:accuracy_aplha}
         \end{minipage}
     \end{figure}
 
-    In this case havving momentum seems to be beneficial. 
-    We maxes out our testing range and found that 0.9 was the best value for momentum. 
-    momentum allows a higher learning rate
-    regualarization does not seem to yield any benefits, in fact
-    having too much regualarization decreases performance
-
-    \begin{figure}[!ht]
+    Our findings indicate that incorporating momentum is beneficial, particularly with a value of 
+    around 0.9, which emerged as the most effective in our tests. This momentum allows for a higher learning rate, 
+    enhancing the training process. In contrast, excessive regularization seems to adversely affect model performance.
+    
+    \begin{figure}[ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_optimizer.png}
             \end{center}
             \caption
             {
-                sgd (Standard gradient decent with momentum)
+                Model accuracy across different optimizers.
             }\label{fig:accuracy_optimizer}
         \end{minipage}
         \hspace{2mm}
@@ -481,15 +479,16 @@
             \end{center}
             \caption
             {
-
+                Accuracy based on batch size.
             }\label{fig:accuracy_batch}
         \end{minipage}
     \end{figure}
 
-    The optimizer does not seem to have a large impact on the performance of the model.
-    However, the Adam and 
-    seems to be slightly better than the others.
-    The batch
+    The choice of optimizer did not significantly impact the model's performance. However, 
+    Adam optimizer showed a slight advantage over others. The batch size also played a role, 
+    with certain sizes yielding better accuracy.
+
+
 
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -498,7 +497,7 @@
             \end{center}
             \caption
             {
-
+                Model performance with different activation functions.
             }\label{fig:accuracy_activ}
         \end{minipage}
         \hspace{2mm}
@@ -508,17 +507,19 @@
             \end{center}
             \caption
             {
-
+                Accuracy in relation to the number of layers and nodes.
             }\label{fig:accuracy_layers_nodes}
         \end{minipage}
     \end{figure}
 
-    In this case havving momentum seems to be beneficial. We maxes out our testing range and 
-    found that 0.9 was the best value for momentum. momentum allows a higher learning rate
-    Introduction regualarization does not seem to yield any benefits, in fact
-    having too much regualarization shunts performance
 
-\clearpage
+
+    In summary, our results highlight the importance of momentum in the learning process and suggest that 
+    over-regularization can be detrimental. The choice of optimizer and batch size, while not as critical, 
+    still influences model performance, with the Adam optimizer slightly outperforming others. The findings 
+    underscore the need for careful hyperparameter tuning in
+
+
 \subsection{Final Evaluation and Comparisons}
 \label{sec:comparisons}
 
@@ -580,17 +581,23 @@
 \section{Regression with Neural Networks}
 \label{sec:regression}
 
-    In project 1\cite{MachineLearningProjects_2023}, we found that 
-    we can fit lines or even polynimals that approximate the distribution of our data by solving an nice 
-    analytical expression for the optimal parameters $\beta$. We can in principle approximate 
-    any function with a polynomial, if we give ourselves infinite degrees of freedom. This is great but there are several
-    limitations to this approach. First of all, we can not give ourselves infinite degrees of freedom, believe it or not.
-    Secondly, what if we don't want to find a polynimal but rather classify our data into some classes?\\
-    However the first problem
-    still remains, we want to approximate any function, but don't want to use an infinite taylor series. 
-    We need a different approach.
-    Instead of finding a single high degree polynimial, we can try to glue together a bunch of smaller line segments.
-    For this we can use a \emph{neural network}.
+    In our previous project\cite{MachineLearningProjects_2023}, we explored the fitting of linear models and 
+    polynomials to data, deriving optimal parameters \(\beta\) through an analytical approach. 
+    This method demonstrated that, theoretically, polynomials can approximate any function, given a sufficiently 
+    high degree of freedom. However, this approach has practical limitations. 
+    Providing a model with infinite degrees of freedom is not feasible due to computational constraints 
+    and the risk of overfitting. How can we approximate complex functions without resorting to high-degree 
+    polynomials? A promising solution is to construct models that are not based on a single high-degree polynomial 
+    but are instead composed of simpler, interconnected components. This is where neural networks come into play.
+    Neural networks offer a flexible architecture that can approximate a wide range of functions. By 'gluing together' 
+    multiple simple functions, such as linear segments in the case of basic neural networks, they can model complex 
+    relationships in the data. Unlike polynomials, neural networks are not limited to a specific functional form and 
+    can be adapted for both regression and classification tasks. Their layered structure, where each layer can learn 
+    different aspects of the data, allows them to capture both simple and intricate patterns.
+
+    Thus, neural networks provide a powerful and versatile alternative to polynomial regression, capable of handling 
+    diverse data modeling challenges, as we will explore in this section.
+
 
 
 \section*{Data}
@@ -700,7 +707,8 @@
                 \includegraphics[width=\textwidth]{../runsAndFigures/perlinNoise_logistic_pred.png}
             \end{center}
             \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range 
-            and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
+            and found that 0.9 was the best value for momentum. momentum allows a higher learning rate
+        }\label{fig:accuracy_optimizer}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -832,11 +840,4 @@
 \bibliographystyle{plain}
 \addcontentsline{toc}{section}{Bibliography}
 \end{document}
-
-
-
-
-
-
-
 
