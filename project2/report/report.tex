@@ -151,7 +151,7 @@
     classification and regression problems, contrasting their performance with traditional 
     logistic regression models. Utilizing the Wisconsin breast cancer dataset, we compared the accuracy of 
     these methods in tumor classification. Our results show that neural networks achieved a classification 
-    accuracy of 95\%, compared to logistic regression's 96\%. Both are similar to the 96\% achieved using SKLearn's models.
+    accuracy of 95\%, compared to logistic regression's 96\%. Both are similar to the 97\% achieved using SKLearn's models.
     Additionally, we examined the application of neural networks to regression problems, 
     finding that they can approximate 2-dimensional perlin nose, with a mean squared error of 0.02, 
     compared to linear regression's 0.04. This shows that both neural networks and logistic regression
@@ -365,10 +365,7 @@
     function with respect to the network's parameters, backpropagation allows for the adjustment of these parameters 
     in a way that minimizes the loss. This process is essential for training neural networks and is applicable across 
     different network architectures, from simple single-layer networks to deep, multi-layered structures.
-    To summarize, neural networks are a powerful extension of logistic and linear regression models, capable of 
-    handling a broad spectrum of tasks from simple regression to complex pattern recognition. Their versatility and 
-    adaptability, combined with the efficiency of matrix operations, make them a cornerstone technology in the field 
-    of machine learning.
+
 
 
 
@@ -525,7 +522,7 @@
     is a sigmoid function. This is because the sigmoid function outputs a value between 0 and 1, which can be
     interpreted as the probability of the data point belonging to class 1. The choice of activation function for the
     hidden layers did not significantly impact the model's performance.
-    We used one hidden layer with 2 nodes when testing actovation functions.
+    We used one hidden layer with 2 nodes when testing activation functions.
 
 \newpage
 \subsection{Final Evaluation and Comparisons}
@@ -556,30 +553,35 @@
     \end{figure}
 
     \noindent
-    For this classification task, logistic regression achieved an accuracy of 96\% on the test set,
-    while our neural network achieved an accuracy of 95\%. This is comparable to the 96\% accuracy achieved using
-    SKLearn's model. It is important to note that this may not be an entirely apples-to-apples comparison, as our models
-    accept different hyperparameters. However, we have attempted to match the hyperparameters as closely as possible.
-    \\
-    It seems that adding more layers and nodes does not improve the model's performance.
-    It might be that the model is overfitting to the training data.
+    In our classification task, logistic regression achieved an accuracy of 96\% on the test set, 
+    while our neural network model achieved 95\%. This performance is comparable to the 96\% accuracy 
+    obtained with SKLearn's logistic regression model. It's important to consider that this comparison may not be 
+    entirely direct due to differences in hyperparameters between the models. Nevertheless, efforts were made to 
+    align the hyperparameters as closely as possible.
+    An interesting observation is that increasing the number of layers and nodes in the neural network 
+    did not significantly enhance its performance. This suggests the possibility of overfitting to the 
+    training data, indicating that a simpler model could be more effective or that additional regularization 
+    techniques might be required.
     
 \section{Conclusion}
 \label{sec:conclusion}
 
+    
+    This project has delved into the capabilities of neural networks in addressing classification challenges, 
+    comparing them with traditional logistic regression models. Using the Wisconsin breast cancer dataset, we 
+    found that neural networks, with a classification accuracy of 95\%, perform nearly as well as logistic regression 
+    models, which achieved 96\%. This result is in line with the 97\% accuracy achieved using SKLearn's implementation.
+    These findings highlight the competitive nature of neural networks in classification tasks, even when compared to 
+    more traditional models. However, they also underscore the importance of careful model selection and hyperparameter 
+    tuning in achieving optimal performance. While neural networks offer flexibility and power, they may not always 
+    outperform simpler models, especially in cases where the underlying data patterns are not exceedingly complex.
+    Future work could explore further optimization of the neural network architecture and hyperparameters, as well as 
+    the application of these models to more diverse datasets to fully assess their generalizability and efficacy in 
+    various classification scenarios.
 
-    In this project, we have explored the effectiveness of neural networks in solving classification problems. 
-    We have also contrasted their performance with traditional logistic regression models. Utilizing the Wisconsin 
-    breast cancer dataset, we compared the accuracy of these methods in tumor classification. Our results show that 
-    neural networks achieved a classification accuracy of 95\%, compared to logistic regression's 96\%. Both are 
-    similar to the 96\% achieved using SKLearn's models.
-    Additionally, we examined the application of neural networks to regression problems, finding that they can 
-    approximate 2-dimensional perlin nose, with a mean squared error of 0.02, compared to linear regression's 0.04. 
-    This shows that both neural networks and logistic regression are powerful tools for classification tasks, 
-    but that neural networks seems to be more viable for complex regression tasks. Offering a more flexible 
-    framework for approximating functions, neural networks are a powerful tool for a wide range of machine learning 
-    tasks. Their versatility and adaptability, combined with the efficiency of matrix operations, make them a 
-    cornerstone technology in the field of machine learning.
+
+    
+    
      
 
 
@@ -633,38 +635,40 @@
     relationships in the data. Unlike polynomials, neural networks are not limited to a specific functional form and 
     can be adapted for both regression and classification tasks. Their layered structure, where each layer can learn 
     different aspects of the data, allows them to capture both simple and intricate patterns.
-
     Thus, neural networks provide a powerful and versatile alternative to polynomial regression, capable of handling 
     diverse data modeling challenges, as we will explore in this section.
 
 
 
+
 \section*{Data}
 
-    For regression we will be using perlin noise to generate our dataset 
+    For this study, we generated our dataset using Perlin noise. Perlin noise is a gradient noise function, 
+    often used in computer graphics, that produces a more natural-appearing randomness compared to standard 
+    random functions. It is particularly useful for simulating textures and other complex, naturally varying patterns.
 
-    \begin{figure}
+    \begin{figure}[h]
         \begin{center}
             \includegraphics[width=0.5\textwidth]{../runsAndFigures/perlinNoise.png}
         \end{center}
-        \caption{}\label{fig:perlin}
+        \caption{Sample visualization of Perlin noise. This noise function generates a variety of gradients, 
+        creating a natural, smooth variation in data.}\label{fig:perlin}
     \end{figure}
 
-    Solving a regression problem with linear regression and neural networks using gradient optimization.
-
+    In our experiment, Perlin noise serves as a basis for creating a diverse and challenging dataset for 
+    regression analysis. The goal is to compare the effectiveness of linear regression and neural networks in
+    modeling and predicting outcomes from this data. By employing gradient optimization techniques, we aim to
+    understand how well each model can learn and adapt to the complexities introduced by Perlin noise-generated
+    data patterns.
 
 
 \section*{Results and Analysis}
 \label{sec:resultsdiscussion2}
 
 
-    In our, we employed the cross-entropy loss function, The gradient of the loss function 
-    with respect to the model's parameters was computed using automatic differentiation. 
-    We used the SKLearn\cite{scikit-learn}
-    library to perform cross-validation for a more robust evaluation of our models.
-    We used k-fold cross-validation with $k=6$ folds. The results presented in this section are based on
-    the average of the results from the 6 folds. The bar plots also show the standard deviation of the
-    results from the 6 folds.
+    For regression, we used the same approach as we did for classification. The difference is that we used
+    the mean squared error (MSE) as our loss function instead of the cross-entropy loss function. The final 
+    activation function was the identity function, as we wanted to predict a continuous value.
 
 
 
@@ -672,18 +676,6 @@
 \subsection*{Hyperparameters}
 \label{sec:hyperparameters2}
 
-    During our hyperparameter tuning phase, we observed interdependencies between certain hyperparameters. Notably, 
-    the learning rate and the number of epochs showed a significant correlation, as did the batch size and the learning 
-    rate. Such dependencies imply that these hyperparameters cannot be optimized independently for the most effective 
-    training process. Ideally, a comprehensive grid search across multiple dimensions of hyperparameters would be 
-    conducted. However, due to constraints in time and computational resources, our experiments were limited.
-    We were able to conduct grid searches, but these were restricted to two dimensions at most. While this limitation 
-    prevented a thorough exploration of the hyperparameter space, the results from these partial grid searches provided 
-    valuable insights. They served as indicators, pointing us towards regions in the hyperparameter space where optimal 
-    settings might exist.
-    The analysis of these results suggests that while we have identified promising hyperparameter settings, a more 
-    exhaustive search might yield further improvements. 
-    We use the same base hyperparameters when we tune the other hyperparameters.
 
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -698,42 +690,42 @@
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_alpha.png}
             \end{center}
-            \caption{Introduction regualarization does not seem to yield any benefits, in fact
-            having too much regualarization shunts performance}\label{fig:MSE_aplha}
+            \caption
+            {
+                Accuracy versus regualarization.
+            }\label{fig:MSE_aplha}
         \end{minipage}
     \end{figure}
 
     \noindent
-    Our findings indicate that incorporating momentum is beneficial, particularly with a value of 
-    around 0.9, which emerged as the most effective in our tests. This momentum allows for a higher learning rate, 
-    enhancing the training process. In contrast, excessive regularization seems to adversely affect model performance.
+    Learning rate and momentum seem to have the same correlation as in the classification task.
+    Regularization makes a great impact on the model's performance. 
     
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_optimizer.png}
             \end{center}
-            \caption{In this case havving momentum seems to be beneficial. 
-            We maxes out our testing range and found that 0.9 was the best value for momentum. 
-            momentum allows a higher learning rate}\label{fig:MSE_optimizer}
+            \caption
+            {
+                Model accuracy across different optimizers. here sgd is standard gradient descent.
+            }\label{fig:MSE_optimizer}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_batch.png}
             \end{center}
-            \caption{Introduction regualarization does not seem to yield any benefits, in fact
-            having too much regualarization shunts performance}\label{fig:MSE_batch}
+            \caption
+            {
+                Accuracy based on batch size.
+            }\label{fig:MSE_batch}
         \end{minipage}
     \end{figure}
 
     \noindent
-    The choice of optimizer did not significantly impact the model's performance. However, 
-    Adam and standard gradient decent with momentum showed a slight advantage over others. 
-    The batch size also played a role, with certain sizes yielding better accuracy. With a batch size of 50,
-    the model accuracy varied greatly between folds.
-
-
+    The Relu activation function seems to be the best choice for the hidden layers.
+    The batch size also played a role, a clear trend shows that a smaller batch size is better.
 
 
     \begin{figure}[!ht]
@@ -741,17 +733,20 @@
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_activs.png}
             \end{center}
-            \caption{In this case havving momentum seems to be beneficial.
-            We maxes out our testing range and found that 0.9 was the best value for momentum. 
-            momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
+            \caption
+            {
+                Model performance with different activation functions.
+            }\label{fig:MSE_activ}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_layers_nodes.png}
             \end{center}
-            \caption{Introduction regualarization does not seem to yield any benefits, in fact
-            having too much regualarization shunts performance}\label{fig:accuracy_aplha}
+            \caption
+            {
+                Accuracy in relation to the number of layers and nodes.
+            }\label{fig:MSE_layers_nodes}
         \end{minipage}
     \end{figure}
 
@@ -785,17 +780,20 @@
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/perlinNoise_logistic_pred.png}
             \end{center}
-            \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range 
-            and found that 0.9 was the best value for momentum. momentum allows a higher learning rate
-        }\label{fig:accuracy_optimizer}
+            \caption
+            {
+                a
+            }\label{fig:perlinNoise_logistic_pred}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/perlinNoise_NN_pred.png}
             \end{center}
-            \caption{Introduction regualarization does not seem to yield any benefits, in fact
-            having too much regualarization shunts performance}\label{fig:accuracy_aplha}
+            \caption
+            {
+                a
+            }\label{fig:perlinNoise_NN_pred}
         \end{minipage}
     \end{figure}
 
