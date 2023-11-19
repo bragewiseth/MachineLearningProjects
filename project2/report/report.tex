@@ -187,7 +187,8 @@
     separable. In such cases, logistic regression cannot effectively draw a boundary to separate the classes, 
     leading to classification errors. This issue is examined in more detail in \hyperref[app:appendixB]{Appendix B}.
     As an alternative, \emph{neural networks} offer a more versatile solution. Capable of approximating any 
-    continuous function with a sufficient number of neurons in the hidden layers, neural networks provide a robust 
+    continuous function with a sufficient number of neurons in the hidden layers\cite{HornikEtAl89}, 
+    neural networks provide a robust 
     tool for both classification and regression problems. Their ability to learn complex, non-linear relationships 
     makes them particularly powerful for tasks where traditional logistic regression falls short. The application 
     of neural networks in regression is explored in \hyperref[app:appendixA]{Appendix A}.
@@ -419,8 +420,13 @@
     We used the SKLearn\cite{scikit-learn}
     library to perform cross-validation for a more robust evaluation of our models.
     We used k-fold cross-validation with $k=6$ folds. The results presented in this section are based on
-    the average of the results from the 6 folds. The bar plots show also show the standard deviation of the
+    the average of the results from the 6 folds. The bar plots also show the standard deviation of the
     results from the 6 folds.
+
+
+\subsection{Hyperparameters}
+\label{sec:hyperparameters}
+
     During our hyperparameter tuning phase, we observed interdependencies between certain hyperparameters. Notably, 
     the learning rate and the number of epochs showed a significant correlation, as did the batch size and the learning 
     rate. Such dependencies imply that these hyperparameters cannot be optimized independently for the most effective 
@@ -432,9 +438,7 @@
     settings might exist.
     The analysis of these results suggests that while we have identified promising hyperparameter settings, a more 
     exhaustive search might yield further improvements. 
-
-\subsection{Hyperparameters}
-\label{sec:hyperparameters}
+    We use the same base hyperparameters when we tune the other hyperparameters.
 
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -458,6 +462,7 @@
         \end{minipage}
     \end{figure}
 
+    \noindent
     Our findings indicate that incorporating momentum is beneficial, particularly with a value of 
     around 0.9, which emerged as the most effective in our tests. This momentum allows for a higher learning rate, 
     enhancing the training process. In contrast, excessive regularization seems to adversely affect model performance.
@@ -469,7 +474,7 @@
             \end{center}
             \caption
             {
-                Model accuracy across different optimizers.
+                Model accuracy across different optimizers. here sgd is standard gradient descent.
             }\label{fig:accuracy_optimizer}
         \end{minipage}
         \hspace{2mm}
@@ -484,10 +489,11 @@
         \end{minipage}
     \end{figure}
 
+    \noindent
     The choice of optimizer did not significantly impact the model's performance. However, 
-    Adam optimizer showed a slight advantage over others. The batch size also played a role, 
-    with certain sizes yielding better accuracy.
-
+    Adam and standard gradient decent with momentum showed a slight advantage over others. 
+    The batch size also played a role, with certain sizes yielding better accuracy. With a batch size of 50,
+    the model accuracy varied greatly between folds.
 
 
     \begin{figure}[!ht]
@@ -513,11 +519,13 @@
     \end{figure}
 
 
-
-    In summary, our results highlight the importance of momentum in the learning process and suggest that 
-    over-regularization can be detrimental. The choice of optimizer and batch size, while not as critical, 
-    still influences model performance, with the Adam optimizer slightly outperforming others. The findings 
-    underscore the need for careful hyperparameter tuning in
+    \noindent
+    \\
+    In order for our model to correctly classify the data, it is essential that the last layer's activation function
+    is a sigmoid function. This is because the sigmoid function outputs a value between 0 and 1, which can be
+    interpreted as the probability of the data point belonging to class 1. The choice of activation function for the
+    hidden layers did not significantly impact the model's performance.
+    We used one hidden layer with 2 nodes when testing actovation functions.
 
 
 \subsection{Final Evaluation and Comparisons}
