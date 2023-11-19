@@ -203,33 +203,74 @@
     for linear regression. However, by using activation functions we lose our lineariy, and thus we can no longer
     use the same analytical expression to find the optimal parameters. Instead, we must use an iterative approach
     to find the optimal parameters. If our cost function is continuous and differentiable, we can use gradient descent
-    to find the minimum of the cost function. All the models we will be using in this project are gradient descent based.
+    to find the minimum of the cost function. All the models we will be using in this project are gradient descent based.\\
 
 
     \noindent
-    \textbf{Gradient Decent}:\\ 
-    In this section we will discuss the gradient decent algorithm and how it can be used to
-    optimize the parameters of a model.\\
-    \textbf{Data}: \\
-    In this section we will discuss the data we will be using in this project.\\
-    \textbf{Results}:\\
-    In this section we will discuss the results we achieved with our models.\\
-    \textbf{Conclusion}:\\
-    In this section we will discuss the results we achieved with our models.\\
+    The report is structured as follows: 
+    In \hyperref[sec:logistic]{Section 2} we will introduce the logistic regression model.
+    In \hyperref[sec:GD]{Section 3} we will introduce gradient descent and backpropagation. 
+    In \hyperref[sec:NN]{Section 4} we will introduce neural networks. 
+    In \hyperref[sec:data]{Section 5} we will introduce the data we will be using.
+    In \hyperref[sec:resultsdiscussion]{Section 6} we will present our results and discuss them. 
+    In \hyperref[sec:conclusion]{Section 7} we will conclude the report. 
+    In \hyperref[app:appendixA]{Appendix A} we will explore regression with neural networks.
+    In \hyperref[app:appendixB]{Appendix B} we will explore the universal approximation theorem. 
+
+
+
+
 
 
 
 \section{Gradient Descent}
 \label{sec:GD}
 
-    Gradient descent is an iterative optimization algorithm for finding the minimum of a function.
-    The idea is to take steps in the direction of the negative gradient of the function. It is
-    verry similar to the Newton-Raphson method for finding roots of a polynimal,
-    but instead of using the second derivative, we use the first derivative.
+    Gradient descent is an iterative optimization algorithm used to find the minimum of a function. 
+    The fundamental principle behind gradient descent is to iteratively move towards the minimum of the 
+    function by taking steps proportional to the negative of the gradient (or approximate gradient) at the current point.
+    Unlike the Newton-Raphson method, which is used for finding the roots of a function and involves the second 
+    derivative, gradient descent primarily utilizes the first derivative. While Newton-Raphson converges faster 
+    under certain conditions due to its use of second-order information, gradient descent is more widely applicable 
+    as it does not require the computation of the second derivative, making it simpler and more computationally 
+    efficient in many scenarios.
+    In the context of machine learning, gradient descent is employed to minimize a cost function, which is a 
+    measure of how far a model's predictions are from the actual outcomes. The algorithm updates the parameters 
+    of the model in a way that the cost function is gradually reduced.
 
-    optimizers
+    There are several variants of gradient descent, each with its unique characteristics:
 
-    stocastic
+    \begin{itemize}
+        \item \textbf{Batch Gradient Descent:} This form computes the gradient of the cost function with respect 
+            to the parameters for the entire training dataset. While this can be computationally expensive
+            \footnote{
+                depending on the way computational resources are utilized, it is possible to parallelize the
+                computation of the gradient for each training example, making it more efficient.
+                For our case using batch gradient descent on a GPU is much faster than using stochastic gradient descent.
+            }\label{foot:gpu},
+            it produces a stable gradient descent convergence.
+        
+        \item \textbf{Stochastic Gradient Descent (SGD):} In contrast to batch gradient descent, SGD updates the 
+            parameters for each training example one by one. It can be faster 
+            and can also help to escape local 
+            minima, but the path to convergence can be more erratic.
+            \label{sec:he}
+            
+            % section he (end)
+        
+        \item \textbf{Mini-batch Gradient Descent:} This is a compromise between batch and stochastic gradient descent. 
+            It updates the parameters based on a small, randomly selected subset of the training data. 
+            This variant provides a balance between the efficiency of SGD and the stability of batch gradient descent.
+    \end{itemize}
+
+    \noindent
+    The choice of gradient descent variant and its parameters, like the learning rate, significantly impacts 
+    the performance and convergence of the algorithm. An appropriately chosen learning rate ensures that the 
+    algorithm converges to the minimum efficiently, while a poorly chosen rate can lead the algorithm to 
+    diverge or get stuck in a local minimum.
+    Furthermore, advanced optimization algorithms based on gradient descent, such as Adam and RMSprop, 
+    have been developed to address some of the limitations of the traditional gradient descent method, 
+    offering adaptive learning rates and momentum features.
 
 
 
@@ -238,27 +279,57 @@
 \subsection{Backpropagation and Chain Rule}
 \label{sec:backpropagation}
 
-    Calculating derivatives is the bread and butter of machine learning. For the simpelest models, like linear regression,
-    the derivatives are relatively easy and straight forward to calculate. We simply take the derivative of the cost function
-    with respect to our parameters. However, for more complex models, like neural networks, the derivatives 
-    are not so easy to calculate.
-    When the loss function is a composition of several functions, we need to invoke the chain rule. 
+    In machine learning, particularly in training neural networks, calculating derivatives is a fundamental process. 
+    For simpler models, such as linear regression, deriving these derivatives is relatively straightforward. 
+    We typically compute the gradient of the cost function with respect to the model parameters. However, 
+    when dealing with more complex models like neural networks, the process of calculating these derivatives 
+    becomes more intricate due to the architecture of the network.
+    Neural networks consist of multiple layers of interconnected nodes, where each node represents a mathematical 
+    operation. The output of one layer serves as the input for the next, creating a chain of functions. 
+    When the loss function of the network is a composition of several such functions, applying the chain rule 
+    becomes essential for computing gradients. This process is known as backpropagation.
 
     \begin{figure}[!h]
         \begin{center}
-            Forward\\
+            Forward Pass\\
             \includegraphics[width=\textwidth]{tikzfigures/forward.pdf}\\
         \end{center}
-        If we want to calculate the derivative of the loss function with respect to $w_0$,
-        we must go trough all the functions in the chain and calculate the derivative of 
-        each function with respect to the next function.
+        In backpropagation, to compute the derivative of the loss function with respect to a specific 
+        weight (e.g., $w_0$), it is necessary to trace the path of influence of that weight through all 
+        the functions in the network. This is done by applying the chain rule in a reverse manner, 
+        starting from the output layer back to the input layer.
         \begin{center}
-            Backwards\\
+            Backward Pass\\
             \hspace{1cm}
             \includegraphics[width=\textwidth]{tikzfigures/backwards.pdf}
         \end{center}
-        \caption{chain rule}\label{fig:chainrule}
+        \caption{Illustration of the Chain Rule in Forward and Backward Passes}\label{fig:chainrule}
     \end{figure}
+
+    Key Concepts in Backpropagation:
+
+    \begin{itemize}
+        \item \textbf{Forward Pass:} In the forward pass, inputs are passed through the network, layer by layer, 
+            to compute the output. Each node's output is a function of its inputs, which are the outputs of 
+            nodes in the previous layer.
+
+        \item \textbf{Backward Pass:} The backward pass is where backpropagation is applied. After computing 
+            the loss (the difference between the predicted output and the actual output), we propagate 
+            this loss backward through the network. This involves applying the chain rule to compute partial 
+            derivatives of the loss with respect to each weight in the network.
+
+        \item \textbf{Gradient Descent:} The gradients computed through backpropagation are used to update 
+            the weights of the network. This is typically done using gradient descent or one of its variants, 
+            where the weight update is proportional to the negative gradient, aiming to minimize the loss function.
+
+        \item \textbf{Activation Functions:} The role of activation functions in each neuron is crucial. 
+            They introduce non-linearities into the model, allowing neural networks to learn complex patterns. 
+            Derivatives of these activation functions play a significant role in the backpropagation process.
+    \end{itemize}
+
+    By iteratively performing forward and backward passes and updating the model parameters using gradient descent, 
+    neural networks can effectively learn from data. Backpropagation is thus a cornerstone technique in 
+    neural network training, enabling these models to capture and learn from complex patterns in data.
 
 
 
@@ -266,38 +337,46 @@
 \section{Neural Networks}
 \label{sec:NN}
 
-    As it turns out, the framework for neural networks is very similar to the framework for logistic regression.
-    Neural networks can be interpeted as several logistic regression models glued together, 
-    huge benefit of this is that we can use the same code
-    For both logistic and linear regression as well as neural networks.
+    Neural networks extend the principles of logistic regression to more complex architectures, enabling the 
+    modeling of a wider range of nonlinear relationships. At their core, neural networks can be conceptualized 
+    as a series of logistic regression models interconnected in a network structure. This similarity allows for a 
+    degree of code reusability across logistic regression, linear regression, and neural network implementations.
 
-    \begin{figure}
+    \begin{figure}[h]
         \begin{center}
             \includegraphics[width=0.4\textwidth]{tikzfigures/nn.pdf}
         \end{center}
         \caption{A model of a neural network with one hidden layer consisting of four nodes}\label{fig:nn}
         \cite{neutelings_tikzcode}
     \end{figure}
-    \begin{figure}
+
+    \begin{figure}[h]
         \begin{center}
-            \includegraphics[width=\textwidth]{tikzfigures/nnActivation.pdf}
+            \includegraphics[width=0.9\textwidth]{tikzfigures/nnActivation.pdf}
         \end{center}
-        \caption{}\label{fig:nn_math}
+        \caption{Illustration of how a single node gets its value during a forward pass. This shows that matrix 
+        operations can be used for more efficient calculations. When $a$ is a batch of inputs, these calculations 
+    become matrix-matrix multiplications, significantly speeding up both training and inference.}\label{fig:nn_math}   
         \cite{neutelings_tikzcode}
     \end{figure}
 
-
-    With backpropagation we have a way to calculate the derivatives of the loss function with 
-    respect to the parameters. This allows us to train our neural network. 
-    with one layer the network becomes a linear regression model. $y = x_0w_0 + x_1w_1 + x_2w_2 + ... + x_nw_n + b_0$ 
-    with a activation function at the end we can make it into a logistig regression model.
-    This makes it very convenient to use the same code for both linear and logistic regression as well as for 
-    larger neural networks with hidden layers, by simply swapping out the different parts.
-
-
-    activation functions
-
-
+    One of the defining features of neural networks is the use of activation functions. These functions introduce 
+    non-linearity into the model, allowing the network to learn complex patterns. Common examples of activation 
+    functions include the sigmoid, tanh, and ReLU functions. Each has unique characteristics that make them suitable 
+    for different types of neural network architectures.
+    In a neural network with no hidden layers, the model essentially becomes a linear regression model, represented by 
+    the equation $y = x_0w_0 + x_1w_1 + x_2w_2 + ... + x_nw_n + b_0$. By introducing an activation function at the 
+    output layer, the model transforms into a logistic regression model, suitable for binary classification tasks. 
+    The flexibility of neural networks arises from their ability to incorporate multiple hidden layers with a variety 
+    of activation functions, enabling them to capture complex relationships in data.
+    Backpropagation is the mechanism through which neural networks learn. By calculating the derivatives of the loss 
+    function with respect to the network's parameters, backpropagation allows for the adjustment of these parameters 
+    in a way that minimizes the loss. This process is essential for training neural networks and is applicable across 
+    different network architectures, from simple single-layer networks to deep, multi-layered structures.
+    To summarize, neural networks are a powerful extension of logistic and linear regression models, capable of 
+    handling a broad spectrum of tasks from simple regression to complex pattern recognition. Their versatility and 
+    adaptability, combined with the efficiency of matrix operations, make them a cornerstone technology in the field 
+    of machine learning.
 
 
 \section{Data}
@@ -319,6 +398,14 @@
     the goal is to classify the tumors as either benign or malignant based on the features.
     a positive result means that the tumor is malignant, and a negative result means that the tumor is benign.
     in other words, we want to find the cases of cancer and classify them as positive
+    \begin{figure}[h]
+        \begin{center}
+            \includegraphics[width=0.9\textwidth]{../runsAndFigures/feature_correlation.png}
+        \end{center}
+        \caption{Feature correlation. Gives us an idea of the redundancy of the features.
+            Only every other features is annotated but you can infer the missing lables 
+        from Figure~\ref{fig:feature_histogram}}\label{fig:feature_correlation}
+    \end{figure}
 
     \begin{figure}
         \begin{center}
@@ -327,14 +414,7 @@
         \caption{Feature histogram. Red ($0$) class is malignent, green ($1$) is benign}\label{fig:feature_histogram}
     \end{figure}
 
-    \begin{figure}
-        \begin{center}
-            \includegraphics[width=\textwidth]{../runsAndFigures/feature_correlation.png}
-        \end{center}
-        \caption{Feature correlation. Gives us an idea of the redundancy of the features.
-            Only every other features is annotated but you can infer the missing lables 
-        from Figure~\ref{fig:feature_histogram}}\label{fig:feature_correlation}
-    \end{figure}
+
 
 
 
@@ -344,21 +424,17 @@
 \label{sec:resultsdiscussion}
 
     For classification we use the cross entropy loss function. 
-    We tune the hyperparameters in a grid searches with a maximum
-    of two dimensions. As we find the optimal hyperparameters, we use the same optimal hyperparameters for the next grid search.
-
-    some of the hyperparameters are more dependent on each other than others. For example, the learning rate and the number of epochs
-    the batch size and the learning rate. We can therefore not tune these hyperparameters independently. We must first find the optimal
-
-    due to our limited time and computational resources we have not been able to do a full grid search for all hyperparameters. 
-    we train each hyperparameter separatly, in some cases in a grid of two dimensions. 
-    we then use this as a utgangspunkt for fine tuning.
+    we use automatic differentiation to calculate the gradient of the loss function with respect to the parameters.
+    some of the hyperparameters are more dependent on each other than others. For example, the learning 
+    rate and the number of epochs
+    the batch size and the learning rate. Optimally we can therefore not tune these hyperparameters independently.
+    Due to our limited time and computational resources we have not been able to do a full grid search.
+    At most we have been able to do a grid search of two dimensions.
+    These indivudial searches are used as an indication of where the optimal hyperparameters lies.
 
 \subsection{Hyperparameters}
 \label{sec:hyperparameters}
-    epochs found to be 200 
 
-    when training for batch size we had to decrease the optimal learning rate due to unstable results for smaller batches
 
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -367,9 +443,7 @@
             \end{center}
             \caption
             {
-                In this case havving momentum seems to be beneficial. 
-                We maxes out our testing range and found that 0.9 was the best value for momentum. 
-                momentum allows a higher learning rate
+
             }\label{fig:accuracy_lr_gamma}
         \end{minipage}
         \hspace{2mm}
@@ -377,29 +451,45 @@
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_alpha.png}
             \end{center}
-            \caption{Introduction regualarization does not seem to yield any benefits, in fact
-            having too much regualarization shunts performance}\label{fig:accuracy_aplha}
+            \caption
+            {
+
+            }\label{fig:accuracy_aplha}
         \end{minipage}
     \end{figure}
 
+    In this case havving momentum seems to be beneficial. 
+    We maxes out our testing range and found that 0.9 was the best value for momentum. 
+    momentum allows a higher learning rate
+    regualarization does not seem to yield any benefits, in fact
+    having too much regualarization decreases performance
 
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_optimizer.png}
             \end{center}
-            \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
+            \caption
+            {
+                sgd (Standard gradient decent with momentum)
+            }\label{fig:accuracy_optimizer}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_batch.png}
             \end{center}
-            \caption{Introduction regualarization does not seem to yield any benefits, in fact
-            having too much regualarization shunts performance}\label{fig:accuracy_aplha}
+            \caption
+            {
+
+            }\label{fig:accuracy_batch}
         \end{minipage}
     \end{figure}
 
+    The optimizer does not seem to have a large impact on the performance of the model.
+    However, the Adam and 
+    seems to be slightly better than the others.
+    The batch
 
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -408,31 +498,40 @@
             \end{center}
             \caption
             {
-                In this case havving momentum seems to be beneficial. We maxes out our testing range and 
-                found that 0.9 was the best value for momentum. momentum allows a higher learning rate
-            }\label{fig:accuracy_optimizer}
+
+            }\label{fig:accuracy_activ}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/accuracy_layers_nodes.png}
             \end{center}
-            \caption{Introduction regualarization does not seem to yield any benefits, in fact
-            having too much regualarization shunts performance}\label{fig:accuracy_aplha}
+            \caption
+            {
+
+            }\label{fig:accuracy_layers_nodes}
         \end{minipage}
     \end{figure}
 
+    In this case havving momentum seems to be beneficial. We maxes out our testing range and 
+    found that 0.9 was the best value for momentum. momentum allows a higher learning rate
+    Introduction regualarization does not seem to yield any benefits, in fact
+    having too much regualarization shunts performance
 
-
+\clearpage
 \subsection{Final Evaluation and Comparisons}
 \label{sec:comparisons}
 
 
-    \begin{figure}
+\begin{figure}[h]
         \begin{center}
-            \includegraphics[width=0.95\textwidth]{../runsAndFigures/confusion_matrix.png}
+            \includegraphics[width=0.5\textwidth]{../runsAndFigures/confusion_matrix.png}
         \end{center}
-        \caption{}\label{fig:}
+        \caption
+        {
+            Confusion matrix for the best model. 
+            The model has an accuracy of 96\% on the test set.
+        }\label{fig:confusion_matrix}
     \end{figure}
 
 
@@ -441,7 +540,6 @@
 \label{sec:conclusion}
 
 
-    Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
 
 
 
@@ -525,7 +623,9 @@
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_lr_gamma.png}
             \end{center}
-            \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:MSE_lr_gamma}
+            \caption{In this case havving momentum seems to be beneficial. 
+            We maxes out our testing range and found that 0.9 was the best value for momentum. 
+            momentum allows a higher learning rate}\label{fig:MSE_lr_gamma}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -543,7 +643,9 @@
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_optimizer.png}
             \end{center}
-            \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:MSE_optimizer}
+            \caption{In this case havving momentum seems to be beneficial. 
+            We maxes out our testing range and found that 0.9 was the best value for momentum. 
+            momentum allows a higher learning rate}\label{fig:MSE_optimizer}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -560,7 +662,9 @@
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_activs.png}
             \end{center}
-            \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
+            \caption{In this case havving momentum seems to be beneficial.
+            We maxes out our testing range and found that 0.9 was the best value for momentum. 
+            momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -595,7 +699,8 @@
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/perlinNoise_logistic_pred.png}
             \end{center}
-            \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
+            \caption{In this case havving momentum seems to be beneficial. We maxes out our testing range 
+            and found that 0.9 was the best value for momentum. momentum allows a higher learning rate}\label{fig:accuracy_optimizer}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -725,7 +830,6 @@
 \bibliography{report}
 % \bibliographystyle{apalike}
 \bibliographystyle{plain}
-% \phantomsection%
 \addcontentsline{toc}{section}{Bibliography}
 \end{document}
 
