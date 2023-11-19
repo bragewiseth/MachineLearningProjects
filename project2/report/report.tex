@@ -851,11 +851,10 @@
     solve the XOR problem. XOR is not linearly separable, meaning that it is not possible to draw a straight line
     that separates the two classes. This is a problem for the perceptron, as it can only draw straight lines.
     One way to solve this problem is to add some polynomial features to the data. 
-    This will allow us to draw a curved line that separates the two classes. However, this is not a scalable solution.
+    This will allow us to draw a curved line that separates the two classes. 
     NNs can also learn xor, without the need for a polynomial feature. This is important because it is not 
     always obvious what feature engineering is required to solve a problem. Neural networks can learn the 
-    relevant features from the data. Manually adding polynomial features is not a scalable solution for 
-    high-dimensional data, whereas neural networks can learn arbitrarily complex functions. \\
+    relevant features from the data. 
 
     \noindent
     Consider figure \ref{fig:xor_plain}, figure \ref{fig:xor_poly} and figure \ref{fig:xor_nn}.
@@ -926,6 +925,7 @@
     with functions like $\text{sin}(x)$ due to its linear nature, sigmoid or similar non-linear 
     functions can successfully approximate such patterns. This exemplifies how neural networks 
     use simple components to build complex models, capturing a wide range of functional relationships.
+    A great post on this topic can be found here\cite{nielsenneural}.
 
 
 
