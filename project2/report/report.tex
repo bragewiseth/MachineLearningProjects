@@ -532,24 +532,55 @@
 \label{sec:comparisons}
 
 
-\begin{figure}[h]
-        \begin{center}
-            \includegraphics[width=0.5\textwidth]{../runsAndFigures/confusion_matrix.png}
-        \end{center}
-        \caption
-        {
-            Confusion matrix for the best model. 
-            The model has an accuracy of 96\% on the test set.
-        }\label{fig:confusion_matrix}
-\end{figure}
 
+    \begin{figure}[!ht]
+        \begin{minipage}[t]{0.5\textwidth - 1mm}
+            \begin{center}
+                \includegraphics[width=\textwidth]{../runsAndFigures/confusion_matrix.png}
+            \end{center}
+            \caption
+            {
+                Confusion matrix for our model. 
+            }\label{fig:confusion_matrix}
+        \end{minipage}
+        \hspace{2mm}
+        \begin{minipage}[t]{0.5\textwidth - 1mm}
+            \begin{center}
+                \includegraphics[width=\textwidth]{../runsAndFigures/confusion_matrix_sklearn.png}
+            \end{center}
+            \caption
+            {
+                Confusion matrix for SKLearn's model.
+            }\label{fig:confusion_matrix_sklearn}
+        \end{minipage}
+    \end{figure}
 
-
+    \noindent
+    For this classification task, logistic regression achieved an accuracy of 96\% on the test set,
+    while our neural network achieved an accuracy of 95\%. This is comparable to the 96\% accuracy achieved using
+    SKLearn's model. It is important to note that this may not be an entirely apples-to-apples comparison, as our models
+    accept different hyperparameters. However, we have attempted to match the hyperparameters as closely as possible.
+    \\
+    It seems that adding more layers and nodes does not improve the model's performance.
+    It might be that the model is overfitting to the training data.
+    
 \section{Conclusion}
 \label{sec:conclusion}
 
 
-
+    In this project, we have explored the effectiveness of neural networks in solving classification problems. 
+    We have also contrasted their performance with traditional logistic regression models. Utilizing the Wisconsin 
+    breast cancer dataset, we compared the accuracy of these methods in tumor classification. Our results show that 
+    neural networks achieved a classification accuracy of 95\%, compared to logistic regression's 96\%. Both are 
+    similar to the 96\% achieved using SKLearn's models.
+    Additionally, we examined the application of neural networks to regression problems, finding that they can 
+    approximate 2-dimensional perlin nose, with a mean squared error of 0.02, compared to linear regression's 0.04. 
+    This shows that both neural networks and logistic regression are powerful tools for classification tasks, 
+    but that neural networks seems to be more viable for complex regression tasks. Offering a more flexible 
+    framework for approximating functions, neural networks are a powerful tool for a wide range of machine learning 
+    tasks. Their versatility and adaptability, combined with the efficiency of matrix operations, make them a 
+    cornerstone technology in the field of machine learning.
+     
 
 
 
@@ -627,20 +658,40 @@
 \label{sec:resultsdiscussion2}
 
 
+    In our, we employed the cross-entropy loss function, The gradient of the loss function 
+    with respect to the model's parameters was computed using automatic differentiation. 
+    We used the SKLearn\cite{scikit-learn}
+    library to perform cross-validation for a more robust evaluation of our models.
+    We used k-fold cross-validation with $k=6$ folds. The results presented in this section are based on
+    the average of the results from the 6 folds. The bar plots also show the standard deviation of the
+    results from the 6 folds.
+
+
 
 
 \subsection*{Hyperparameters}
 \label{sec:hyperparameters2}
 
+    During our hyperparameter tuning phase, we observed interdependencies between certain hyperparameters. Notably, 
+    the learning rate and the number of epochs showed a significant correlation, as did the batch size and the learning 
+    rate. Such dependencies imply that these hyperparameters cannot be optimized independently for the most effective 
+    training process. Ideally, a comprehensive grid search across multiple dimensions of hyperparameters would be 
+    conducted. However, due to constraints in time and computational resources, our experiments were limited.
+    We were able to conduct grid searches, but these were restricted to two dimensions at most. While this limitation 
+    prevented a thorough exploration of the hyperparameter space, the results from these partial grid searches provided 
+    valuable insights. They served as indicators, pointing us towards regions in the hyperparameter space where optimal 
+    settings might exist.
+    The analysis of these results suggests that while we have identified promising hyperparameter settings, a more 
+    exhaustive search might yield further improvements. 
+    We use the same base hyperparameters when we tune the other hyperparameters.
 
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_lr_gamma.png}
             \end{center}
-            \caption{In this case havving momentum seems to be beneficial. 
-            We maxes out our testing range and found that 0.9 was the best value for momentum. 
-            momentum allows a higher learning rate}\label{fig:MSE_lr_gamma}
+            \caption{Accuracy versus learning rate and momentum
+            }\label{fig:MSE_lr_gamma}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -652,7 +703,11 @@
         \end{minipage}
     \end{figure}
 
-
+    \noindent
+    Our findings indicate that incorporating momentum is beneficial, particularly with a value of 
+    around 0.9, which emerged as the most effective in our tests. This momentum allows for a higher learning rate, 
+    enhancing the training process. In contrast, excessive regularization seems to adversely affect model performance.
+    
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
@@ -671,6 +726,15 @@
             having too much regualarization shunts performance}\label{fig:MSE_batch}
         \end{minipage}
     \end{figure}
+
+    \noindent
+    The choice of optimizer did not significantly impact the model's performance. However, 
+    Adam and standard gradient decent with momentum showed a slight advantage over others. 
+    The batch size also played a role, with certain sizes yielding better accuracy. With a batch size of 50,
+    the model accuracy varied greatly between folds.
+
+
+
 
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
@@ -691,10 +755,17 @@
         \end{minipage}
     \end{figure}
 
+    \noindent
+    \\
+    In order for our model to correctly classify the data, it is essential that the last layer's activation function
+    is a sigmoid function. This is because the sigmoid function outputs a value between 0 and 1, which can be
+    interpreted as the probability of the data point belonging to class 1. The choice of activation function for the
+    hidden layers did not significantly impact the model's performance.
+    We used one hidden layer with 2 nodes when testing actovation functions.
 
     \begin{figure}
         \begin{center}
-            \includegraphics[width=0.95\textwidth]{../runsAndFigures/MSE_degree.png}
+            \includegraphics[width=0.5\textwidth]{../runsAndFigures/MSE_degree.png}
         \end{center}
         \caption{}\label{fig:}
     \end{figure}
