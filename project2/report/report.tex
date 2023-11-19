@@ -664,7 +664,7 @@
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/MSE_lr_gamma.png}
             \end{center}
-            \caption{Accuracy versus learning rate and momentum
+            \caption{MSE versus learning rate and momentum
             }\label{fig:MSE_lr_gamma}
         \end{minipage}
         \hspace{2mm}
@@ -674,7 +674,7 @@
             \end{center}
             \caption
             {
-                Accuracy versus regualarization.
+                MSE versus regualarization.
             }\label{fig:MSE_aplha}
         \end{minipage}
     \end{figure}
@@ -692,7 +692,7 @@
             \end{center}
             \caption
             {
-                Model accuracy across different optimizers. here sgd is standard gradient descent.
+                Model performance across different optimizers. here sgd is standard gradient descent.
             }\label{fig:MSE_optimizer}
         \end{minipage}
         \hspace{2mm}
@@ -702,20 +702,21 @@
             \end{center}
             \caption
             {
-                Accuracy based on batch size.
+                MSE based on batch size.
             }\label{fig:MSE_batch}
         \end{minipage}
     \end{figure}
 
     \noindent
-    The optimizer we used had varying impact, with RMSprop underperforming compared to others. 
-    A smaller batch size generally led to better performance.\\
+    In figure~\ref{fig:MSE_optimizer}, we can see that 
+    the optimizer we used had varying impact, with RMSprop underperforming compared to others. 
+    A smaller batch size generally led to better performance, see figure~\ref{fig:MSE_batch}.\\
     
     \noindent
     For the hidden layers, the ReLU activation function proved most effective. Our experiments 
     found that a network with 5 layers, each containing 5 nodes, yielded the best results. It's crucial to 
     use the identity function (or no activation function) in the final layer for regression tasks to predict 
-    continuous values accurately.
+    continuous values accurately, as shown in figure~\ref{fig:MSE_activ} and figure~\ref{fig:MSE_layers_nodes}.\\
 
 
     \begin{figure}[!ht]
@@ -735,7 +736,7 @@
             \end{center}
             \caption
             {
-                Accuracy in relation to the number of layers and nodes.
+                MSE in relation to the number of layers and nodes.
             }\label{fig:MSE_layers_nodes}
         \end{minipage}
     \end{figure}
@@ -820,20 +821,14 @@
 \section{Universal Approximation}
 \label{sec:UAT}
 
-    Where is the limit of what we can learn with a neural network? Can we approximate any function?
-    There are several ways to approximate a function. For periodic functions it may be wise to use a Fourier series,
-    another option is to use a Taylor series. If these mehtods don't float your boat, we can in fact use a neural network
-    instead. A neural network with only one hidden layer can approximate any continuous function
-    given enough neurons in the hidden layer. The more neurons, the higher the resolution of the Approximation
-    \cite{HornikEtAl89}. 
 
-
-A fundamental question in neural network theory is the extent of their learning capabilities. Specifically, 
-can neural networks approximate any function? There are traditional methods for function approximation, such 
-as Fourier series for periodic functions or Taylor series for local approximations. However, neural networks 
-offer a more flexible approach. According to the Universal Approximation Theorem, a neural network with even a 
-single hidden layer can approximate any continuous function, provided it has enough neurons \cite{HornikEtAl89}. 
-This capacity for universal approximation underlines the power and versatility of neural networks in modeling complex relationships.
+    A fundamental question in neural network theory is the extent of their learning capabilities. Specifically, 
+    can neural networks approximate any function? There are traditional methods for function approximation, such 
+    as Fourier series for periodic functions or Taylor series for local approximations. However, neural networks 
+    offer a more flexible approach. According to the Universal Approximation Theorem, a neural network with even a 
+    single hidden layer can approximate any continuous function, provided it has enough neurons \cite{HornikEtAl89}. 
+    This capacity for universal approximation underlines the power and versatility of neural networks in modeling 
+    complex relationships.
 
 
 \subsection*{XOR VS Perceptron}
@@ -843,7 +838,9 @@ This capacity for universal approximation underlines the power and versatility o
         \begin{center}
             \includegraphics[width=0.4\textwidth]{../runsAndFigures/xor.png}
         \end{center}
-        \caption{}\label{fig:xor_data}
+        \caption{
+            XOR-like dataset. The two classes are not linearly separable.
+        }\label{fig:xor_data}
     \end{wrapfigure}
 
     A perceptron is a simple model of a neuron. It takes in a set of inputs, multiplies them by a set of weights 
@@ -857,30 +854,31 @@ This capacity for universal approximation underlines the power and versatility o
     This will allow us to draw a curved line that separates the two classes. However, this is not a scalable solution.
     NNs can also learn xor, without the need for a polynomial feature. This is important because it is not 
     always obvious what feature engineering is required to solve a problem. Neural networks can learn the 
-    relevant 
-    features from the data. Manually adding polynomial features is not a scalable solution for 
-    high-dimensional data,
-    whereas neural networks can learn arbitrarily complex functions. Adding polynomial featurer 
-    is also prone to 
-    bias problems.
+    relevant features from the data. Manually adding polynomial features is not a scalable solution for 
+    high-dimensional data, whereas neural networks can learn arbitrarily complex functions. \\
 
-The perceptron, a simple neural network model, demonstrates both the strengths and limitations of neural networks. It calculates an output by weighting inputs, summing them, and then applying a step function, often a Heaviside function\footnote{In our case, we use the sigmoid function instead of the Heaviside function for classification. The principles, however, remain similar.}. While effective for simple linearly separable problems, the perceptron struggles with the XOR problem, a classic example of non-linear separability.
-
-To illustrate, a perceptron cannot draw a straight line to separate the classes in an XOR problem. A potential workaround is to add polynomial features to the data, allowing the model to fit a non-linear boundary. However, this solution isn't scalable for high-dimensional data. Neural networks, in contrast, can learn to solve the XOR problem without manual feature engineering, as they can inherently learn complex functions.
-
-
+    \noindent
+    Consider figure \ref{fig:xor_plain}, figure \ref{fig:xor_poly} and figure \ref{fig:xor_nn}.
+    The intersection of the plane and the height $z=0.5$ is the decision boundary.
+    XOR gets separated by this boundry. 
     \begin{figure}[h]
         \begin{minipage}{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/xor_plain.png}
-                \caption{}\label{fig:xor_plain}
+                \caption{
+                The output of a logistic regression model with no polynomial features added to the data.
+                    We get a classification accuracy of 0.5.
+                }\label{fig:xor_plain}
             \end{center}
         \end{minipage}
         \hspace{2mm}
         \begin{minipage}{0.5\textwidth - 1mm}
             \begin{center}
                 \includegraphics[width=\textwidth]{../runsAndFigures/xor_poly.png}
-                \caption{}\label{fig:xor_poly}
+                \caption{
+                    The output of a logistic regression model with polynomial features added to the data.
+                    We get a classification accuracy of 1.0. 
+                }\label{fig:xor_poly}
             \end{center}
         \end{minipage}
     \end{figure}
@@ -891,7 +889,10 @@ To illustrate, a perceptron cannot draw a straight line to separate the classes 
         \begin{center}
             \includegraphics[width=0.5\textwidth]{../runsAndFigures/xor_nn.png}
         \end{center}
-        \caption{}\label{fig:xor_nn}
+        \caption{
+            The output of a neural network with no polynomial features added to the data.
+            We get a classification accuracy of 1.0. 
+        }\label{fig:xor_nn}
     \end{figure}
 
 
@@ -899,86 +900,37 @@ To illustrate, a perceptron cannot draw a straight line to separate the classes 
 \subsection*{Combining Neurons}
 \label{app:neuronscombined}
 
-    We want to approximate this sin function with a neural network. How might that look like?
+
+    We want to approximate a function like $\text{sin}(x)$ with a neural network. How might that look like?
     We can use a single neuron to approximate a line $a w + b$, putting it trough a sigmoid function
     we get some non-linearity. Every node in the first hidden layer (and consequents layers) is then 
     a line put trough a sigmoid function. The final output of a single hidden layer network is just
-    a linear combination of these curves. We can add more nodes to get more curves, but we are still
-    We can chose whatever activation function we want as long as it is non-linear. Relu strugles to learn this 
-    sin function, but sigmoid works fine.
+    a linear combination of these curves. We can add more nodes to get more curves. 
 
 
     \begin{figure}
         \begin{center}
             \includegraphics[width=0.4\textwidth]{../runsAndFigures/sin.png}
         \end{center}
-        \caption{A $\text{sin}$ function that we want to approximate}\label{fig:sin}
+        \caption{The $\text{sin}$ function to be approximated.}\label{fig:sin}
     \end{figure}
 
     \begin{figure}
         \begin{center}
             \includegraphics[width=0.95\textwidth]{tikzfigures/universal.pdf}
         \end{center}
-        \caption{Four indivudual logistic regression outputs scaled and added together to produce 
-        a sin approximation}\label{fig:universal}
+        \caption{Combining outputs of individual neurons to approximate a $\text{sin}$ function.}\label{fig:universal}
     \end{figure}
 
+    In this context, the choice of activation function is crucial. While ReLU might struggle 
+    with functions like $\text{sin}(x)$ due to its linear nature, sigmoid or similar non-linear 
+    functions can successfully approximate such patterns. This exemplifies how neural networks 
+    use simple components to build complex models, capturing a wide range of functional relationships.
 
 
 
 
 
-
-
-
-\chapter*{Appendix B}
-\label{app:appendixB}
-
-\section{Universal Approximation}
-\label{sec:UAT}
-
-
-
-\subsection*{XOR vs. Perceptron}
-\label{app:xor}
-
-\begin{wrapfigure}{r}{0.5\textwidth}
-    \begin{center}
-        \includegraphics[width=0.4\textwidth]{../runsAndFigures/xor.png}
-    \end{center}
-    \caption{The XOR dataset.}\label{fig:xor_data}
-\end{wrapfigure}
-
-
-
-\begin{figure}[h]
-    % [Include the figures and captions for perceptron vs. polynomial features]
-\end{figure}
-
-\begin{figure}[!h]
-    % [Include the figure and caption for neural network solving XOR]
-\end{figure}
-
-\subsection*{Combining Neurons}
-\label{app:neuronscombined}
-
-To approximate a function like $\text{sin}(x)$, we can utilize the combined outputs of neurons in a neural network. Each neuron in a hidden layer essentially represents a transformed line, and when these are combined, they can approximate complex patterns.
-
-\begin{figure}
-    \begin{center}
-        \includegraphics[width=0.4\textwidth]{../runsAndFigures/sin.png}
-    \end{center}
-    \caption{The $\text{sin}$ function to be approximated.}\label{fig:sin}
-\end{figure}
-
-\begin{figure}
-    \begin{center}
-        \includegraphics[width=0.95\textwidth]{tikzfigures/universal.pdf}
-    \end{center}
-    \caption{Combining outputs of individual neurons to approximate a $\text{sin}$ function.}\label{fig:universal}
-\end{figure}
-
-In this context, the choice of activation function is crucial. While ReLU might struggle with functions like $\text{sin}(x)$ due to its linear nature, sigmoid or similar non-linear functions can successfully approximate such patterns. This exemplifies how neural networks use simple components to build complex models, capturing a wide range of functional relationships.
 
 
 
