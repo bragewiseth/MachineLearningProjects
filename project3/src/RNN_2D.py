@@ -11,7 +11,7 @@ from tensorflow import keras
 dx=0.1 #space increment
 dt=0.05 #time increment
 tmin=0.0 #initial time
-tmax=60.0 #simulate until
+tmax=3.0 #simulate until
 xmin=-5.0 #left bound
 xmax=5.0 #right bound
 ymin=-5.0 #bottom bound
