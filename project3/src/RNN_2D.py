@@ -66,7 +66,7 @@ hidden_layer_size = 50
 # define model
 model = keras.models.Sequential([
     keras.layers.SimpleRNN(hidden_layer_size, return_sequences=True, input_shape=[None, input_size]),
-    keras.layers.Dense(output_size)
+    keras.layers.Dense(output_size)# return_sequences=True means that the output of the RNN layer will be a sequence rather than a single vector
 ])
 
 model.compile(optimizer='adam', loss='mean_squared_error')

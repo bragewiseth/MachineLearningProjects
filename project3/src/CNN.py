@@ -36,44 +36,41 @@ for t in range(1,nt-1):
         u[t+1,a] = 2*(1-rsq)*u[t,a]-u[t-1,a]+rsq*(u[t,a-1]+u[t,a+1])
 
 
+print(u.shape)
 # reshape data for RNN input
 data = u.reshape((nt, nx, 1))
 
-# define sizes
-input_size = 1
-output_size = 1
-hidden_layer_size = 50
+#model
+model = keras.models.Sequential()
+model.add(keras.layers.Conv1D(filters=64, kernel_size=2, activation='relu', input_shape=(nx, 1)))#
+model.add(keras.layers.Conv1D(filters=64, kernel_size=2, activation='relu'))
+model.add(keras.layers.Dropout(0.5))
+model.add(keras.layers.MaxPooling1D(pool_size=2))#halves the size of the input by taking the max of every 2 values
+model.add(keras.layers.Flatten())
+model.add(keras.layers.Dense(50, activation='relu'))
+model.add(keras.layers.Dense(101))
 
-# define model
-model = keras.models.Sequential([
-    keras.layers.SimpleRNN(hidden_layer_size, return_sequences=True, input_shape=[None, input_size]),
-    keras.layers.Dense(output_size)# return_sequences=True means that the output of the RNN layer will be a sequence rather than a single vector
-])
+# compile model
+model.compile(loss='mse', optimizer='adam')
 
-model.compile(optimizer='adam', loss='mean_squared_error')
 
-# prepare data for training
-X_train = data[:-1]
-Y_train = data[1:]
-
-print("data: " + str(data.shape))
-print("X_train: " + str(X_train.shape))
-
-# train model
-model.fit(X_train, Y_train, epochs=10, verbose=2, batch_size=1)
+# fit model
+model.fit(data, data, epochs=100, verbose=0)
 
 
 
 #-------------------plotting--------------------
 
-X_train_predict = model.predict(X_train)
-print("X_train_predict: " + str(X_train_predict.shape))
+data_predict = model.predict(data)
+
+print(data.shape)
+print(data_predict.shape)
 
 fig = plt.figure()
 plts = []  # list with all the images to be plotted
-for i in range(len(X_train_predict)):
+for i in range(len(data_predict)):
     p1, = plt.plot(u[i,:], 'k')  # plot the simulation
-    p2, = plt.plot(X_train_predict[i,:], 'r')  # plot the prediction
+    p2, = plt.plot(data_predict[i,:], 'r')  # plot the prediction
     plts.append([p1, p2])  # save the line artist for the animation
 ani = animation.ArtistAnimation(fig, plts, interval=50, repeat_delay=3000)  # run the animation
 #ani.save('wave.gif', writer='pillow')  # optionally save it to a file
