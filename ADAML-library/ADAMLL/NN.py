@@ -135,7 +135,7 @@ class Model():
                     t_batch = t[random_index:random_index+batch_size]
 
                     params, opt_state= step(params, opt_state, X_batch, t_batch)
-                    current_loss = self.metric(self.forward(params, X_val)[0][-1], t_val)
+                    current_loss = self.metric(self.forward(params, X_val)[0][-1], t_val, X_val) # this has changed when solving the wave equation
 
                     loss = loss.at[e].set(current_loss)
 
@@ -234,8 +234,9 @@ def build_backwards( alpha, loss=CE):
     @jax.jit
     def backwards(params, t, activations, grads ):
         a0, a1 = activations[-2:] # last two activations
+        x = activations[0]                                  # this has changed when solving the wave equation
         g1 = grads[-1]
-        loss_deriv = jax.grad(loss)(a1, t)
+        loss_deriv = jax.grad(loss)(a1, t, x)               # this has changed when solving the wave equation
         output_error = loss_deriv * g1
         gb = np.sum(output_error, axis=0)
         gw = a0.T @ output_error + 2 * alpha * params[-1]['w']
