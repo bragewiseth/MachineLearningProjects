@@ -10,6 +10,7 @@ figures:
 	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=tikzfigures tikzfigures/forward.tex
 	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=tikzfigures tikzfigures/backwards.tex
 	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=tikzfigures tikzfigures/nnActivation.tex
+	xelatex -shell-escape -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=tikzfigures tikzfigures/rnn.tex
 
 
 clean:
