@@ -313,7 +313,8 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 
 \subsection{Physics Informed Neural Networks (PINNs)}
 \label{sec:DNN}
-
+    
+    The architecture is dense feed forward nn
     Physics Informed Neural Networks (PINNs) leverage the Universal Approximation Theorem, which posits 
     that a neural network with even a single hidden layer can approximate any function to a desired degree 
     of precision. This foundational principle enables neural networks to approximate complex functions, including 
@@ -587,12 +588,6 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     the performance of the hybrid solver. We have not done any experiments to see how the hyperparameters
     affect the performance of the RNN model, as this would require a lot of time and computational resources.
 
-
-
-\newpage
-\subsection{Comparisons}
-\label{sec:comparisons}
-
     We have however done some experiments to see how the different components of the loss function affect
     the performance of the RNN model.
 
@@ -601,6 +596,12 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     This paper shows that a carefully designed loss function goes a long way and many techniques can b combined trough
     the loss function. If we have some prior knowledge about the problem, we can bake this into the loss function.
     improving the model's performance.
+
+\newpage
+\subsection{Comparisons}
+\label{sec:comparisons}
+
+
 
 
     
