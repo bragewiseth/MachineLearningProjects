@@ -24,3 +24,6 @@ this repo:
 - `matplotlib`
 - `seaborn`
 - `tensorflow`
+
+
+The main code is found in the 'src' folder in the notebook 'waveequation.ipynb'

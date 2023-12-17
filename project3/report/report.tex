@@ -157,12 +157,12 @@
     the wave equation, although the accuracy of the models is not as high as we would have hoped. For our
     simple case where both analytical and finite difference solutions are available, the neural network
     models are not able to achieve the same accuracy. The PINN manages to capture the physical laws embedded
-    in its loss function, but fails to generalize to other initial conditions. The RNN is able to capture
-    the temporal dynamics of the wave equation, but fails to capture the spatial dynamics. The hybrid solver
-    is able to capture both the spatial and temporal dynamics, but fails to generalize to other initial conditions.
+    in its loss function, but might fail to generalize to other initial conditions. The RNN is able to capture
+    the temporal dynamics of the wave equation and this approach it is more gernerizable.
     Although the neural nets indeed learn the dynamics of waves, they also suffer from artifacts, such as
-    violating energy conservation.
-    Despite this, our study demonstrates the potential of neural
+    violating energy conservation. A hybrid approach, combining the finite difference scheme with the PINN,
+    is able to mitigate these artifacts and is the most promising approach for cases with fixed initial
+    conditions. Despite this, our study demonstrates the potential of neural
     networks in solving more complex PDEs, paving the way for future research in this field.
 \end{abstract}
 \begin{keywords}
@@ -181,30 +181,39 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     the physical world. While analytical solutions are often preferred, they are not always feasible,
     they are often limited to simple cases with idealized boundary and initial conditions. Numerical methods, 
     although versatile, can be computationally 
-    demanding and less accurate over time. In recent years, the advent 
+    demanding and less accurate for long simulations. 
+    In recent years, the advent 
     of deep learning has opened new avenues for addressing complex computational problems.
-    The primary aim of this paper is to serve as a proof of concept for the use of neural networks in solving
-    partial differential equations. As neural networks are universal function approximators, they should be 
-    capable of approximating the solutions to PDEs. A naive approach to employing neural networks for solving
-    PDEs can be to simply train a dense neural network with heaps of simulated data. Without any prior knowledge
-    about the problem, this approach is unlikely to yield good results and will require a lot of data. 
-    \cite{krishnapriyan2021characterizing} By giving the neural network some help and insight about the specific
-    problem, we hope to drastically limit the search space of the neural network, and thus require less data.
-    We will explore two different approaches to solving the wave equation with neural networks. The first approach
-    is to use a Physics Informed Neural Network (PINN). PINNs are neural networks that incorporate physical laws
-    into their loss function. This way the neural network can learn the underlying dynamics of the system, and
-    thus require less data. The second approach is to use a Recurrent Neural Network (RNN). RNNs are neural networks
-    that are able to process sequences. This way the neural network can learn the temporal dynamics of the system,
-    and thus require less data. We will also explore a hybrid approach, where we use a finite difference scheme
-    to generate data with labels, and use this data to define an error between the output of the neural network
-    combined with physical laws. As previously mentioned, the primary aim of this paper is to serve as a proof
-    of concept for the use of neural networks in solving partial differential equations. We will therefore
-    not expoit the full potential of neural networks in this field.
-    We leave the exploration and exploitation of the full potential of neural
-    networks in this field to future work. 
-    This research analyzes these neural network architectures, 
-    discussing their theoretical frameworks, implementations, and comparative performance across accuracy, 
-    efficiency, and scalability, thereby contributing to computational physics and engineering.
+    This paper aims to showcase neural networks as a promising tool for solving PDEs. 
+    As neural networks are universal function approximators, they should be 
+    capable of approximating the solutions to PDEs. 
+    A naive approach to employing neural networks for solving
+    PDEs can be to simply train a dense neural network with simulated or recorded data in hopes that
+    the neural network will learn the physical laws embedded in the data. This might require a lot of data,
+    and without any constraints on what functions the neural network can learn, the search space is huge.
+    By giving the neural network some help and insight about the specific
+    problem, we hope to drastically limit the search space of the neural network, and the hunger for data
+    as well as increase the accuracy of the model.
+    We explore two distinct 
+    methodologies: Physics Informed Neural Networks (PINNs) and Recurrent Neural Networks (RNNs). 
+    PINNs embed physical laws in their structure, encouraging the learning of solutions that respect
+    these laws. While RNNs are 
+    adept at processing sequences, allowing them to capture temporal dynamics effectively. Furthermore, 
+    we investigate a hybrid approach combining a traditional numerical methods like finite
+    differnce schemes for labeled data generation combined with physical laws as constraints in the loss function.
+    This investigation is primarily a proof of concept, highlighting neural networks' potential 
+    in solving PDEs, rather than an exhaustive exploration of their full capabilities in this field, 
+    which we reserve for future research.\\
+    We will delve into:
+    \begin{itemize}
+    \item \textbf{Wave Equation}: Discussing the wave equation's fundamentals.
+    \item \textbf{Data}: Describing the data used for training the neural networks.
+    \item \textbf{Methods}: Outlining our approaches to solve the wave equation using neural networks.
+    \item \textbf{Results and Analysis}: Presenting and analyzing the outcomes of our experiments.
+    \end{itemize}
+    The focus is on comparing these neural network architectures in terms of theoretical framework, 
+    implementation, accuracy, computational efficiency, and scalability, contributing significantly 
+    to the field of computational physics and engineering.
 
 \section{Wave Equation}
 \label{sec:wave}
@@ -233,7 +242,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     u(x,0) = e^{-0.25x^2},
     \quad \frac{\partial u}{\partial t}(x,0) = 0,
     \end{equation}
-    representing a Gaussian pulse with zero initial momentum at t=0t=0. 
+    representing a Gaussian pulse with zero initial momentum at $t=0$. 
     The boundary conditions are:
     \begin{equation}
     u(-5,t) = u(5,t) = 0.
@@ -242,34 +251,29 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     \begin{equation}
     u(x,t) = \frac{1}{2}(e^{-0.25(x+ct)^2} + e^{-0.25(x-ct)^2}).
     \end{equation}
-
-    For the supervised and unsupervised learning approaches, we require labeled and unlabeled data, 
-    respectively. In the supervised case (hybrid PINN), data is generated through a finite difference scheme. 
-    In contrast, the unsupervised approach (plain PINN) relies on the network itself to generate labels.
-
+    As we utilize differnet methods with slightly different goals we need to align the data accordingly.
     \subsubsection{Unsupervised Data}
-    In unsupervised learning, we input coordinates $(x,t)$ and predict displacement $u(x,t)$ using 
-    a uniform distribution for xx and tt. The "labels" are described by the wave equation.
-
+    For the pure PINN with only the wave equation as a constraint, we do not require any labeled data.
+    The input to the model is simply the coordinates $(x,t)$, and the output is the displacement $u(x,t)$. 
+    We use a uniform distribution for $x$ and $t$ within the bounds.
     \subsubsection{Supervised Data}
-    For supervised learning, we similarly input coordinates $(x,t)$, but the data is generated via a finite 
-    difference solver. The loss function here compares the network output with the solver output.
-
+    For the hybrid and RNN models, we need labeled data. We input coordinates $(x,t)$,
+    and use the solution from the finite difference scheme at that point as the label.
     \subsubsection{Sequential Supervised Data (RNN)}
-    for the RNN we input a sequence of spatial poitns at each time slice $\mathbf{x}_1, \mathbf{x}_2, \dots, \mathbf{x}_n$ 
-    where $t_1, t_2, \dots, t_n$ are the time slices. The network then outputs the displacement at each of these points
-    at each time slice. The loss function is then defined as the mean squared error between the output of the network
-    if the input is the sequence of spatial points up to time $t_i$, the output of the network is the displacement
-    at time $t_{i+1}$
+    For the RNN model we input a sequence of spatial points at each time slice 
+    $\mathbf{u}_1, \mathbf{u}_2, \dots, \mathbf{u}_n$ where each $\mathbf{u}_i$ is the 
+    solution $\mathbf{u}(\mathbf{x}_i,t_i)$
+    over the entrie bounded spatial domain $\mathbf{x}_i$ at time $t_i$. These solutions can be sampled from the analytical
+    solution, or from the finite difference solver.
+    For a given sequence $\mathbf{u}_1, \mathbf{u}_2, \dots, \mathbf{u}_n$ of inputs the 
+    label is the next point in the sequence
+    $\mathbf{u}_{n+1}$.
+    It is important that the data is not shuffled, as the network needs to process the data in order to learn the
+    telmporal dynamics of the wave equation.
     
 
 \section{Methods}
 \label{sec:methods}
-
-    In this section we will describe the methods we have used to solve the wave equation.
-    Some of the specific goals that each method aims to achieve differ, but they all aim to
-    approximate the solution to the wave equation. We will start by describing the methods
-
 
 
 
@@ -287,7 +291,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     \end{equation}
     where $h$ is a small number. The smaller $h$ is, the more accurate the approximation will be.
     However, if $h$ is too small, the approximation will be unstable. The optimal value of $h$ depends
-    on the problem. In our experiments we have used $h=0.01$.
+    on the problem. In our experiments we have used $h=\Delta t=0.02$ and $h=\Delta x=0.1$.
     We can use the forward difference approximation to approximate the derivatives in the wave equation:
     \begin{equation}
     \frac{\partial^2 u}{\partial t^2} \approx \frac{u(x,t+h) - 2u(x,t) + u(x,t-h)}{h^2}
@@ -307,14 +311,12 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     For each time step, the approximation gets more and more inaccurate. This is because the approximation is based on
     the previous time step, which is based on the time step before that, and so on. This way the error accumulates
     over time. For simulations that run for a long time, the error can become very large. One way to address this
-    is to use a smaller time step $h$. Or as we propose in this paper, we can use a neural network to correct the
-    error.
+    is to use a smaller time step $h$.
 
 
 \subsection{Physics Informed Neural Networks (PINNs)}
 \label{sec:DNN}
     
-    The architecture is dense feed forward nn
     Physics Informed Neural Networks (PINNs) leverage the Universal Approximation Theorem, which posits 
     that a neural network with even a single hidden layer can approximate any function to a desired degree 
     of precision. This foundational principle enables neural networks to approximate complex functions, including 
@@ -363,112 +365,127 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
         \mathcal{L} = \frac{1}{N}\sum_{i=1}^{N} f(x_i, t_i, P) + u(x_i, 0) - \Omega  + 
         \frac{\partial u}{\partial t}(x_i, 0) - \Gamma
     \end{equation}
+    Extracting the initial condotions generated by the neural network is trivial, as we can simply evaluate the network
+    at $t=0$, and $t=dt$ to get the initial displacement and momentum respectively. The output of the neural network
+    $u(x,t)$ is a function of $x$ and $t$, and we can exctract the second order derivatives
+    needed to evaluate the wave equation, this can be computed by differentiating the output of the neural network twice
+    with respect to $x$ and $t$. This can be done analytically, or by using automatic differentiation.
+    The architecture of the neural network is a fully connected feed forward neural network, although other architectures
+    may be used.
+    \\
     \cite{fys-stk}
     \cite{krishnapriyan2021characterizing}
 
 
 
-\subsection{Hybrid solver}
+\subsection{Hybrid Solver}
 \label{sec:hybrid}
      
-    As we have great control over the loss function, we can use this to our advantage. In some cases, a finite difference
+    In some cases, a finite difference
     scheme may be quick to compute, and provide a decent approximation to the solution. We propose a hybrid solver, where
     we use a finite difference scheme to generate data with labels, and use this data to define an error between the
-    output of the neural network and the finite difference scheme. We could in therory stop there and use this error
+    output of the neural network and the finite difference scheme. We can choose to only use this error
     as the loss function, however this will only give us a solution that is as good as the finite difference scheme.
     To improve on this, we can also add the wave equation as a constraint to the loss function.
     It is also possible to weight the components of the loss function differently, to give more or less 
-    importance to the different components. We present an example of this in the implementation section.
+    importance to the different components. We present an example of this in our experiments.
     \begin{equation}
     \mathcal{L} = \alpha\mathcal{L}_{\text{FD}} + \mathcal{L}_{\text{PINN}}
     \end{equation}
-    where $\mathcal{L}_{\text{FD}}$ is the loss from the finite difference scheme (or your favorite solver), 
+    where $\mathcal{L}_{\text{FD}}$ is MSE of the output of the neural network with the finite difference scheme as 
+    the target,
+    (or your favorite solver), 
     and $\mathcal{L}_{\text{PINN}}$ is the physics informed neural network loss. $\alpha$ is a hyperparameter
     that determines the relative importance of the two components of the loss function.
+    \\
     \cite{krishnapriyan2021characterizing}
 
 \subsection{Recurrent Neural Networks (RNNs)}
 \label{sec:rnn}
 
-    I problem with our current approch with PINNs is that we have to hard code the wave equation and the initial
+    The problem with our current approch with PINNs is that we have to hard code the wave equation and the initial
     conditions into the loss function. This means that we have to train a new model for each set of initial conditions.
-    In addressing the challenges posed by this lack of generalization, we can use a Recurrent Neural Network (RNN)
+    In addressing the challenges posed by this lack of generalization, we can use a Recurrent Neural Network (RNN).
+    RNNs are a class of neural networks that are well suited for processing sequential data. RNNs are able to process
+    sequences of data, and use the information from previous data points to process the current data point. This way
+    the RNN can learn the temporal dynamics of the wave equation, and thus generalize to other initial conditions.
+    We can train the RNN on a small time frame, and then use the RNN to predict the evolution of the wave for the rest
+    of the time frame. This way we can train a single model that can be used to predict the evolution of the wave for
+    any sequence wheter it be a small time frame simulation or analytical solution.
+    An RNN is a neural network is on the form 
+    \begin{equation}
+        \mathbf{h}_t = \sigma(\mathbf{W}_{hh}\mathbf{h}_{t-1} + \mathbf{W}_{xh}\mathbf{x}_t + \mathbf{b}_h)
+    \end{equation}
+    Where $\mathbf{h}_t$ is the hidden state at time $t$, $\mathbf{x}_t$ is the input at time $t$, $\mathbf{W}_{hh}$
+    is the weight matrix for the hidden state, $\mathbf{W}_{xh}$ is the weight matrix for the input, $\mathbf{b}_h$
+    is the bias, and $\sigma$ is the activation function. The output of the RNN is then
+    \begin{equation}
+        \mathbf{y}_t = \mathbf{W}_{hy}\mathbf{h}_t + \mathbf{b}_y
+    \end{equation}
+    where $\mathbf{W}_{hy}$ is the weight matrix for the output, and $\mathbf{b}_y$ is the bias.
+    The RNN is trained by feeding it a sequence of inputs $\mathbf{x}_1, \mathbf{x}_2, \dots, \mathbf{x}_n$,
+    and the label is the next point in the sequence $\mathbf{x}_{n+1}$. The loss function is then
+    \begin{equation}
+        \mathcal{L} = \frac{1}{N}\sum_{i=1}^{N} (\mathbf{y}_i - \mathbf{x}_{i+1})^2
+    \end{equation}
+    where $N$ is the number of data points in the sequence.
     to capture the temporal dynamics of the wave equation. This way we can train a single model that can be used
     to predict the evolution of the wave for any set of initial conditions. RNNs are distinguished by their ability to 
     process sequences and their inherent memory, making them well-suited for time-dependent problems.
-    Our RNN model utilizes a series of LSTM (Long Short-Term Memory) layers, chosen for their 
+    Our RNN model utilizes a series of LSTM (Long Short-Term Memory)\cite{lstm} layers, chosen for their 
     effectiveness in capturing long-range dependencies and mitigating the vanishing gradient problem.
-    The network architecture is tailored to map the sequential nature of the wave data, taking 
-    into account both spatial and temporal aspects.
-
-    2. Data Preparation and Input Format:
-
-        The input to the RNN is structured as sequences representing the state of the wave at consecutive 
-        time steps.
-        Prior to training, the data is preprocessed to normalize the amplitude of the wave, ensuring 
-        consistent input value ranges for the network.
-
-    When Not to Shuffle the Data
-
-        Temporal Dependency: For problems where the goal is to predict future 
-        states based on past states (like time series forecasting), the temporal 
-        order of the data is crucial. The RNN learns to understand the sequence of 
-        events or states, and shuffling would disrupt this order and potentially render 
-        the data meaningless for the task.
-
-        Sequential Learning: If each data point in your sequence depends on the previous 
-        points (as is common in solving differential equations like the wave equation), 
-        then maintaining the correct order of these points is essential for the model to 
-        learn the underlying dynamics correctly.
+    For the RNN model we input a sequence of spatial points at each time slice 
+    $\mathbf{u}_1, \mathbf{u}_2, \dots, \mathbf{u}_n$ where each $\mathbf{u}_i$ is 
+    the solution $\mathbf{u}(\mathbf{x}_i,t_i)$
+    over the entrie bounded spatial domain $\mathbf{x}_i$ at time $t_i$. These solutions can be sampled from the analytical
+    solution, or from the finite difference solver.
+    For a given sequence $\mathbf{u}_1, \mathbf{u}_2, \dots, \mathbf{u}_n$ of inputs the 
+    label is the next point in the sequence
+    $\mathbf{u}_{n+1}$.
+    It is important that the data is not shuffled, as the network needs to process the data in order to learn the
+    telmporal dynamics of the wave equation.
         \cite{hu2022neuralpde}
 
-    % \begin{figure}[!h]
-    %     \begin{center}
-    %         \includegraphics[width=0.8\textwidth]{tikzfigures/rnn.pdf}
-    %     \end{center}
-    %     \caption{A model of a neural network with one hidden layer consisting of four nodes}\label{fig:rnn}
-    %     \cite{neutelings_tikzcode}
-    % \end{figure}
+
 
 \section{Results and Analysis}
 \label{sec:resultsdiscussion}
 
-\begin{mytable}[float=!h,label=tab:toyscores, width=0.5\textwidth]{Mean square error between analytical solution and different solvers.}
-\centering
-\begin{tabular}{l|l}
-    Finite difference   &\texttt{0.00855}  \\
-    PINN                &\texttt{0.879}  \\
-    Hybrid              &\texttt{0.02}  \\
-    Degree              &\texttt{0.02}  \\ 
-\end{tabular}%
-\end{mytable}
+
     
-    loss function
-    failures
-    rescources
-    time to train
-
-    The way we implemented PINNs does not allow for genralization to other problems. This is because we have
-    hard coded the wave equation and the initial conditions into the loss function. We also only have trainig data 
-    for one set of initial conditions. However, 
-    it may be possible to generalize the PINN 
-    to other problems by using a more general loss function.
-    When solving the wave equation with PINN overfitting in the traditional sense is not a problem, as the network
-    aims to find an exact solution to the wave equation and not a general solution. With the hybrid solver and RNN
-    however, overfitting  can pose a problem, and must be considered. For the hybrid solver, we can as mentioned
-    weigh the components of the loss function differently to give more or less importance to the different components.
-    and thus hinder overfitting. classical regularization techniques can also be used to prevent overfitting.
+    Our experiments yielded insightful results regarding the performance of different solvers. 
+    We found that the finite difference scheme outperformed other methods in terms of accuracy, 
+    followed by the hybrid solver. The Physics-Informed Neural Networks (PINNs) and the Recurrent Neural Network (RNN) 
+    lagged behind, with the latter showing limited efficiency relative to its extensive training time. 
+    This comparison highlights the finite difference scheme's effectiveness, especially considering its 
+    lower computational demand compared to neural network-based approaches.
+    \subsubsection{Limitations and Potential of PINNs:}
+    The implementation of PINNs in our study was tailored specifically for the wave equation, with both the 
+    equation and initial conditions hardcoded into the loss function. This approach limits the generalizability 
+    of our PINNs model to other problems. Nevertheless, by adopting a more generalized loss function, it might 
+    be feasible to extend the application of PINNs to a broader range of problems.
 
 
+    \subsubsection{Overfitting Considerations in Different Solvers:}
+    In the context of solving the wave equation with PINNs, traditional overfitting concerns are less relevant 
+    since the network seeks an exact solution rather than a generalized one. However, for the hybrid solver and RNN, 
+    overfitting remains a significant challenge. We addressed this in the hybrid solver by adjusting the weight of 
+    different loss function components. Additionally, classical regularization techniques were employed as 
+    preventive measures against overfitting.
 
-    Where the differnet features have vasly different scales, it might be a good idea to consider normalizing the data.
-    however as our exmaple has featers with similar scales, we have not done this in our experiments.
+    \subsubsection{Data Normalization and Scale Considerations:}
+    In cases where input features exhibit vastly different scales, normalizing the data is generally advisable. 
+    Our experiments, however, did not involve such normalization as the features in our example had similar scales. 
+    This decision was based on the context of our specific use case, though it may vary in different scenarios.
 
-    We used two hidden layers with 20 nodes each. We used the Adam optimizer with a learning rate of 0.01.
-
-    The RNN takes significantly longer to train than the other models. This is because the RNN has to process
-    the data sequentially, while the other models can process the data in parallel. The RNN also has to process
-    the data in order, while the other models can process the data in any order. This means that the RNN has to
+    \subsubsection{Potential and Limitations of Neural Networks for PDEs:}
+    We acknowledge that our examples might be too simplistic to fully demonstrate the capabilities of neural 
+    networks in solving Partial Differential Equations (PDEs). Our study was constrained to a one-dimensional 
+    problem with straightforward initial conditions and a brief simulation duration. Under these circumstances, 
+    traditional methods like finite difference schemes might be preferable due to their speed and accuracy. However, 
+    for more complex scenarios, the neural network-based methods we explored could offer advantages over 
+    conventional techniques. Furthermore, it's important to note that neural networks typically require 
+    substantial data to achieve optimal performance, a factor that should be considered in future applications.
 
 
     \begin{figure}[!ht]
@@ -498,8 +515,8 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                The PINN learns a solution to the wave equation where the initial momentum is not defined.
-                Yet it satisfies the wave equation and the initial conditions.
+                The PINN descided to ignore the contraint on the initial momentum. Yet the solution still satisfies the
+                wave equation to a certain degree.
             }\label{fig:wave_tf_dnn}
     \end{figure}
 
@@ -510,7 +527,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                PINN solution to the wave equation.
+                The hybrid solver is able to mitigate the artifacts of the pure PINN, and is the most accurate NN solver.
             }\label{fig:wave_own_dnn}
         \end{minipage}
         \hspace{2mm}
@@ -544,8 +561,8 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                The PINN learns a solution to the wave equation where the initial momentum is not defined.
-                Yet it satisfies the wave equation and the initial conditions.
+                The PINN descided to ignore the contraint on the initial momentum. Yet the solution still satisfies the
+                wave equation to a certain degree.
             }\label{fig:wave_tf_dnn}
         \end{minipage}
     \end{figure}
@@ -567,42 +584,49 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                The PINN learns a solution to the wave equation where the initial momentum is not defined.
-                Yet it satisfies the wave equation and the initial conditions.
+            We can see that the RNN strugles generate new data points. 
             }\label{fig:wave_tf_dnn}
         \end{minipage}
     \end{figure}
 
-    We can see that the RNN strugles generate new data points. In fact for our case the PINN is far greater at this task.
-    as we can train it on a small time frame and get good approximations for the rest of the time frame. We think 
-    that the RNN would be better suited for problems where we want to generalize to other initial conditions,
-    with more data available.
 
 
-\subsection{Hyperparameters}
+    \begin{mytable}[float=!h,label=tab:toyscores, width=0.5\textwidth]{Mean square error between 
+        analytical solution and different solvers.}
+    \centering
+    \begin{tabular}{l|l}
+        Finite difference   &\texttt{0.00855}  \\
+        PINN                &\texttt{0.00879}  \\
+        Hybrid              &\texttt{0.00002}  \\
+    \end{tabular}%
+    \end{mytable}
+
+\subsection{Hyperparameters and Architecture}
 \label{sec:hyperparameters}
 
-    As this is a proof of concept, we have not spent much time tuning hyperparameters. We have however
-    done some experiments to get a feel for how the hyperparameters affect the performance of the models.
-    We have also done some experiments to see how the different components of the loss function affect
-    the performance of the hybrid solver. We have not done any experiments to see how the hyperparameters
-    affect the performance of the RNN model, as this would require a lot of time and computational resources.
+    In our proof of concept, extensive hyperparameter tuning wasn't a primary focus. 
+    However, we conducted preliminary experiments to understand the impact of hyperparameters 
+    on model performance. Our efforts were primarily directed towards exploring how various 
+    components of the loss function influence the efficiency of the hybrid solver. Notably, 
+    we didn't investigate the hyperparameter effects on the RNN model's performance due to time 
+    and computational resource constraints.
+    For our PINN models, we implemented two hidden layers, each comprising 50 nodes. The neural 
+    networks were developed using TensorFlow\cite{tensorflow2015-whitepaper}. The Adam optimizer was 
+    employed with a learning 
+    rate of 0.001, which provided an effective balance between computational efficiency and learning accuracy. 
+    The models were trained over 10,000 epochs, using a batch size of 1,000. This approach allowed for 
+    sufficient data processing while maintaining manageable computational demands. Additionally, 
+    we incorporated weight decay in our training process, applying a weight of 0.0001 to prevent 
+    overfitting and improve model generalization.
+    The RNN model consisted of three LSTM layers, each comprising 50 nodes. The model was trained
+    with the same hyperparameters as the PINN model, except for the sequence length which was set to 10.
 
-    We have however done some experiments to see how the different components of the loss function affect
-    the performance of the RNN model.
 
-    training time
-
-    This paper shows that a carefully designed loss function goes a long way and many techniques can b combined trough
-    the loss function. If we have some prior knowledge about the problem, we can bake this into the loss function.
-    improving the model's performance.
-
-\newpage
 \subsection{Comparisons}
 \label{sec:comparisons}
 
-
-
+    "paper" found that PINNs are great with better results than us
+    "paper" found that RNNs are great with better results than us
 
     
 \section{Conclusion}
@@ -622,7 +646,10 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     and finite difference solutions. Another interesting direction would be to explore the use of
 
 
-    
+        Nevertheless, our experiments shed light on how loss function components can be optimized 
+    to enhance the RNN model's effectiveness. This study demonstrates that a well-crafted loss 
+    function can significantly influence performance, especially when it incorporates techniques 
+    that leverage prior knowledge about the problem domain.
     
      
 
@@ -654,8 +681,8 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 
 \vskip 0.2in
 \bibliography{report}
-\bibliographystyle{apalike}
-% \bibliographystyle{plain}
+% \bibliographystyle{apalike}
+\bibliographystyle{plain}
 \addcontentsline{toc}{section}{Bibliography}
 \end{document}
 
