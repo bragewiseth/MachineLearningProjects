@@ -154,15 +154,14 @@
     with classical methods like finite difference and analytical solutions. It demonstrates the feasibility
     of employing neural networks for solving partial differential equations (PDEs), offering a proof of 
     concept for future research in this domain. We found that neural networks are indeed capable of approximating
-    the wave equation, although the accuracy of the models is not as high as we would have hoped. For our
-    simple case where both analytical and finite difference solutions are available, the neural network
-    models are not able to achieve the same accuracy. The PINN manages to capture the physical laws embedded
-    in its loss function, but might fail to generalize to other initial conditions. The RNN is able to capture
-    the temporal dynamics of the wave equation and this approach it is more generalizable.
-    Although the neural nets indeed learn the dynamics of waves, they also suffer from artifacts, such as
-    violating energy conservation. A hybrid approach, combining the finite difference scheme with the PINN,
-    is able to mitigate these artifacts and is the most promising approach for cases with fixed initial
-    conditions. Despite this, our study demonstrates the potential of neural
+    the wave equation, with greater accuracy than traditional methods albeit at the cost of increased training time.
+    The PINN manages to capture the physical laws embedded
+    in its loss function, but might fail to generalize to other initial conditions. We found that our RNN model
+    was not able to capture the temporal dynamics of the wave equation although we think that this
+    approach might be promising for more complex problems. The hybrid solver, combining the finite difference
+    scheme with the PINN, achieves similar accuracy to the PINN, but with a much faster training time.
+    In some cases we might want to decrease the training time at the cost of accuracy, and in these cases
+    we might see some artifacts like violating energy conservation. Overall our study demonstrates the potential of neural
     networks in solving more complex PDEs, paving the way for future research in this field.
 \end{abstract}
 \begin{keywords}
