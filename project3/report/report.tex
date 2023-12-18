@@ -628,37 +628,25 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 \label{sec:conclusion}
 
     We have explored the use of neural networks in solving the wave equation. Our findings indicate that
-<<<<<<< HEAD
     neural networks are capable of approximating the wave equation.
     Both PINN and hybrid solutons were able to achieve a higher accuracy than the finite difference scheme.
     However, the training time for the neural network models was significantly longer than the "training time"
     for the finite difference scheme.
+    Our RNN model showed disappointing results, likely due to the simplicity of our example and limited training time.
     For our simple case where both analytical and finite difference
     solutions are available, it might be preferable to use these methods, as they are faster and can provide
     acceptable accuracy. Although we have not explored this in our experiments, it is likely that for more complex
     problems, the benefits of neural networks will be more apparent.
     Future work could involve exploring more complex partial differential equations, such as the
     Navier-Stokes equations. 
-    and finite difference solutions. 
-
-    Another interesting direction would be to explore the use of
-=======
-    neural networks are capable of approximating the wave equation, although the accuracy of the models
-    is not as high as we would have hoped. For our simple case where both analytical and finite difference
-    solutions are available, the neural network models are not able to achieve the same accuracy. 
-    However, as the partial differential equations become
-    more complex, the analytical solutions may be impossible to find, and the finite difference solutions
-    may become too computationally expensive or inaccurate. In these cases, neural networks may be a
-    viable alternative.
-    Future work could involve exploring more complex partial differential equations, such as the
-    Navier-Stokes equations, with more complex bounds and initial conditions 
-    and comparing the accuracy of the neural network models to the analytical
-    and finite difference solutions. Another interesting direction would be to explore the use of
->>>>>>> refs/remotes/origin/main
     Nevertheless, our experiments shed light on how loss function components can be optimized 
-    to enhance the RNN model's effectiveness. This study demonstrates that a well-crafted loss 
+    to enhance the performance of neural network-based solvers.
+    This study demonstrates that a well-crafted loss 
     function can significantly influence performance, especially when it incorporates techniques 
     that leverage prior knowledge about the problem domain.
+
+ 
+
     
      
 
