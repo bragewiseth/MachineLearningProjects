@@ -158,7 +158,7 @@
     simple case where both analytical and finite difference solutions are available, the neural network
     models are not able to achieve the same accuracy. The PINN manages to capture the physical laws embedded
     in its loss function, but might fail to generalize to other initial conditions. The RNN is able to capture
-    the temporal dynamics of the wave equation and this approach it is more gernerizable.
+    the temporal dynamics of the wave equation and this approach it is more generalizable.
     Although the neural nets indeed learn the dynamics of waves, they also suffer from artifacts, such as
     violating energy conservation. A hybrid approach, combining the finite difference scheme with the PINN,
     is able to mitigate these artifacts and is the most promising approach for cases with fixed initial
@@ -177,7 +177,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 
     Partial differential equations (PDEs) are ubiquitous in the field of physics and engineering,
     describing a wide range of phenomena, from fluid dynamics to quantum mechanics.
-    PDEs are in a sense the language of physics, and as such, solving them yeilds valuable insights into
+    PDEs are in a sense the language of physics, and as such, solving them yields valuable insights into
     the physical world. While analytical solutions are often preferred, they are not always feasible,
     they are often limited to simple cases with idealized boundary and initial conditions. Numerical methods, 
     although versatile, can be computationally 
@@ -211,9 +211,6 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     \item \textbf{Methods}: Outlining our approaches to solve the wave equation using neural networks.
     \item \textbf{Results and Analysis}: Presenting and analyzing the outcomes of our experiments.
     \end{itemize}
-    The focus is on comparing these neural network architectures in terms of theoretical framework, 
-    implementation, accuracy, computational efficiency, and scalability, contributing significantly 
-    to the field of computational physics and engineering.
 
 \section{Wave Equation}
 \label{sec:wave}
@@ -226,7 +223,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     where $u(x,t)$ denotes the displacement of the wave at position $x$ and time $t$, and $c$  
     signifies the wave speed. Typically, $x$ is considered within a 3-dimensional or 2-dimensional 
     space ($\mathbb{R}^3$ or $\mathbb{R}^2$) and $t$ within the temporal dimension ($\mathbb{R}$). 
-    This paper, however, will focus on the one-dimensional spatial case ($x \in \mathbb{R}$).
+    This paper, however, will focus on the one-dimensional case ($x \in \mathbb{R}$).
     The equation illustrates that the wave's acceleration at a point in time is directly proportional to 
     its spatial curvature at that point. Solving the wave equation requires understanding the complex 
     interaction between its spatial and temporal aspects. While analytical solutions exist for certain 
@@ -251,7 +248,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     \begin{equation}
     u(x,t) = \frac{1}{2}(e^{-0.25(x+ct)^2} + e^{-0.25(x-ct)^2}).
     \end{equation}
-    As we utilize differnet methods with slightly different goals we need to align the data accordingly.
+    As we utilize different methods with slightly different goals we need to align the data accordingly.
     \subsubsection{Unsupervised Data}
     For the pure PINN with only the wave equation as a constraint, we do not require any labeled data.
     The input to the model is simply the coordinates $(x,t)$, and the output is the displacement $u(x,t)$. 
@@ -451,7 +448,15 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 \section{Results and Analysis}
 \label{sec:resultsdiscussion}
 
-
+    \begin{mytable}[float=!h,label=tab:toyscores, width=0.5\textwidth]{Mean squared error between 
+        analytical solution and different solvers.}
+    \centering
+    \begin{tabular}{l|l}
+        Finite difference   &\texttt{4.9722476e-05}  \\
+        PINN                &\texttt{2.7890243e-05}  \\
+        Hybrid              &\texttt{0.00002}  \\
+    \end{tabular}%
+    \end{mytable}
     
     Our experiments yielded insightful results regarding the performance of different solvers. 
     We found that the finite difference scheme outperformed other methods in terms of accuracy, 
@@ -509,41 +514,17 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             }\label{fig:wave_analytic}
         \end{minipage}
     \end{figure}
-    \begin{figure}[!ht]
-            \begin{center}
-                \includegraphics[width=0.5\textwidth]{../runsAndFigures/wave_tf_pinn_velocity.png}
-            \end{center}
-            \caption
-            {
-                The PINN descided to ignore the contraint on the initial momentum. Yet the solution still satisfies the
-                wave equation to a certain degree.
-            }\label{fig:wave_tf_dnn}
-    \end{figure}
-
-    \begin{figure}[!ht]
-        \begin{minipage}[t]{0.5\textwidth - 1mm}
-            \begin{center}
-                \includegraphics[width=\textwidth]{../runsAndFigures/wave_tf_hybrid.png}
-            \end{center}
-            \caption
-            {
-                The hybrid solver is able to mitigate the artifacts of the pure PINN, and is the most accurate NN solver.
-            }\label{fig:wave_own_dnn}
-        \end{minipage}
-        \hspace{2mm}
-        \begin{minipage}[t]{0.5\textwidth - 1mm}
-            \begin{center}
-                \includegraphics[width=\textwidth]{../runsAndFigures/wave_tf_hybrid_loss.png}
-            \end{center}
-            \caption
-            {
-                The PINN learns a solution to the wave equation where the initial momentum is not defined.
-                Yet it satisfies the wave equation and the initial conditions.
-            }\label{fig:wave_tf_dnn}
-        \end{minipage}
-    \end{figure}
-
-
+    % \begin{figure}[!ht]
+    %         \begin{center}
+    %             \includegraphics[width=0.5\textwidth]{../runsAndFigures/wave_tf_pinn_velocity.png}
+    %         \end{center}
+    %         \caption
+    %         {
+    %             A solution to the wave equation solved by the PINN, The network seems to have put less emphasis on
+    %             the initial momentum and has found a solution that is not in accordance with our set initial momentum.
+    %             This is the result after training for 500 epochs
+    %         }\label{fig:wave_tf_dnn}
+    % \end{figure}
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
@@ -561,12 +542,31 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                The PINN descided to ignore the contraint on the initial momentum. Yet the solution still satisfies the
-                wave equation to a certain degree.
+                The loss curve for the PINN. The loss seems to have converged after 10000 epochs.
             }\label{fig:wave_tf_dnn}
         \end{minipage}
     \end{figure}
-
+    \begin{figure}[!ht]
+        \begin{minipage}[t]{0.5\textwidth - 1mm}
+            \begin{center}
+                \includegraphics[width=\textwidth]{../runsAndFigures/wave_tf_hybrid.png}
+            \end{center}
+            \caption
+            {
+                The hybrid solver is able to mitigate the artifacts of the pure PINN, and is the most accurate NN solver.
+            }\label{fig:wave_own_dnn}
+        \end{minipage}
+        \hspace{2mm}
+        \begin{minipage}[t]{0.5\textwidth - 1mm}
+            \begin{center}
+                \includegraphics[width=\textwidth]{../runsAndFigures/wave_tf_hybrid_loss.png}
+            \end{center}
+            \caption
+            {
+                The loss curve for the hybrid solver. The loss seems to have converged after 10000 epochs.
+            }\label{fig:wave_tf_dnn}
+        \end{minipage}
+    \end{figure}
     \begin{figure}[!ht]
         \begin{minipage}[t]{0.5\textwidth - 1mm}
             \begin{center}
@@ -574,7 +574,8 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                PINN solution to the wave equation.
+                RNN solution to the wave equation on the same time frame as the training data. 
+                The first 10 points are not shown as they are used as input to the RNN.
             }\label{fig:wave_own_dnn}
         \end{minipage}
         \hspace{2mm}
@@ -584,22 +585,15 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-            We can see that the RNN strugles generate new data points. 
+                The RNN predicts the evolution of the wave after the initial time frame of the training data.
+                We can see that the accuracy diminishes quickly.
             }\label{fig:wave_tf_dnn}
         \end{minipage}
     \end{figure}
 
 
 
-    \begin{mytable}[float=!h,label=tab:toyscores, width=0.5\textwidth]{Mean square error between 
-        analytical solution and different solvers.}
-    \centering
-    \begin{tabular}{l|l}
-        Finite difference   &\texttt{0.00855}  \\
-        PINN                &\texttt{0.00879}  \\
-        Hybrid              &\texttt{0.00002}  \\
-    \end{tabular}%
-    \end{mytable}
+
 
 \subsection{Hyperparameters and Architecture}
 \label{sec:hyperparameters}
@@ -627,8 +621,11 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 
     "paper" found that PINNs are great with better results than us
     "paper" found that RNNs are great with better results than us
+    We got decent results although it took a long time to train
+    perhaps more sophisticated approaches could yield better results
+    like the ones described in the papers above
 
-    
+\clearpage
 \section{Conclusion}
 \label{sec:conclusion}
 
@@ -644,19 +641,12 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     Navier-Stokes equations, with more complex bounds and initial conditions 
     and comparing the accuracy of the neural network models to the analytical
     and finite difference solutions. Another interesting direction would be to explore the use of
-
-
-        Nevertheless, our experiments shed light on how loss function components can be optimized 
+    Nevertheless, our experiments shed light on how loss function components can be optimized 
     to enhance the RNN model's effectiveness. This study demonstrates that a well-crafted loss 
     function can significantly influence performance, especially when it incorporates techniques 
     that leverage prior knowledge about the problem domain.
     
      
-
-
-
-
-
 
 
 
