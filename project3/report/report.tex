@@ -152,8 +152,8 @@
     Physics Informed Neural Networks (PINNs) 
     and Recurrent Neural Networks (RNNs), in solving the wave equation, contrasting their effectiveness 
     with classical methods like finite difference and analytical solutions. It demonstrates the feasibility
-    of employing neural networks for solving partial differential equations (PDEs), offering a proof of 
-    concept for future research in this domain. We found that neural networks are indeed capable of approximating
+    of employing neural networks for solving partial differential equations (PDEs).
+    We found that neural networks are indeed capable of approximating
     the wave equation, with greater accuracy than traditional methods albeit at the cost of increased training time.
     The PINN manages to capture the physical laws embedded
     in its loss function, but might fail to generalize to other initial conditions. We found that our RNN model
@@ -453,7 +453,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     \begin{tabular}{l|l}
         Finite difference   &\texttt{4.9722476e-05}  \\
         PINN                &\texttt{2.7890243e-05}  \\
-        Hybrid              &\texttt{0.00002}  \\
+        Hybrid              &\texttt{7.792424e-05}  \\
     \end{tabular}%
     \end{mytable}
     
@@ -551,7 +551,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                The hybrid solver is able to mitigate the artifacts of the pure PINN, and is the most accurate NN solver.
+                The hybrid solver's solution to the wave equation.
             }\label{fig:wave_own_dnn}
         \end{minipage}
         \hspace{2mm}
@@ -561,7 +561,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                The loss curve for the hybrid solver. The loss seems to have converged after 10000 epochs.
+                The loss curve for the hybrid solver. The loss seems to have converged after  
             }\label{fig:wave_tf_dnn}
         \end{minipage}
     \end{figure}
@@ -628,17 +628,19 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 \label{sec:conclusion}
 
     We have explored the use of neural networks in solving the wave equation. Our findings indicate that
-    neural networks are capable of approximating the wave equation, although the accuracy of the models
-    is not as high as we would have hoped. For our simple case where both analytical and finite difference
-    solutions are available, the neural network models are not able to achieve the same accuracy. 
-    However, as the partial differential equations become
-    more complex, the analytical solutions may be impossible to find, and the finite difference solutions
-    may become too computationally expensive or inaccurate. In these cases, neural networks may be a
-    viable alternative.
-    Future work could involve exploring more complex partial differential equations , such as the
-    Navier-Stokes equations, with more complex bounds and initial conditions 
-    and comparing the accuracy of the neural network models to the analytical
-    and finite difference solutions. Another interesting direction would be to explore the use of
+    neural networks are capable of approximating the wave equation.
+    Both PINN and hybrid solutons were able to achieve a higher accuracy than the finite difference scheme.
+    However, the training time for the neural network models was significantly longer than the "training time"
+    for the finite difference scheme.
+    For our simple case where both analytical and finite difference
+    solutions are available, it might be preferable to use these methods, as they are faster and can provide
+    acceptable accuracy. Although we have not explored this in our experiments, it is likely that for more complex
+    problems, the benefits of neural networks will be more apparent.
+    Future work could involve exploring more complex partial differential equations, such as the
+    Navier-Stokes equations. 
+    and finite difference solutions. 
+
+    Another interesting direction would be to explore the use of
     Nevertheless, our experiments shed light on how loss function components can be optimized 
     to enhance the RNN model's effectiveness. This study demonstrates that a well-crafted loss 
     function can significantly influence performance, especially when it incorporates techniques 
