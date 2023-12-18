@@ -449,7 +449,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 \label{sec:resultsdiscussion}
 
     \begin{mytable}[float=!h,label=tab:toyscores, width=0.5\textwidth]{Mean squared error between 
-        analytical solution and different solvers.}
+        analytical solution and different solvers. Lower is better.}
     \centering
     \begin{tabular}{l|l}
         Finite difference   &\texttt{4.9722476e-05}  \\
@@ -459,11 +459,10 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     \end{mytable}
     
     Our experiments yielded insightful results regarding the performance of different solvers. 
-    We found that the finite difference scheme outperformed other methods in terms of accuracy, 
-    followed by the hybrid solver. The Physics-Informed Neural Networks (PINNs) and the Recurrent Neural Network (RNN) 
-    lagged behind, with the latter showing limited efficiency relative to its extensive training time. 
-    This comparison highlights the finite difference scheme's effectiveness, especially considering its 
-    lower computational demand compared to neural network-based approaches.
+    We found that the PINN and hybrid outperformed other methods in terms of accuracy. The RNN did 
+    not show promising results, likely due to the simplicity of our example.
+    Although the PINN and hybrid solver peroformed well in terms of accuracy, they both suffer from extensive
+    training times.
     \subsubsection{Limitations and Potential of PINNs:}
     The implementation of PINNs in our study was tailored specifically for the wave equation, with both the 
     equation and initial conditions hardcoded into the loss function. This approach limits the generalizability 
@@ -542,7 +541,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                The loss curve for the PINN. The loss seems to have converged after 10000 epochs.
+                The loss curve for the PINN. The loss is very noisy, but it seems to not have converged after 50000 epochs.
             }\label{fig:wave_tf_dnn}
         \end{minipage}
     \end{figure}
@@ -608,9 +607,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     networks were developed using TensorFlow\cite{tensorflow2015-whitepaper}. The Adam optimizer was 
     employed with a learning 
     rate of 0.001, which provided an effective balance between computational efficiency and learning accuracy. 
-    The models were trained over 10,000 epochs, using a batch size of 1,000. This approach allowed for 
-    sufficient data processing while maintaining manageable computational demands. Additionally, 
-    we incorporated weight decay in our training process, applying a weight of 0.0001 to prevent 
+    Additionally, we incorporated weight decay in our training process, applying a weight of 0.0001 to prevent 
     overfitting and improve model generalization.
     The RNN model consisted of three LSTM layers, each comprising 50 nodes. The model was trained
     with the same hyperparameters as the PINN model, except for the sequence length which was set to 10.
@@ -619,13 +616,15 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 \subsection{Comparisons}
 \label{sec:comparisons}
 
-    "paper" found that PINNs are great with better results than us
-    "paper" found that RNNs are great with better results than us
-    We got decent results although it took a long time to train
-    perhaps more sophisticated approaches could yield better results
-    like the ones described in the papers above
+    With PINN and the hybrid we got decent results although it took a long time to train
+    perhaps more sophisticated approaches could yield better results. The paper by 
+    Krishnapriyan et al. \cite{krishnapriyan2021characterizing} shows more advanced approaches
+    that could be used to improve the performance of the PINN and hybrid solver.
+    The RNN model was not able to capture the temporal dynamics of the wave equation, and the accuracy diminished
+    quickly after the initial time frame of the training data. This is likely due to the simplicity of our example.
+    more complex examples might yield better results. The paper by Hu et al. \cite{hu2022neuralpde} shows promising
+    results for the RNN model, although they use a more complex example.
 
-\clearpage
 \section{Conclusion}
 \label{sec:conclusion}
 
