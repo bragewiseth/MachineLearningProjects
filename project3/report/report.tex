@@ -159,7 +159,7 @@
     in its loss function, but might fail to generalize to other initial conditions. We found that our RNN model
     was not able to capture the temporal dynamics of the wave equation although we think that this
     approach might be promising for more complex problems. The hybrid solver, combining the finite difference
-    scheme with the PINN, achieves similar accuracy to the PINN, but with a much faster training time.
+    scheme with the PINN, achieves slightly worse accuracy to the PINN.
     In some cases we might want to decrease the training time at the cost of accuracy, and in these cases
     we might see some artifacts like violating energy conservation. Overall our study demonstrates the potential of neural
     networks in solving more complex PDEs, paving the way for future research in this field.
@@ -183,8 +183,8 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     demanding and less accurate for long simulations. 
     In recent years, the advent 
     of deep learning has opened new avenues for addressing complex computational problems.
-    This paper aims to showcase neural networks as a promising tool for solving PDEs. 
-    As neural networks are universal function approximators, they should be 
+    This paper aims to showcase neural networks as a promising tool for solving PDEs. As 
+    neural networks are universal function approximators, they should be 
     capable of approximating the solutions to PDEs. 
     A naive approach to employing neural networks for solving
     PDEs can be to simply train a dense neural network with simulated or recorded data in hopes that
@@ -458,7 +458,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     \end{mytable}
     
     Our experiments yielded insightful results regarding the performance of different solvers. 
-    We found that the PINN and hybrid outperformed other methods in terms of accuracy. The RNN did 
+    We found that the PINN outperformed other methods in terms of accuracy. The RNN did 
     not show promising results, likely due to the simplicity of our example.
     Although the PINN and hybrid solver peroformed well in terms of accuracy, they both suffer from extensive
     training times.
@@ -561,7 +561,7 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
             \end{center}
             \caption
             {
-                The loss curve for the hybrid solver. The loss seems to have converged after  
+                The loss curve for the hybrid solver. The loss is less noisy than the PINN, with a clear downward trend.
             }\label{fig:wave_tf_dnn}
         \end{minipage}
     \end{figure}
@@ -615,8 +615,8 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 \subsection{Comparisons}
 \label{sec:comparisons}
 
-    With PINN and the hybrid we got decent results although it took a long time to train
-    perhaps more sophisticated approaches could yield better results. The paper by 
+    With PINN and the hybrid method we got decent results although it took a long time to train.
+    Perhaps more sophisticated approaches could yield better results. The paper by 
     Krishnapriyan et al. \cite{krishnapriyan2021characterizing} shows more advanced approaches
     that could be used to improve the performance of the PINN and hybrid solver.
     The RNN model was not able to capture the temporal dynamics of the wave equation, and the accuracy diminished
@@ -629,12 +629,13 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 
     We have explored the use of neural networks in solving the wave equation. Our findings indicate that
     neural networks are capable of approximating the wave equation.
-    Both PINN and hybrid solutons were able to achieve a higher accuracy than the finite difference scheme.
-    However, the training time for the neural network models was significantly longer than the "training time"
+    the PINN model were able to achieve a higher accuracy than the finite difference scheme, the hybrid
+    method achieved a slightly lower accuracy than the finite difference scheme.
+    The training time for the neural network models was significantly longer than the "training time"
     for the finite difference scheme.
     Our RNN model showed disappointing results, likely due to the simplicity of our example and limited training time.
-    For our simple case where both analytical and finite difference
-    solutions are available, it might be preferable to use these methods, as they are faster and can provide
+    For our simple case where finite difference
+    solutions are cheap and accurate, it might be preferable to use these methods, as they are faster and can provide
     acceptable accuracy. Although we have not explored this in our experiments, it is likely that for more complex
     problems, the benefits of neural networks will be more apparent.
     Future work could involve exploring more complex partial differential equations, such as the
@@ -644,6 +645,12 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
     This study demonstrates that a well-crafted loss 
     function can significantly influence performance, especially when it incorporates techniques 
     that leverage prior knowledge about the problem domain.
+    
+
+    \vspace{12mm}
+    \noindent
+    Code for the examples can be found at \\\url{https://github.com/bragewiseth/MachineLearningProjects}.
+
 
  
 
@@ -652,7 +659,6 @@ PINNs, RNNs, PDEs, Wave Equation, Neural Networks
 
 
 
-% \acks{}
 
 
 % \clearpage 
